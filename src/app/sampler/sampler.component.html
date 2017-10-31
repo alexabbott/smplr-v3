@@ -1,0 +1,10 @@
+<ul>
+    <li class="text" *ngFor="let k of kit | async">
+      {{ k.name }}
+        <ul>
+          <li class="text" *ngFor="let sample of samples | async">
+            {{ sample.name }}
+          </li>
+        </ul>
+    </li>
+  </ul>
