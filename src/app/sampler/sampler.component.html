@@ -1,10 +1,11 @@
-<ul>
-    <li class="text" *ngFor="let k of kit | async">
-      {{ k.name }}
-        <ul>
-          <li class="text" *ngFor="let sample of samples | async">
-            {{ sample.name }}
-          </li>
-        </ul>
-    </li>
-  </ul>
+<h3>{{ (kit | async)?.name }}</h3>
+<div class="kit" dnd-sortable-container [dropZones]="['sample-zone']" [sortableData]="kitSamples">
+    <div
+        class="sample"
+        *ngFor="let sample of kitSamples; let i = index"
+        dnd-sortable
+        [sortableIndex]="i"
+        (onDropSuccess)="addBack($event)">
+        {{ sample.name }}
+    </div>
+</div>

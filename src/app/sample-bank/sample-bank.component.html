@@ -1,0 +1,11 @@
+<div dnd-sortable-container [dropZones]="['sample-zone']" [sortableData]="samples">
+    <div
+        class="sample"
+        *ngFor="let sample of samples; let i = index"
+        dnd-sortable
+        [sortableIndex]="i"
+        [dragData]="sample"
+        (onDragStartCallback)="consoleIt($event)">
+        {{ sample.name }}
+    </div>
+</div>
