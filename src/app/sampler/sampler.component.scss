@@ -1,11 +1,11 @@
-.kit {
-    display: inline-block;
-    margin: 0 auto;
-    width: auto;
+mat-form-field {
+    display: block;
 }
 
-h3 {
-    text-align: center;
+.kit {
+    display: block;
+    margin: 0 auto;
+    width: 416px;
 }
 
 .sample {
@@ -17,4 +17,11 @@ h3 {
     margin: 2px;
     text-align: center;
     width: 100px;
+}
+
+.mat-fab {
+    bottom: 50px;
+    font-size: 1.5em;
+    position: absolute;
+    right: 50px;
 }

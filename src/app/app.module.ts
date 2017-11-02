@@ -1,8 +1,18 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatButtonModule, MatCardModule, MatToolbarModule, MatSidenavModule, MatDialogModule } from '@angular/material';
+import {
+  MatButtonModule,
+  MatCardModule,
+  MatToolbarModule,
+  MatSidenavModule,
+  MatDialogModule,
+  MatFormFieldModule,
+  MatInputModule,
+  MatSelectModule,
+  MatOptionModule } from '@angular/material';
 import 'hammerjs';
+import { FormsModule } from '@angular/forms';
 import * as firebase from 'firebase';
 import { AngularFireModule } from 'angularfire2';
 import { AngularFirestoreModule } from 'angularfire2/firestore';
@@ -18,6 +28,7 @@ import { SampleBankComponent } from './sample-bank/sample-bank.component';
 import { AddSampleDialogComponent } from './add-sample-dialog/add-sample-dialog.component';
 
 import { GlobalService } from './global.service';
+import { SearchPipe } from './search.pipe';
 
 firebase.initializeApp(environment.firebase);
 
@@ -27,18 +38,24 @@ firebase.initializeApp(environment.firebase);
     SamplerComponent,
     SidenavComponent,
     SampleBankComponent,
-    AddSampleDialogComponent
+    AddSampleDialogComponent,
+    SearchPipe
   ],
   imports: [
     AngularFireModule.initializeApp(environment.firebase),
     AppRoutingModule,
     BrowserModule,
     BrowserAnimationsModule,
+    FormsModule,
     MatButtonModule,
     MatCardModule,
     MatDialogModule,
-    MatToolbarModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatOptionModule,
+    MatSelectModule,
     MatSidenavModule,
+    MatToolbarModule,
     AngularFirestoreModule,
     AngularFireAuthModule,
     DndModule.forRoot()

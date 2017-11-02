@@ -1,7 +1,11 @@
-<mat-toolbar>SMPLR</mat-toolbar>
+<mat-toolbar>
+  <span>SMPLR</span>
+  <span class="toolbar-spacer"></span>
+  <span><i class="material-icons" (click)="sidenav.toggle()">playlist_play</i></span>
+</mat-toolbar>
 <mat-sidenav-container>
   <router-outlet></router-outlet>
-  <mat-sidenav mode="side" opened="true" position="end">
+  <mat-sidenav #sidenav mode="side" opened="true" position="end">
     <sidenav></sidenav>
   </mat-sidenav>
 </mat-sidenav-container>

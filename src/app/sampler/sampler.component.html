@@ -1,11 +1,20 @@
-<h3>{{ (kit | async)?.name }}</h3>
-<div class="kit" dnd-sortable-container [dropZones]="['sample-zone']" [sortableData]="kitSamples">
+<div class="kit">
+    <mat-form-field>
+        <mat-select [(ngModel)]="currentKit" (change)="changeKit()">
+            <mat-option *ngFor="let k of (kits | async)" [value]="k.slug">
+                {{ k.name }}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
     <div
         class="sample"
+        id="sample{{i+1}}"
         *ngFor="let sample of kitSamples; let i = index"
-        dnd-sortable
-        [sortableIndex]="i"
-        (onDropSuccess)="addBack($event)">
+        dnd-droppable
+        [dropZones]="['zone' + (i + 1)]"
+        (onDropSuccess)="replaceSample($event)">
         {{ sample.name }}
     </div>
 </div>
+
+<button mat-fab>+</button>

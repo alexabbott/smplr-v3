@@ -11,19 +11,15 @@ import { GlobalService } from '../global.service';
 export class SampleBankComponent implements OnInit {
     samplesRef: Observable<any>;
     samples: any;
+    sampleSearch: string;
 
     constructor(
         public db: AngularFirestore,
         public globalService: GlobalService
     ) {
+        this.sampleSearch = '';
         this.samples = [];
         this.samplesRef = this.db.collection<any[]>('samples').valueChanges();
-
-        globalService.movedSample.subscribe((sample) => {
-            if (sample) {
-                this.samples.push(sample);
-            }
-        });
     }
 
     ngOnInit() {
@@ -33,9 +29,4 @@ export class SampleBankComponent implements OnInit {
             }
         });
     }
-
-    consoleIt($event: any) {
-        console.log('start', $event);
-    }
-
 }

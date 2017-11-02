@@ -1,6 +1,12 @@
+.sample-bank {
+    display: block;
+    margin: 0 auto;
+    width: 208px;
+}
+
 .sample {
     background: gray;
-    display: block;
+    display: inline-block;
     color: white;
     height: 100px;
     line-height: 100px;

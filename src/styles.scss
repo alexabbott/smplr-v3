@@ -15,17 +15,19 @@ h3,
 .mat-dialog,
 .mat-button,
 .mat-raised-button,
-.mat-dialog-title {
+.mat-dialog-title,
+.mat-select-value-text,
+.mat-option-text {
     font-family: $font-serif;
 }
 
 mat-sidenav {
     box-sizing: border-box;
-    height: 100vh;
+    height: calc(100vh - 64px);
     padding: 20px;
     width: 300px;
 }
 
 mat-sidenav-content {
-    height: 100vh !important;
+    height: calc(100vh - 64px) !important;
 }

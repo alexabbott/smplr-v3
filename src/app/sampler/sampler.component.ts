@@ -11,7 +11,9 @@ import { GlobalService } from '../global.service';
 })
 export class SamplerComponent implements OnInit {
     kit: Observable<any>;
+    kits: Observable<any>;
     kitSamples: any;
+    currentKit: any;
 
     constructor(
         public db: AngularFirestore,
@@ -20,6 +22,7 @@ export class SamplerComponent implements OnInit {
         public globalService: GlobalService
     ) {
         this.kitSamples = [];
+        this.kits = this.db.collection<any[]>('kits').valueChanges();
     }
 
     ngOnInit() {
@@ -27,6 +30,7 @@ export class SamplerComponent implements OnInit {
             if (params.slug) {
                 this.kit = this.db.collection<any[]>('kits').doc(params.slug).valueChanges();
                 this.kit.subscribe((k) => {
+                    this.currentKit = k.slug;
                     for (let i = 0; i < k.samples.length; i++) {
                         this.db.collection<any[]>('samples').doc(k.samples[i].id).valueChanges().subscribe((s) => {
                             this.kitSamples.push(s);
@@ -37,8 +41,13 @@ export class SamplerComponent implements OnInit {
         });
     }
 
-    addBack($event: any) {
-        console.log('dropped', $event);
-        this.globalService.movedSample.next($event);
+    changeKit() {
+        this.kitSamples = [];
+        this.router.navigateByUrl('kit/' + this.currentKit);
+    }
+
+    replaceSample($event: any) {
+        let index = $event.mouseEvent.toElement.id.split('sample')[1] - 1;
+        this.kitSamples.splice(index, 1, $event.dragData);
     }
 }
