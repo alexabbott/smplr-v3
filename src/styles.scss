@@ -17,8 +17,10 @@ h3,
 .mat-raised-button,
 .mat-dialog-title,
 .mat-select-value-text,
-.mat-option-text {
-    font-family: $font-serif;
+.mat-option-text,
+.mat-input-placeholder,
+.mat-input-element {
+    font-family: $font-serif !important;
 }
 
 mat-sidenav {

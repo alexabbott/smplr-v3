@@ -9,6 +9,7 @@ import {
   MatDialogModule,
   MatFormFieldModule,
   MatInputModule,
+  MatMenuModule,
   MatSelectModule,
   MatOptionModule } from '@angular/material';
 import 'hammerjs';
@@ -52,6 +53,7 @@ firebase.initializeApp(environment.firebase);
     MatDialogModule,
     MatFormFieldModule,
     MatInputModule,
+    MatMenuModule,
     MatOptionModule,
     MatSelectModule,
     MatSidenavModule,

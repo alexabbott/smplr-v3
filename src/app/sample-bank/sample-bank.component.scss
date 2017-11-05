@@ -5,9 +5,12 @@
 }
 
 .sample {
-    background: gray;
+    background: transparent;
+    border: 1px solid #000;
+    border-radius: 3px;
+    box-sizing: border-box;
     display: inline-block;
-    color: white;
+    color: #000;
     height: 100px;
     line-height: 100px;
     margin: 2px;

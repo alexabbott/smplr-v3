@@ -9,9 +9,12 @@ mat-form-field {
 }
 
 .sample {
-    background: gray;
+    background: transparent;
+    border: 1px solid #000;
+    border-radius: 3px;
+    box-sizing: border-box;
     display: inline-block;
-    color: white;
+    color: #000;;
     height: 100px;
     line-height: 100px;
     margin: 2px;
@@ -20,8 +23,8 @@ mat-form-field {
 }
 
 .mat-fab {
-    bottom: 50px;
+    bottom: 25px;
     font-size: 1.5em;
     position: absolute;
-    right: 50px;
+    right: 25px;
 }
