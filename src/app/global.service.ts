@@ -3,7 +3,8 @@ import { Observable, BehaviorSubject } from 'rxjs/Rx';
 
 @Injectable()
 export class GlobalService {
-  public movedSample = new BehaviorSubject(null);
+  public showSampleUpload = new BehaviorSubject(false);
+  public currentSamples = new BehaviorSubject(null);
 
   constructor() {}
 

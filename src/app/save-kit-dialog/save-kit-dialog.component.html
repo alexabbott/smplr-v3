@@ -1,0 +1,9 @@
+<h2 mat-dialog-title>Save Current Kit</h2>
+<mat-dialog-actions>
+  <mat-form-field>
+    <input matInput placeholder="Kit Name" [(ngModel)]="kitName">
+  </mat-form-field>
+  <button mat-button mat-dialog-close>Cancel</button>
+  <!-- Can optionally provide a result for the closing dialog. -->
+  <button mat-button (click)="saveNewKit()" [mat-dialog-close]="true">Save</button>
+</mat-dialog-actions>

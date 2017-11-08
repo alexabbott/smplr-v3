@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularFirestore } from 'angularfire2/firestore';
 import { Observable } from 'rxjs/Observable';
-import { GlobalService } from '../global.service';
 
 @Component({
     selector: 'sample-bank',
@@ -12,20 +11,23 @@ export class SampleBankComponent implements OnInit {
     samplesRef: Observable<any>;
     samples: any;
     sampleSearch: string;
+    newSample: any;
 
     constructor(
-        public db: AngularFirestore,
-        public globalService: GlobalService
+        public db: AngularFirestore
     ) {
         this.sampleSearch = '';
         this.samples = [];
-        this.samplesRef = this.db.collection<any[]>('samples').valueChanges();
+        this.samplesRef = this.db.collection<any[]>('samples').snapshotChanges();
     }
 
     ngOnInit() {
         this.samplesRef.subscribe((s) => {
             for (let i = 0; i < s.length; i++) {
-                this.samples.push(s[i]);
+                let newSample = {}
+                this.newSample = s[i].payload.doc.data();
+                this.newSample.id = s[i].payload.doc.id;
+                this.samples.push(this.newSample);
             }
         });
     }

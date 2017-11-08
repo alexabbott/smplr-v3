@@ -21,12 +21,14 @@ import { AngularFireAuthModule } from 'angularfire2/auth';
 import { environment } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
 import { DndModule } from 'ng2-dnd';
+import { NgcFloatButtonModule } from 'ngc-float-button';
 
 import { AppComponent } from './app.component';
 import { SamplerComponent } from './sampler/sampler.component';
 import { SidenavComponent } from './sidenav/sidenav.component';
 import { SampleBankComponent } from './sample-bank/sample-bank.component';
 import { AddSampleDialogComponent } from './add-sample-dialog/add-sample-dialog.component';
+import { SaveKitDialogComponent } from './save-kit-dialog/save-kit-dialog.component';
 
 import { GlobalService } from './global.service';
 import { SearchPipe } from './search.pipe';
@@ -40,7 +42,8 @@ firebase.initializeApp(environment.firebase);
     SidenavComponent,
     SampleBankComponent,
     AddSampleDialogComponent,
-    SearchPipe
+    SearchPipe,
+    SaveKitDialogComponent
   ],
   imports: [
     AngularFireModule.initializeApp(environment.firebase),
@@ -58,12 +61,13 @@ firebase.initializeApp(environment.firebase);
     MatSelectModule,
     MatSidenavModule,
     MatToolbarModule,
+    NgcFloatButtonModule,
     AngularFirestoreModule,
     AngularFireAuthModule,
     DndModule.forRoot()
   ],
   providers: [GlobalService],
-  entryComponents: [AddSampleDialogComponent],
+  entryComponents: [AddSampleDialogComponent, SaveKitDialogComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

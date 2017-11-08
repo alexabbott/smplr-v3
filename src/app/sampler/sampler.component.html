@@ -17,4 +17,8 @@
     </div>
 </div>
 
-<button mat-fab>+</button>
+<ngc-float-button icon="add">
+    <ngc-float-item-button (click)="openSampleDialog()" icon="music_note" content="Upload a Sample"></ngc-float-item-button>
+    <ngc-float-item-button (click)="openSaveKitDialog()" icon="grid_on" content="Save as New Kit"></ngc-float-item-button>
+    <ngc-float-item-button icon="mode_edit" content="Edit Current Kit"></ngc-float-item-button>
+</ngc-float-button>
