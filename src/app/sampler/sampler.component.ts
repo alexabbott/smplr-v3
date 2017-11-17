@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { AngularFirestore } from 'angularfire2/firestore';
 import { Observable } from 'rxjs/Observable';
 import { ActivatedRoute, Params, Router } from '@angular/router';
@@ -18,6 +18,7 @@ export class SamplerComponent implements OnInit {
     kitSamples: any;
     currentKit: any;
     sample: any;
+    keyMap: any;
 
     constructor(
         public db: AngularFirestore,
@@ -28,6 +29,25 @@ export class SamplerComponent implements OnInit {
     ) {
         this.kitSamples = [];
         this.kits = this.db.collection<any[]>('kits').valueChanges();
+
+        this.keyMap = {
+            'z': 12,
+            'x': 13,
+            'c': 14,
+            'v': 15,
+            'a': 8,
+            's': 9,
+            'd': 10,
+            'f': 11,
+            'q': 4,
+            'w': 5,
+            'e': 6,
+            'r': 7,
+            '1': 0,
+            '2': 1,
+            '3': 2,
+            '4': 3,
+        }
     }
 
     ngOnInit() {
@@ -48,6 +68,19 @@ export class SamplerComponent implements OnInit {
                 });
             }
         });
+    }
+
+    @HostListener('document:keydown', ['$event'])
+    keydown(e: KeyboardEvent) {
+        let sample = <HTMLAudioElement>document.getElementById('player' + (this.keyMap[e.key] + 1));
+        sample.play();
+    }
+
+    @HostListener('document:keyup', ['$event'])
+    keyup(e: KeyboardEvent) {
+        let sample = <HTMLAudioElement>document.getElementById('player' + (this.keyMap[e.key] + 1));
+        sample.pause();
+        sample.currentTime = 0;
     }
 
     changeKit() {

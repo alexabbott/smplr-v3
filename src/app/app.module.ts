@@ -11,7 +11,8 @@ import {
   MatInputModule,
   MatMenuModule,
   MatSelectModule,
-  MatOptionModule } from '@angular/material';
+  MatOptionModule,
+  MatSnackBarModule } from '@angular/material';
 import 'hammerjs';
 import { FormsModule } from '@angular/forms';
 import * as firebase from 'firebase';
@@ -60,6 +61,7 @@ firebase.initializeApp(environment.firebase);
     MatOptionModule,
     MatSelectModule,
     MatSidenavModule,
+    MatSnackBarModule,
     MatToolbarModule,
     NgcFloatButtonModule,
     AngularFirestoreModule,

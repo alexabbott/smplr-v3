@@ -3,6 +3,7 @@ import { Observable } from 'rxjs/Observable';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { AngularFirestore } from 'angularfire2/firestore';
 import * as firebase from 'firebase/app';
+import { GlobalService } from './global.service';
 
 
 @Component({
@@ -11,19 +12,22 @@ import * as firebase from 'firebase/app';
     styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
+    userData: any;
+
     constructor(
         public afAuth: AngularFireAuth,
-        public db: AngularFirestore
-    ) { }
-
-    login() {
-        this.afAuth.auth.signInWithPopup(new firebase.auth.GoogleAuthProvider()).then((result) => {
+        public db: AngularFirestore,
+        public globalService: GlobalService
+    ) {
+        afAuth.authState.subscribe((user) => {
+            this.globalService.user.next(user.uid);
             let userData = {
-                displayName: result.user.displayName,
-                photoURL: result.user.photoURL,
-                email: result.user.email
+                displayName: user.displayName,
+                photoURL: user.photoURL,
+                email: user.email
             };
-            const userRef = this.db.collection('users').doc(result.user.uid);
+            this.globalService.user.next(user.uid);
+            const userRef = this.db.collection('users').doc(user.uid);
             userRef.valueChanges().subscribe((u) => {
                 if (!u) {
                     userRef.set(userData);
@@ -31,6 +35,12 @@ export class AppComponent {
                     userRef.update(userData);
                 }
             });
+        });
+    }
+
+    login() {
+        this.afAuth.auth.signInWithPopup(new firebase.auth.GoogleAuthProvider()).then((result) => {
+            console.log('logged in');
         });
     }
 

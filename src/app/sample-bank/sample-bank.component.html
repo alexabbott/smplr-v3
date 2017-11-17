@@ -5,10 +5,13 @@
     <div
         class="sample"
         *ngFor="let sample of samples | search: sampleSearch; let i = index"
+        (mousedown)="globalService.playSample($event)"
+        (mouseup)="globalService.stopSample($event)"
         dnd-draggable
         [dragEnabled]="true"
         [dragData]="sample"
         [dropZones]="['zone1','zone2','zone3','zone4','zone5','zone6','zone7','zone8','zone9','zone10','zone11','zone12','zone13','zone14','zone15','zone16']">
         {{ sample.name }}
+        <audio [src]="sample.url"></audio>
     </div>
 </div>

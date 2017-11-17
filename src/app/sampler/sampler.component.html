@@ -14,6 +14,7 @@
         [dropZones]="['zone' + (i + 1)]"
         (onDropSuccess)="replaceSample($event)">
         {{ sample.name }}
+        <audio src="{{sample.url}}" id="player{{i+1}}"></audio>
     </div>
 </div>
 

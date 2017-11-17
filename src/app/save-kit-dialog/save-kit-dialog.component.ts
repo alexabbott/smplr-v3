@@ -3,6 +3,7 @@ import { MatDialogRef } from '@angular/material';
 import { AngularFirestore } from 'angularfire2/firestore';
 import { Observable } from 'rxjs/Observable';
 import { GlobalService } from '../global.service';
+import { MatSnackBar } from '@angular/material';
 
 @Component({
   selector: 'save-kit-dialog',
@@ -12,14 +13,17 @@ import { GlobalService } from '../global.service';
 export class SaveKitDialogComponent implements OnInit {
   kitName: string;
   currentSamples: any;
+  user: string;
 
   constructor(
     public dialogRef: MatDialogRef<SaveKitDialogComponent>,
     public db: AngularFirestore,
-    public globalService: GlobalService
+    public globalService: GlobalService,
+    public snackBar: MatSnackBar
   ) { }
 
   ngOnInit() {
+    this.globalService.user.subscribe((u) => this.user = u);
   }
 
   onNoClick(): void {
@@ -31,25 +35,16 @@ export class SaveKitDialogComponent implements OnInit {
       this.currentSamples = samples;
       let sampleRefs = [];
       for (let i = 0; i < this.currentSamples.length; i++) {
-        sampleRefs.push(this.db.doc('samples/' + this.currentSamples[i].id));
+        sampleRefs.push(this.db.doc('samples/' + this.currentSamples[i].id).ref);
       }
-      this.db.collection<any[]>('kits').doc(this.slugify(this.kitName)).set({
+      this.db.collection<any[]>('kits').doc(this.globalService.slugify(this.kitName)).set({
         name: this.kitName,
         slug: this.slugify(this.kitName),
-        samples: sampleRefs
+        samples: sampleRefs,
+        user: this.db.collection('users').doc(this.user).ref
       }).then((resp) => {
         console.log('saved kit', resp);
       });
     });
   }
-
-  slugify(text) {
-    return text.toString().toLowerCase()
-    .replace(/\s+/g, '-')
-    .replace(/[^\w\-]+/g, '')
-    .replace(/\-\-+/g, '-')
-    .replace(/^-+/, '')
-    .replace(/-+$/, '')
-  }
-
 }

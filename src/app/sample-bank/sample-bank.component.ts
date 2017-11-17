@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularFirestore } from 'angularfire2/firestore';
 import { Observable } from 'rxjs/Observable';
+import { GlobalService } from '../global.service';
 
 @Component({
     selector: 'sample-bank',
@@ -14,7 +15,8 @@ export class SampleBankComponent implements OnInit {
     newSample: any;
 
     constructor(
-        public db: AngularFirestore
+        public db: AngularFirestore,
+        public globalService: GlobalService
     ) {
         this.sampleSearch = '';
         this.samples = [];
