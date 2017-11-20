@@ -5,6 +5,8 @@
     <div
         class="sample"
         *ngFor="let sample of samples | search: sampleSearch; let i = index"
+        (focus)="globalService.keyMapEnabled.next(false)"
+        (focusout)="globalService.keyMapEnabled.next(true)"
         (mousedown)="globalService.playSample($event)"
         (mouseup)="globalService.stopSample($event)"
         dnd-draggable

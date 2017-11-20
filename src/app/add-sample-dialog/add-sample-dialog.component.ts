@@ -59,14 +59,12 @@ export class AddSampleDialogComponent implements OnInit {
             });
             this.storageRef.child('samples/' + path).getDownloadURL().then((url) => {
                 me.sampleURL = url;
-                console.log('url', me.sampleURL);
                 this.allowSave = true;
             });
         });
     }
 
     saveSample() {
-        console.log('surl', this.sampleURL);
         this.db.collection('samples').add({
             name: this.sampleName,
             slug: this.globalService.slugify(this.sampleName),
@@ -74,11 +72,11 @@ export class AddSampleDialogComponent implements OnInit {
             user: this.db.collection('users').doc(this.user).ref
         }).then((resp) => {
             console.log('saved sample', resp);
-            // this.db.collection('users').add({
-
-            // }).then((response) => {
-            //     console.log('saved sample', response);
-            // });
+            this.db.collection('users/' + this.user + '/samples').add(
+                this.db.collection('samples').doc(resp.id).ref)
+            .then((response) => {
+                console.log('saved user sample', response);
+            });
         });
     }
 

@@ -6,6 +6,7 @@ export class GlobalService {
   public showSampleUpload = new BehaviorSubject(false);
   public currentSamples = new BehaviorSubject(null);
   public user = new BehaviorSubject(null);
+  public keyMapEnabled = new BehaviorSubject(true);
 
   constructor() {}
 

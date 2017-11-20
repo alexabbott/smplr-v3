@@ -20,21 +20,23 @@ export class AppComponent {
         public globalService: GlobalService
     ) {
         afAuth.authState.subscribe((user) => {
-            this.globalService.user.next(user.uid);
-            let userData = {
-                displayName: user.displayName,
-                photoURL: user.photoURL,
-                email: user.email
-            };
-            this.globalService.user.next(user.uid);
-            const userRef = this.db.collection('users').doc(user.uid);
-            userRef.valueChanges().subscribe((u) => {
-                if (!u) {
-                    userRef.set(userData);
-                } else {
-                    userRef.update(userData);
-                }
-            });
+            if (user) {
+                this.globalService.user.next(user.uid);
+                let userData = {
+                    displayName: user.displayName,
+                    photoURL: user.photoURL,
+                    email: user.email
+                };
+                this.globalService.user.next(user.uid);
+                const userRef = this.db.collection('users').doc(user.uid);
+                userRef.valueChanges().subscribe((u) => {
+                    if (!u) {
+                        userRef.set(userData);
+                    } else {
+                        userRef.update(userData);
+                    }
+                });
+            }
         });
     }
 

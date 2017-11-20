@@ -19,6 +19,7 @@ export class SamplerComponent implements OnInit {
     currentKit: any;
     sample: any;
     keyMap: any;
+    keyMapEnabled: boolean;
 
     constructor(
         public db: AngularFirestore,
@@ -29,6 +30,10 @@ export class SamplerComponent implements OnInit {
     ) {
         this.kitSamples = [];
         this.kits = this.db.collection<any[]>('kits').valueChanges();
+
+        this.globalService.keyMapEnabled.subscribe((enabled) => {
+            this.keyMapEnabled = enabled;
+        });
 
         this.keyMap = {
             'z': 12,
@@ -72,15 +77,19 @@ export class SamplerComponent implements OnInit {
 
     @HostListener('document:keydown', ['$event'])
     keydown(e: KeyboardEvent) {
-        let sample = <HTMLAudioElement>document.getElementById('player' + (this.keyMap[e.key] + 1));
-        sample.play();
+        if (this.keyMapEnabled) {
+            let sample = <HTMLAudioElement>document.getElementById('player' + (this.keyMap[e.key] + 1));
+            sample.play();
+        }
     }
 
     @HostListener('document:keyup', ['$event'])
     keyup(e: KeyboardEvent) {
-        let sample = <HTMLAudioElement>document.getElementById('player' + (this.keyMap[e.key] + 1));
-        sample.pause();
-        sample.currentTime = 0;
+        if (this.keyMapEnabled) {
+            let sample = <HTMLAudioElement>document.getElementById('player' + (this.keyMap[e.key] + 1));
+            sample.pause();
+            sample.currentTime = 0;
+        }
     }
 
     changeKit() {
@@ -95,21 +104,25 @@ export class SamplerComponent implements OnInit {
     }
 
     openSampleDialog() {
+        this.globalService.keyMapEnabled.next(false);
         let dialogRef = this.dialog.open(AddSampleDialogComponent, {
             width: '250px'
         });
 
         dialogRef.afterClosed().subscribe(result => {
+            this.globalService.keyMapEnabled.next(true);
             console.log('The sample upload dialog was closed');
         });
     }
 
     openSaveKitDialog() {
+        this.globalService.keyMapEnabled.next(false);
         let dialogRef = this.dialog.open(SaveKitDialogComponent, {
             width: '250px'
         });
 
         dialogRef.afterClosed().subscribe(result => {
+            this.globalService.keyMapEnabled.next(true);
             console.log('The save kit dialog was closed');
         });
     }

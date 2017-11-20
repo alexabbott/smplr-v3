@@ -37,13 +37,18 @@ export class SaveKitDialogComponent implements OnInit {
       for (let i = 0; i < this.currentSamples.length; i++) {
         sampleRefs.push(this.db.doc('samples/' + this.currentSamples[i].id).ref);
       }
-      this.db.collection<any[]>('kits').doc(this.globalService.slugify(this.kitName)).set({
+      this.db.collection('kits').doc(this.globalService.slugify(this.kitName)).set({
         name: this.kitName,
-        slug: this.slugify(this.kitName),
+        slug: this.globalService.slugify(this.kitName),
         samples: sampleRefs,
         user: this.db.collection('users').doc(this.user).ref
       }).then((resp) => {
         console.log('saved kit', resp);
+        this.db.collection('users/' + this.user + '/kits').add(
+          this.db.collection('kits').doc(this.globalService.slugify(this.kitName)).ref)
+          .then((response) => {
+            console.log('saved user kit', response);
+        });
       });
     });
   }
