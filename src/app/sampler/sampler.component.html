@@ -1,6 +1,6 @@
 <div class="kit">
     <mat-form-field>
-        <mat-select [(ngModel)]="currentKit" (change)="changeKit()">
+        <mat-select [(ngModel)]="currentKit.slug" (change)="changeKit()">
             <mat-option *ngFor="let k of (kits | async)" [value]="k.slug">
                 {{ k.name }}
             </mat-option>
@@ -10,6 +10,7 @@
         class="sample"
         id="sample{{i+1}}"
         *ngFor="let sample of kitSamples; let i = index"
+        [ngClass]="{ 'active': activeKeys[keys[i]]}"
         dnd-droppable
         [dropZones]="['zone' + (i + 1)]"
         (onDropSuccess)="replaceSample($event)">
@@ -21,5 +22,5 @@
 <ngc-float-button icon="add">
     <ngc-float-item-button (click)="openSampleDialog()" icon="music_note" content="Upload a Sample"></ngc-float-item-button>
     <ngc-float-item-button (click)="openSaveKitDialog()" icon="grid_on" content="Save as New Kit"></ngc-float-item-button>
-    <ngc-float-item-button icon="mode_edit" content="Edit Current Kit"></ngc-float-item-button>
+    <ngc-float-item-button (click)="openSaveKitDialog(true)" *ngIf="user && kitUser && kitUser === user" icon="mode_edit" content="Edit Current Kit"></ngc-float-item-button>
 </ngc-float-button>

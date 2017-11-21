@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { MatDialogRef } from '@angular/material';
+import { Component, OnInit, Inject } from '@angular/core';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { AngularFirestore } from 'angularfire2/firestore';
 import { Observable } from 'rxjs/Observable';
 import { GlobalService } from '../global.service';
@@ -17,6 +17,7 @@ export class SaveKitDialogComponent implements OnInit {
 
   constructor(
     public dialogRef: MatDialogRef<SaveKitDialogComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any,
     public db: AngularFirestore,
     public globalService: GlobalService,
     public snackBar: MatSnackBar
@@ -24,6 +25,9 @@ export class SaveKitDialogComponent implements OnInit {
 
   ngOnInit() {
     this.globalService.user.subscribe((u) => this.user = u);
+    if (this.data && this.data.kitName) {
+      this.kitName = this.data.kitName;
+    }
   }
 
   onNoClick(): void {

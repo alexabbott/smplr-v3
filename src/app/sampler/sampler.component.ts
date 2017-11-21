@@ -13,13 +13,17 @@ import { SaveKitDialogComponent } from '../save-kit-dialog/save-kit-dialog.compo
     styleUrls: ['./sampler.component.scss']
 })
 export class SamplerComponent implements OnInit {
+    user: any;
     kit: Observable<any>;
     kits: Observable<any>;
+    kitUser: any;
     kitSamples: any;
     currentKit: any;
     sample: any;
+    keys: any;
     keyMap: any;
     keyMapEnabled: boolean;
+    activeKeys: any;
 
     constructor(
         public db: AngularFirestore,
@@ -29,11 +33,31 @@ export class SamplerComponent implements OnInit {
         public dialog: MatDialog
     ) {
         this.kitSamples = [];
+        this.currentKit = {};
         this.kits = this.db.collection<any[]>('kits').valueChanges();
 
         this.globalService.keyMapEnabled.subscribe((enabled) => {
             this.keyMapEnabled = enabled;
         });
+
+        this.keys = [
+            '1',
+            '2',
+            '3',
+            '4',
+            'q',
+            'w',
+            'e',
+            'r',
+            'a',
+            's',
+            'd',
+            'f',
+            'z',
+            'x',
+            'c',
+            'v',
+        ];
 
         this.keyMap = {
             'z': 12,
@@ -53,14 +77,35 @@ export class SamplerComponent implements OnInit {
             '3': 2,
             '4': 3,
         }
+
+        this.activeKeys = {
+            'z': false,
+            'x': false,
+            'c': false,
+            'v': false,
+            'a': false,
+            's': false,
+            'd': false,
+            'f': false,
+            'q': false,
+            'w': false,
+            'e': false,
+            'r': false,
+            '1': false,
+            '2': false,
+            '3': false,
+            '4': false,
+        };
     }
+
 
     ngOnInit() {
         this.route.params.subscribe((params: Params) => {
             if (params.slug) {
                 this.kit = this.db.collection<any[]>('kits').doc(params.slug).valueChanges();
                 this.kit.subscribe((k) => {
-                    this.currentKit = k.slug;
+                    this.currentKit.slug = k.slug;
+                    this.currentKit.name = k.name;
                     for (let i = 0; i < k.samples.length; i++) {
                         this.db.collection<any[]>('samples').doc(k.samples[i].id).valueChanges().subscribe((s) => {
                             this.sample = {};
@@ -69,9 +114,16 @@ export class SamplerComponent implements OnInit {
                             this.kitSamples.push(this.sample);
                         });
                     }
+                    this.db.collection<any[]>('users').doc(k.user.id).snapshotChanges().subscribe((u) => {
+                        this.kitUser = u.payload.id;
+                    });
                     this.globalService.currentSamples.next(this.kitSamples);
                 });
             }
+        });
+
+        this.globalService.user.subscribe((u) => {
+            this.user = u;
         });
     }
 
@@ -79,13 +131,21 @@ export class SamplerComponent implements OnInit {
     keydown(e: KeyboardEvent) {
         if (this.keyMapEnabled) {
             let sample = <HTMLAudioElement>document.getElementById('player' + (this.keyMap[e.key] + 1));
-            sample.play();
+            if (!this.activeKeys[e.key]) {
+                sample.play();
+            }
+            this.activeKeys[e.key] = true;
+            sample.onended = () => {
+                sample.pause();
+                sample.currentTime = 0;
+            };
         }
     }
 
     @HostListener('document:keyup', ['$event'])
     keyup(e: KeyboardEvent) {
         if (this.keyMapEnabled) {
+            this.activeKeys[e.key] = false;
             let sample = <HTMLAudioElement>document.getElementById('player' + (this.keyMap[e.key] + 1));
             sample.pause();
             sample.currentTime = 0;
@@ -94,7 +154,7 @@ export class SamplerComponent implements OnInit {
 
     changeKit() {
         this.kitSamples = [];
-        this.router.navigateByUrl('kit/' + this.currentKit);
+        this.router.navigateByUrl('kit/' + this.currentKit.slug);
     }
 
     replaceSample($event: any) {
@@ -103,7 +163,7 @@ export class SamplerComponent implements OnInit {
         this.globalService.currentSamples.next(this.kitSamples);
     }
 
-    openSampleDialog() {
+    openSampleDialog(edit: boolean) {
         this.globalService.keyMapEnabled.next(false);
         let dialogRef = this.dialog.open(AddSampleDialogComponent, {
             width: '250px'
@@ -115,11 +175,20 @@ export class SamplerComponent implements OnInit {
         });
     }
 
-    openSaveKitDialog() {
+    openSaveKitDialog(edit: boolean) {
         this.globalService.keyMapEnabled.next(false);
-        let dialogRef = this.dialog.open(SaveKitDialogComponent, {
-            width: '250px'
-        });
+        let dialogRef;
+
+        if (edit) {
+            dialogRef = this.dialog.open(SaveKitDialogComponent, {
+                width: '250px',
+                data: { kitName: this.currentKit.name }
+            });
+        } else {
+            dialogRef = this.dialog.open(SaveKitDialogComponent, {
+                width: '250px'
+            });
+        }
 
         dialogRef.afterClosed().subscribe(result => {
             this.globalService.keyMapEnabled.next(true);

@@ -33,7 +33,7 @@ export class AddSampleDialogComponent implements OnInit {
 
     ngOnInit() {
         this.globalService.user.subscribe((u) => {
-            console.log('user', u); this.user = u;
+            this.user = u;
         });
     }
 
