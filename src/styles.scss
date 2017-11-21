@@ -24,7 +24,8 @@ h3,
 .mat-select-value-text,
 .mat-option-text,
 .mat-input-placeholder,
-.mat-input-element {
+.mat-input-element,
+.mat-chip {
     font-family: $font-serif !important;
 }
 
@@ -44,6 +45,10 @@ mat-toolbar {
     box-shadow: 0 0 16px 3px rgba(0, 0, 0, 0.1);
     position: relative;
     z-index: 2;
+}
+
+.mat-form-field {
+    width: 100%;
 }
 
 .dnd-drag-start {

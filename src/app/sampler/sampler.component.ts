@@ -41,18 +41,18 @@ export class SamplerComponent implements OnInit {
         });
 
         this.keys = [
-            '1',
-            '2',
-            '3',
             '4',
-            'q',
-            'w',
+            '5',
+            '6',
+            '7',
             'e',
             'r',
-            'a',
+            't',
+            'y',
             's',
             'd',
             'f',
+            'g',
             'z',
             'x',
             'c',
@@ -64,18 +64,18 @@ export class SamplerComponent implements OnInit {
             'x': 13,
             'c': 14,
             'v': 15,
-            'a': 8,
-            's': 9,
-            'd': 10,
-            'f': 11,
-            'q': 4,
-            'w': 5,
-            'e': 6,
-            'r': 7,
-            '1': 0,
-            '2': 1,
-            '3': 2,
-            '4': 3,
+            's': 8,
+            'd': 9,
+            'f': 10,
+            'g': 11,
+            'e': 4,
+            'r': 5,
+            't': 6,
+            'y': 7,
+            '4': 0,
+            '5': 1,
+            '6': 2,
+            '7': 3,
         }
 
         this.activeKeys = {
@@ -83,18 +83,18 @@ export class SamplerComponent implements OnInit {
             'x': false,
             'c': false,
             'v': false,
-            'a': false,
             's': false,
             'd': false,
             'f': false,
-            'q': false,
-            'w': false,
+            'g': false,
             'e': false,
             'r': false,
-            '1': false,
-            '2': false,
-            '3': false,
+            't': false,
+            'y': false,
             '4': false,
+            '5': false,
+            '6': false,
+            '7': false,
         };
     }
 
@@ -129,7 +129,7 @@ export class SamplerComponent implements OnInit {
 
     @HostListener('document:keydown', ['$event'])
     keydown(e: KeyboardEvent) {
-        if (this.keyMapEnabled) {
+        if (this.keyMapEnabled && this.keys.includes(e.key)) {
             let sample = <HTMLAudioElement>document.getElementById('player' + (this.keyMap[e.key] + 1));
             if (!this.activeKeys[e.key]) {
                 sample.play();
@@ -144,7 +144,7 @@ export class SamplerComponent implements OnInit {
 
     @HostListener('document:keyup', ['$event'])
     keyup(e: KeyboardEvent) {
-        if (this.keyMapEnabled) {
+        if (this.keyMapEnabled && this.keys.includes(e.key)) {
             this.activeKeys[e.key] = false;
             let sample = <HTMLAudioElement>document.getElementById('player' + (this.keyMap[e.key] + 1));
             sample.pause();
@@ -166,7 +166,7 @@ export class SamplerComponent implements OnInit {
     openSampleDialog(edit: boolean) {
         this.globalService.keyMapEnabled.next(false);
         let dialogRef = this.dialog.open(AddSampleDialogComponent, {
-            width: '250px'
+            width: '350px'
         });
 
         dialogRef.afterClosed().subscribe(result => {
@@ -181,12 +181,12 @@ export class SamplerComponent implements OnInit {
 
         if (edit) {
             dialogRef = this.dialog.open(SaveKitDialogComponent, {
-                width: '250px',
+                width: '350px',
                 data: { kitName: this.currentKit.name }
             });
         } else {
             dialogRef = this.dialog.open(SaveKitDialogComponent, {
-                width: '250px'
+                width: '350px'
             });
         }
 

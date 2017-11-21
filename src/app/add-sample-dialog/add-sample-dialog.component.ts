@@ -6,6 +6,8 @@ import { FirebaseApp } from 'angularfire2';
 import * as firebase from 'firebase/app';
 import { MatSnackBar } from '@angular/material';
 import { GlobalService } from '../global.service';
+import { ENTER, COMMA } from '@angular/cdk/keycodes';
+import { MatChipInputEvent } from '@angular/material';
 
 @Component({
     selector: 'add-sample-dialog',
@@ -19,6 +21,10 @@ export class AddSampleDialogComponent implements OnInit {
     sampleURL: string;
     user: string;
     allowSave: boolean;
+    tags: any;
+
+    // Enter, comma
+    separatorKeysCodes = [ENTER, COMMA];
 
     constructor(
         public dialogRef: MatDialogRef<AddSampleDialogComponent>,
@@ -29,6 +35,7 @@ export class AddSampleDialogComponent implements OnInit {
     ) {
         this.storageRef = af.storage().ref();
         this.allowSave = false;
+        this.tags = [];
     }
 
     ngOnInit() {
@@ -65,15 +72,18 @@ export class AddSampleDialogComponent implements OnInit {
     }
 
     saveSample() {
-        this.db.collection('samples').add({
+        let sampleData = {
             name: this.sampleName,
             slug: this.globalService.slugify(this.sampleName),
             url: this.sampleURL,
-            user: this.db.collection('users').doc(this.user).ref
-        }).then((resp) => {
+            user: this.db.collection('users').doc(this.user).ref,
+            tags: this.tags
+        }
+        console.log('sampleData', sampleData);
+        this.db.collection('samples').add(sampleData).then((resp) => {
             console.log('saved sample', resp);
-            this.db.collection('users/' + this.user + '/samples').add(
-                this.db.collection('samples').doc(resp.id).ref)
+            this.db.collection('users/' + this.user + '/samples').add({
+                sample: this.db.collection('samples').doc(resp.id).ref})
             .then((response) => {
                 console.log('saved user sample', response);
             });
@@ -82,6 +92,27 @@ export class AddSampleDialogComponent implements OnInit {
 
     onNoClick(): void {
         this.dialogRef.close();
+    }
+
+    addChip(event: MatChipInputEvent): void {
+        let input = event.input;
+        let value = event.value;
+
+        if ((value || '').trim()) {
+            this.tags.push({ name: value.trim() });
+        }
+
+        if (input) {
+            input.value = '';
+        }
+    }
+
+    removeChip(tag: any): void {
+        let index = this.tags.indexOf(tag);
+
+        if (index >= 0) {
+            this.tags.splice(index, 1);
+        }
     }
 
 }

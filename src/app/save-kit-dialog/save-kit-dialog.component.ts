@@ -48,8 +48,8 @@ export class SaveKitDialogComponent implements OnInit {
         user: this.db.collection('users').doc(this.user).ref
       }).then((resp) => {
         console.log('saved kit', resp);
-        this.db.collection('users/' + this.user + '/kits').add(
-          this.db.collection('kits').doc(this.globalService.slugify(this.kitName)).ref)
+        this.db.collection('users/' + this.user + '/kits').add({
+          kit: this.db.collection('kits').doc(this.globalService.slugify(this.kitName)).ref})
           .then((response) => {
             console.log('saved user kit', response);
         });
