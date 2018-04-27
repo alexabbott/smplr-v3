@@ -35,6 +35,7 @@ import { SaveKitDialogComponent } from './save-kit-dialog/save-kit-dialog.compon
 
 import { GlobalService } from './global.service';
 import { SearchPipe } from './search.pipe';
+import { ProfileComponent } from './profile/profile.component';
 
 firebase.initializeApp(environment.firebase);
 
@@ -46,7 +47,8 @@ firebase.initializeApp(environment.firebase);
     SampleBankComponent,
     AddSampleDialogComponent,
     SearchPipe,
-    SaveKitDialogComponent
+    SaveKitDialogComponent,
+    ProfileComponent
   ],
   imports: [
     AngularFireModule.initializeApp(environment.firebase),

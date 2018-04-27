@@ -47,7 +47,7 @@ export class AddSampleDialogComponent implements OnInit {
     handleFiles(e) {
         this.file = e.srcElement.files[0];
         if (this.file.size > 2097152) {
-            let snackBarRef = this.snackBar.open('Images must be 2 MB or less', 'OK!', {
+            let snackBarRef = this.snackBar.open('Samples must be 2 MB or less', 'OK!', {
                 duration: 3000
             });
         } else {

@@ -5,7 +5,6 @@ import { AngularFirestore } from 'angularfire2/firestore';
 import * as firebase from 'firebase/app';
 import { GlobalService } from './global.service';
 
-
 @Component({
     selector: 'app-root',
     templateUrl: './app.component.html',
@@ -21,12 +20,12 @@ export class AppComponent {
     ) {
         afAuth.authState.subscribe((user) => {
             if (user) {
-                this.globalService.user.next(user.uid);
                 let userData = {
                     displayName: user.displayName,
                     photoURL: user.photoURL,
                     email: user.email
                 };
+                console.log('user', user);
                 this.globalService.user.next(user.uid);
                 const userRef = this.db.collection('users').doc(user.uid);
                 userRef.valueChanges().subscribe((u) => {

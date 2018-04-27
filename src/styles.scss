@@ -58,3 +58,22 @@ mat-toolbar {
 .dnd-drag-over {
     background: rgba(0, 0, 0, 0.3) !important;
 }
+
+.sample {
+    background: transparent;
+    border: 1px solid #000;
+    border-radius: 1px;
+    box-sizing: border-box;
+    display: inline-block;
+    color: #000;;
+    height: 100px;
+    line-height: 100px;
+    margin: 2px;
+    text-align: center;
+    width: 100px;
+
+    &.active {
+        background: #000;
+        color: #fff;
+    }
+}
