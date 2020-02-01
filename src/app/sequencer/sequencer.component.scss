@@ -1,0 +1,25 @@
+.row {
+  display: flex;
+}
+
+.sample-name {
+  height: 20px;
+  overflow: hidden;
+  width: 50px;
+}
+
+.steps {
+  display: flex;
+}
+
+.step {
+  background: black;
+  cursor: pointer;
+  height: 15px;
+  margin: 1px;
+  width: 15px;
+
+  &.active {
+    background: green;
+  }
+}

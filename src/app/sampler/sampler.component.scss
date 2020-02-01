@@ -8,6 +8,11 @@ mat-form-field {
     width: 416px;
 }
 
+.kit-samples {
+    display: flex;
+    flex-wrap: wrap;
+}
+
 ngc-float-button {
     bottom: 25px;
     position: absolute;

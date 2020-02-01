@@ -25,7 +25,6 @@ export class AppComponent {
                     photoURL: user.photoURL,
                     email: user.email
                 };
-                console.log('user', user);
                 this.globalService.user.next(user.uid);
                 const userRef = this.db.collection('users').doc(user.uid);
                 userRef.valueChanges().subscribe((u) => {

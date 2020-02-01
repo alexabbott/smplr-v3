@@ -6,17 +6,22 @@
             </mat-option>
         </mat-select>
     </mat-form-field>
-    <div
-        class="sample"
-        id="sample{{i+1}}"
-        *ngFor="let sample of kitSamples; let i = index"
-        [ngClass]="{ 'active': activeKeys[keys[i]]}"
-        dnd-droppable
-        [dropZones]="['zone' + (i + 1)]"
-        (onDropSuccess)="replaceSample($event)">
-        {{ sample.name }}
-        <audio src="{{sample.url}}" id="player{{i+1}}"></audio>
-    </div>
+        <div class="kit-samples">
+            <div
+                id="sample{{i+1}}"
+                *ngFor="let sample of kitSamples; let i = index"
+                dnd-droppable
+                [dropZones]="['zone' + (i + 1)]"
+                (onDropSuccess)="replaceSample($event)">
+                <sample
+                    [sample]="sample"
+                    [index]="i+1"
+                    [component]="'sampler'"
+                    [active]="activeKeys[keys[i]]"
+                >
+                </sample>
+            </div>
+        </div>
 </div>
 
 <ngc-float-button icon="add">

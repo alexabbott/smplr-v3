@@ -1,0 +1,17 @@
+<div class="sequencer">
+  <button (click)="play()">Play</button>
+  <button (click)="stop()">Stop</button>
+  <div *ngFor="let sample of samples" class="row">
+    <div class="sample-name">{{ sample.name }}</div>
+    <div class="steps">
+      <div
+        *ngFor="let step of steps; let i = index"
+        class="step"
+        (click)="toggleStepSample(i, sample)"
+        [ngClass]="{'active': step.includes(sample)}"
+      >
+        {{ step }}
+      </div>
+    </div>
+  </div>
+</div>

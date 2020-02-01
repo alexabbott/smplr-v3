@@ -1,0 +1,4 @@
+<div class="sample" [ngClass]="{'active': active}" *ngIf="sample">
+  <audio src="{{sample.url}}" id="{{component}}{{index}}" preload="auto"></audio>
+  <div class="sample-name">{{ sample.name }}</div>
+</div>

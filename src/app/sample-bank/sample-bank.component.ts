@@ -16,7 +16,7 @@ export class SampleBankComponent implements OnInit {
 
     constructor(
         public db: AngularFirestore,
-        public globalService: GlobalService
+        public globalService: GlobalService,
     ) {
         this.sampleSearch = '';
         this.samples = [];
@@ -26,7 +26,6 @@ export class SampleBankComponent implements OnInit {
     ngOnInit() {
         this.samplesRef.subscribe((s) => {
             for (let i = 0; i < s.length; i++) {
-                let newSample = {}
                 this.newSample = s[i].payload.doc.data();
                 this.newSample.id = s[i].payload.doc.id;
                 this.samples.push(this.newSample);

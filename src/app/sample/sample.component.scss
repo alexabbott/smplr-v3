@@ -1,0 +1,29 @@
+.sample {
+    background: transparent;
+    border: 1px solid #000;
+    border-radius: 1px;
+    box-sizing: border-box;
+    display: inline-block;
+    color: #000;;
+    height: 100px;
+    line-height: 100px;
+    margin: 2px;
+    position: relative;
+    text-align: center;
+    width: 100px;
+
+    &.active {
+        background: #000;
+        color: #fff;
+    }
+
+    .sample-name {
+        line-height: normal;
+        left: 50%;
+        pointer-events: none;
+        position: absolute;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        width: 100%;
+    }
+}

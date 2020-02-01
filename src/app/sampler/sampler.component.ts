@@ -130,7 +130,7 @@ export class SamplerComponent implements OnInit {
     @HostListener('document:keydown', ['$event'])
     keydown(e: KeyboardEvent) {
         if (this.keyMapEnabled && this.keys.includes(e.key)) {
-            let sample = <HTMLAudioElement>document.getElementById('player' + (this.keyMap[e.key] + 1));
+            const sample = <HTMLAudioElement>document.getElementById('sampler' + (this.keyMap[e.key] + 1));
             if (!this.activeKeys[e.key]) {
                 sample.play();
             }
@@ -146,7 +146,7 @@ export class SamplerComponent implements OnInit {
     keyup(e: KeyboardEvent) {
         if (this.keyMapEnabled && this.keys.includes(e.key)) {
             this.activeKeys[e.key] = false;
-            let sample = <HTMLAudioElement>document.getElementById('player' + (this.keyMap[e.key] + 1));
+            const sample = <HTMLAudioElement>document.getElementById('sampler' + (this.keyMap[e.key] + 1));
             sample.pause();
             sample.currentTime = 0;
         }
@@ -158,14 +158,14 @@ export class SamplerComponent implements OnInit {
     }
 
     replaceSample($event: any) {
-        let index = $event.mouseEvent.toElement.id.split('sample')[1] - 1;
+        const index = $event.mouseEvent.toElement.id.split('sample')[1] - 1;
         this.kitSamples.splice(index, 1, $event.dragData);
         this.globalService.currentSamples.next(this.kitSamples);
     }
 
     openSampleDialog(edit: boolean) {
         this.globalService.keyMapEnabled.next(false);
-        let dialogRef = this.dialog.open(AddSampleDialogComponent, {
+        const dialogRef = this.dialog.open(AddSampleDialogComponent, {
             width: '350px'
         });
 

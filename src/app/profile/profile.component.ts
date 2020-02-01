@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularFirestore } from 'angularfire2/firestore';
-import { Observable } from 'rxjs/Observable';
 import { GlobalService } from '../global.service';
 import { Router } from '@angular/router';
 
@@ -26,20 +25,36 @@ export class ProfileComponent implements OnInit {
     this.samplesRef = this.db.collection<any[]>('samples');
     this.kitsRef = this.db.collection<any[]>('kits');
     this.samplesQuery = [];
+    this.kitsQuery = [];
     this.globalService.user.subscribe((u) => {
       this.user = u;
-      this.db.collection('users/' + u + '/samples').valueChanges().subscribe((samps:any) => {
-        for (let i = 0; i < samps.length; i++) {
-          this.db.doc(samps[i].sample.path).valueChanges().subscribe((s) => {
-            this.samplesQuery.push(s);
-          });
-        }
-      });
+      this.fetchUserSamples(u);
+      this.fetchUserKits(u);
     });
   }
 
   ngOnInit() {
 
+  }
+
+  fetchUserSamples(user) {
+    this.db.collection('users/' + user + '/samples').valueChanges().subscribe((samps: any) => {
+      for (let i = 0; i < samps.length; i++) {
+        this.db.doc(samps[i].sample.path).valueChanges().subscribe((s) => {
+          this.samplesQuery.push(s);
+        });
+      }
+    });
+  }
+
+  fetchUserKits(user) {
+    this.db.collection('users/' + user + '/kits').valueChanges().subscribe((kits: any) => {
+      for (let i = 0; i < kits.length; i++) {
+        this.db.doc(kits[i].kit.path).valueChanges().subscribe((k) => {
+          this.kitsQuery.push(k);
+        });
+      }
+    });
   }
 
   closeProfile() {

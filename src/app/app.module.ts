@@ -36,6 +36,9 @@ import { SaveKitDialogComponent } from './save-kit-dialog/save-kit-dialog.compon
 import { GlobalService } from './global.service';
 import { SearchPipe } from './search.pipe';
 import { ProfileComponent } from './profile/profile.component';
+import { SampleComponent } from './sample/sample.component';
+import { SequencerComponent } from './sequencer/sequencer.component';
+import { SamplesService } from './samples.service';
 
 firebase.initializeApp(environment.firebase);
 
@@ -48,7 +51,9 @@ firebase.initializeApp(environment.firebase);
     AddSampleDialogComponent,
     SearchPipe,
     SaveKitDialogComponent,
-    ProfileComponent
+    ProfileComponent,
+    SampleComponent,
+    SequencerComponent
   ],
   imports: [
     AngularFireModule.initializeApp(environment.firebase),
@@ -74,7 +79,10 @@ firebase.initializeApp(environment.firebase);
     AngularFireAuthModule,
     DndModule.forRoot()
   ],
-  providers: [GlobalService],
+  providers: [
+    GlobalService,
+    SamplesService,
+  ],
   entryComponents: [AddSampleDialogComponent, SaveKitDialogComponent],
   bootstrap: [AppComponent]
 })
