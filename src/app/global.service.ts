@@ -30,6 +30,19 @@ export class GlobalService {
       .replace(/-+$/, '')
   }
 
+  formattedTags(name, tagsArray) {
+    const tags = [];
+    tagsArray.forEach((tag) => {
+      tags.push(tag.name);
+    });
+    const slugArray = name.split(' ').map(item => this.slugify(item));
+    return tags.concat(slugArray);
+  }
+
+  formattedChips(tags) {
+    return tags.map((tag) => { return { name: tag } });
+  }
+
   capitalize(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
   }

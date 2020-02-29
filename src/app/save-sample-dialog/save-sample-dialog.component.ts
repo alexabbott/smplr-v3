@@ -67,20 +67,14 @@ export class SaveSampleDialogComponent implements OnInit {
     });
   }
 
-  formattedTags() {
-    return Object.keys(this.tags).push(this.sampleName);
-  }
-
   saveSample() {
-    const tags = Object.keys(this.tags)
-
     let sampleData = {
       name: this.sampleName,
       slug: this.globalService.slugify(this.sampleName),
       url: this.sampleURL,
       user: this.db.collection('users').doc(this.user).ref,
       updated: firebase.firestore.FieldValue.serverTimestamp(),
-      tags: this.formattedTags(),
+      tags: this.globalService.formattedTags(this.sampleName, this.tags),
       favoritesCount: 0,
     }
     this.db.collection('samples').add(sampleData).then((resp) => {

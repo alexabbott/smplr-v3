@@ -151,7 +151,7 @@ export class KitComponent implements OnInit {
         if (edit) {
             dialogRef = this.dialog.open(SaveKitDialogComponent, {
                 width: '350px',
-                data: { kitName: this.currentKit.name, favoritesCount: this.currentKit.favoritesCount }
+                data: { kitName: this.currentKit.name, favoritesCount: this.currentKit.favoritesCount, tags: this.currentKit.tags }
             });
         } else {
             dialogRef = this.dialog.open(SaveKitDialogComponent, {
@@ -185,8 +185,13 @@ export class KitComponent implements OnInit {
                 this.kit = this.db.collection<any[]>('kits', ref => ref.where('slug', '==', params.slug)).valueChanges();
                 this.kit.subscribe((k) => {
                     const kit = k[0];
-                    this.currentKit.slug = kit.slug;
-                    this.currentKit.name = kit.name;
+                    this.currentKit = {
+                        slug: kit.slug,
+                        name: kit.name,
+                        favoritesCount: kit.favoritesCount,
+                        tags: kit.tags,
+                        user: kit.user.id,
+                    };
                     this.globalService.currentSequence.next(kit.sequence);
                     if (kit && kit.samples) { this.loadKitSamples(kit); }
                     this.setKitUser();
@@ -209,9 +214,9 @@ export class KitComponent implements OnInit {
     }
 
     setKitUser() {
-        this.db.collection<any[]>('users').doc(this.user).valueChanges().subscribe((u) => {
+        this.db.collection<any[]>('users').doc(this.currentKit.user).valueChanges().subscribe((u) => {
             this.kitUser = u;
-            this.kitUser.id = this.user;
+            this.kitUser.id = this.currentKit.user;
         });
     }
 

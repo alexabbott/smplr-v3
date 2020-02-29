@@ -41,9 +41,10 @@ export class SaveKitDialogComponent implements OnInit {
     this.globalService.currentSamples.subscribe((samples) => this.currentSamples = samples);
 
     this.sequencerService.sequence.subscribe((s) => this.sequence = s);
-
-    if (this.data && this.data.kitName) {
-      this.kitName = this.data.kitName;
+    console.log('this.data', this.data);
+    if (this.data) {
+      if (this.data.kitName) { this.kitName = this.data.kitName; }
+      if (this.data.tags) { this.tags = this.globalService.formattedChips(this.data.tags); console.log(this.tags); }
     }
   }
 
@@ -51,26 +52,23 @@ export class SaveKitDialogComponent implements OnInit {
     this.dialogRef.close();
   }
 
-  formattedTags() {
-    return Object.keys(this.tags).push(this.kitName);
-  }
-
   saveNewKit() {
     const sampleRefs = [];
+    const slug = this.globalService.slugify(this.kitName);
 
     for (let i = 0; i < this.currentSamples.length; i++) {
       sampleRefs.push(this.db.doc('samples/' + this.currentSamples[i].id).ref);
     }
-    this.db.collection('kits').add({
+    this.db.collection('kits').doc(slug).set({
       name: this.kitName,
-      slug: this.globalService.slugify(this.kitName),
+      slug,
       samples: sampleRefs,
       user: this.db.collection('users').doc(this.user).ref,
       sequence: this.sequence,
-      tags: this.formattedTags(),
+      tags: this.globalService.formattedTags(this.kitName, this.tags),
       updated: firebase.firestore.FieldValue.serverTimestamp(),
       favoritesCount: this.data.kitName ? this.data.favoritesCount : 0,
-    }).then((resp) => {
+    }, {merge: true}).then((resp) => {
       console.log('saved kit', resp);
       this.saveUserKit();
     });
