@@ -20,16 +20,16 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   });
 
-  it(`should have as title 'smplr-test'`, () => {
+  it(`should have as title 'smplr-v3'`, () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
-    expect(app.title).toEqual('smplr-test');
+    expect(app.title).toEqual('smplr-v3');
   });
 
   it('should render title', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement;
-    expect(compiled.querySelector('.content span').textContent).toContain('smplr-test app is running!');
+    expect(compiled.querySelector('.content span').textContent).toContain('smplr-v3 app is running!');
   });
 });

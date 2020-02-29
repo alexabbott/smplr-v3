@@ -10,7 +10,7 @@ describe('workspace-project App', () => {
 
   it('should display welcome message', () => {
     page.navigateTo();
-    expect(page.getTitleText()).toEqual('smplr-test app is running!');
+    expect(page.getTitleText()).toEqual('smplr-v3 app is running!');
   });
 
   afterEach(async () => {
