@@ -1,0 +1,37 @@
+<div class="kits">
+  <div class="search">
+    <mat-form-field>
+        <input
+            matInput
+            placeholder="Search kits"
+            [(ngModel)]="search"
+            (ngModelChange)="searchChanged($event)"
+        >
+    </mat-form-field>
+    <mat-icon [matMenuTriggerFor]="menu" class="sort-icon">sort</mat-icon>
+    <mat-menu #menu="matMenu">
+      <button mat-menu-item (click)="sortKits('updated')">Newest kits</button>
+      <button mat-menu-item (click)="sortKits('favoritesCount')">Popular kits</button>
+    </mat-menu>
+  </div>
+  <a routerLink="kit/{{ kit.slug }}" *ngFor="let kit of kits" class="kit">
+    <div class="kit-container">
+      <div class="kit-left">
+        <div class="kit-info">
+          <span class="name">{{ kit.name }}</span> by
+          <img *ngIf="kit.fullUser" [src]="kit.fullUser.photoURL" class="avatar">
+        </div>
+        <div class="favorite">
+          <favorite
+            [collection]="'kits'"
+            [id]="kit.id"
+            [favoritesCount]="kit.favoritesCount"
+            *ngIf="user"
+            class="favorite-icon"
+          ></favorite>
+        </div>
+      </div>
+      <button mat-raised-button class="load">Load</button>
+    </div>
+  </a>
+</div>

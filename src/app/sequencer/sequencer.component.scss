@@ -1,0 +1,70 @@
+.sequencer {
+  display: flex;
+  justify-content: center;
+  margin: 2rem 0;
+  position: relative;
+}
+
+.controls,
+.step-container {
+  margin: 0 2rem;
+}
+
+.controls {
+  position: absolute;
+  right: 1rem;
+  top: 1rem;
+  button {
+    margin: 0 .2rem;
+  }
+}
+
+.sequencer {
+
+  .row {
+    display: flex;
+  }
+  
+  .sample-name {
+    font-size: .5rem;
+    height: 10px;
+    width: 70px;
+  }
+  
+  .steps {
+    display: flex;
+  }
+  
+  .step {
+    border: 1px solid #000;
+    box-sizing: border-box;
+    cursor: pointer;
+    height: 10px;
+    margin: 1px;
+    width: 20px;
+  
+    &.active {
+      background: #000;
+    }
+  }
+}
+
+.controls {
+  align-items: flex-end;
+  display: flex;
+
+  button {
+    min-width: 45px;
+    width: 45px;
+  }
+    
+  .bpm {
+    display: inline-block;
+    margin-left: .4rem;
+    width: 70px;
+  }
+  
+  .stop {
+    font-size: 1.2rem;
+  }
+}

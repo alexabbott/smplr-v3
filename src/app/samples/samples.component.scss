@@ -1,0 +1,25 @@
+.samples {
+    display: block;
+    margin: 0 auto;
+    width: 208px;
+
+    .bank-samples {
+        display: flex;
+        flex-wrap: wrap;
+
+        ::ng-deep .sample .sample-name {
+            top: 37%;
+        }
+    }
+}
+
+.search {
+    align-items: center;
+    display: flex;
+}
+
+.sort-icon {
+    color: #828282;
+    cursor: pointer;
+    margin-left: 10px;
+}

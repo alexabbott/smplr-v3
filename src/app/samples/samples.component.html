@@ -1,0 +1,32 @@
+<div class="samples">
+    <div class="search">
+        <mat-form-field>
+            <input
+                matInput
+                placeholder="Search samples"
+                [(ngModel)]="search"
+                (ngModelChange)="searchChanged($event)"
+            >
+        </mat-form-field>
+        <mat-icon [matMenuTriggerFor]="menu" class="sort-icon">sort</mat-icon>
+        <mat-menu #menu="matMenu">
+            <button mat-menu-item (click)="sortSamples('updated')">Newest samples</button>
+            <button mat-menu-item (click)="sortSamples('favoritesCount')">Popular samples</button>
+        </mat-menu>
+    </div>
+    <div class="bank-samples">
+        <div
+            class="sample"
+            *ngFor="let sample of samples; let i = index"
+            (focus)="globalService.keyMapEnabled.next(false)"
+            (focusout)="globalService.keyMapEnabled.next(true)"
+            (mousedown)="globalService.playSample($event)"
+            (mouseup)="globalService.stopSample($event)"
+            dnd-draggable
+            [dragEnabled]="true"
+            [dragData]="sample"
+            [dropZones]="['zone1','zone2','zone3','zone4','zone5','zone6','zone7','zone8','zone9','zone10','zone11','zone12','zone13','zone14','zone15','zone16']">
+            <sample [sample]="sample" [index]="i+1" [component]="'samples'" [showFavorite]="user"></sample>
+        </div>
+    </div>
+</div>

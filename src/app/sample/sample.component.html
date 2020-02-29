@@ -1,0 +1,10 @@
+<div class="sample" [ngClass]="{'active': active, 'empty': !sample.url}" *ngIf="sample">
+  <audio src="{{sample.url}}" id="{{component}}{{index}}" preload="auto"></audio>
+  <div class="sample-name">{{ sample.name }}</div>
+  <favorite
+    [collection]="'samples'"
+    [id]="sample.id"
+    [favoritesCount]="sample.favoritesCount"
+    *ngIf="showFavorite"
+  ></favorite>
+</div>

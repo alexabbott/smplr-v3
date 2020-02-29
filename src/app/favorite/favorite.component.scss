@@ -1,0 +1,15 @@
+.filled {
+  color: red;
+}
+
+.favorite {
+  align-items: center;
+  display: flex;
+  font-size: .8rem;
+  width: 80px;
+
+  .favorite-icon {
+    margin: 1px 5px 0 0;
+    pointer-events: initial;
+  }
+}

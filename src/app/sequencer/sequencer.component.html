@@ -1,0 +1,25 @@
+<div class="sequencer">
+  <div class="steps-container">
+    <ng-container *ngFor="let sample of samples; let x = index;">
+      <div *ngIf="sample && sample.name" class="row">
+        <div class="sample-name">{{ sample.name }}</div>
+        <div class="steps">
+          <div
+            *ngFor="let step of steps; let y = index"
+            class="step"
+            (click)="toggleStepSample(x, y)"
+            [ngClass]="{'active': step.includes(x)}"
+          >
+          </div>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+  <div class="controls">
+    <button (click)="stop()" mat-raised-button class="stop">■</button>
+    <button (click)="play()" mat-raised-button class="play">►</button>
+    <mat-form-field class="bpm">
+      <input matInput type="number" min="1" max="500" [(ngModel)]="bpm" placeholder="BPM">
+    </mat-form-field>
+  </div>
+</div>

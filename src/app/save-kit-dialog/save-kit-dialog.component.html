@@ -1,0 +1,22 @@
+<h2 mat-dialog-title>Save Current Kit</h2>
+<mat-dialog-content>
+  <mat-form-field>
+    <input matInput placeholder="Kit Name" [(ngModel)]="kitName">
+  </mat-form-field>
+  <mat-form-field>
+    <mat-chip-list #chipList>
+      <mat-chip *ngFor="let tag of tags" (remove)="removeChip(tag)">
+        {{ tag.name }}
+        <mat-icon matChipRemove>cancel</mat-icon>
+      </mat-chip>
+      <input placeholder="Kit tags" [matChipInputFor]="chipList"
+        [matChipInputSeparatorKeyCodes]="separatorKeysCodes" [matChipInputAddOnBlur]="true"
+        (matChipInputTokenEnd)="addChip($event)" />
+    </mat-chip-list>
+  </mat-form-field>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button mat-dialog-close>Cancel</button>
+  <!-- Can optionally provide a result for the closing dialog. -->
+  <button mat-raised-button (click)="saveNewKit()" [mat-dialog-close]="true">Save</button>
+</mat-dialog-actions>

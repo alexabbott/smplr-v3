@@ -1,0 +1,36 @@
+mat-form-field {
+    display: block;
+}
+
+.kit {
+    display: block;
+    margin: 2rem auto 0;
+    width: 416px;
+}
+
+.kit-info {
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+    margin-bottom: .5rem;
+
+    .avatar {
+        border-radius: 50%;
+        height: 30px;
+        margin: -1px 0 0 .2rem;
+        width: 30px;
+    }
+}
+
+
+.kit-samples {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.menu {
+    cursor: pointer;
+    position: absolute;
+    right: 25px;
+    top: 25px;
+}

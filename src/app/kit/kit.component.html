@@ -1,0 +1,34 @@
+<div class="kit">
+    <div class="kit-info">
+        {{ currentKit.name }} by <img *ngIf="kitUser" [src]="kitUser.photoURL" class="avatar">
+    </div>
+    <div class="kit-samples">
+        <div
+            *ngFor="let sample of kitSamples; let i = index"
+            id="sample{{i+1}}"
+            (mousedown)="globalService.playSample($event)"
+            (mouseup)="globalService.stopSample($event)"
+            dnd-droppable
+            [dropZones]="['zone' + (i + 1)]"
+            (onDropSuccess)="replaceSample($event)">
+            <sample
+                [sample]="sample"
+                [index]="i+1"
+                [component]="'sampler'"
+                [active]="activeKeys[keys[i]]"
+                [showFavorite]="false"
+            >
+            </sample>
+        </div>
+    </div>
+</div>
+
+<span class="menu">
+    <mat-icon [matMenuTriggerFor]="menu" class="menu-icon">add_circle</mat-icon>
+    <mat-menu #menu="matMenu">
+        <button mat-menu-item (click)="openSampleDialog()">Upload a sample</button>
+        <button mat-menu-item (click)="openSaveKitDialog(false)">Save as new kit</button>
+        <button mat-menu-item (click)="openSaveKitDialog(true)" *ngIf="user && kitUser && kitUser.id === user">Edit current kit</button>
+        <button mat-menu-item (click)="openSaveSequenceDialog()" *ngIf="user && kitUser && kitUser.id === user">Save kit sequence</button>
+    </mat-menu>
+</span>
