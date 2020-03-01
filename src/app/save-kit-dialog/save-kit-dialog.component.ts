@@ -53,25 +53,35 @@ export class SaveKitDialogComponent implements OnInit {
     this.dialogRef.close();
   }
 
+  selectSequence() {
+    let sequence;
+    if (this.sequence.length > 0) {
+      sequence = this.sequencerService.buildSequenceObject(this.sequence);
+    } else if (this.data && this.data.sequence) {
+      sequence = this.data.sequenece;
+    } else {
+      sequence = {};
+    }
+    return sequence;
+  }
+
   saveNewKit() {
     const sampleRefs = [];
     const slug = this.globalService.slugify(this.kitName);
 
-    console.log(this.data.sequence, 'this.data.sequence');
-    console.log(this.sequence, 'this.sequence');
-
     for (let i = 0; i < this.currentSamples.length; i++) {
       sampleRefs.push(this.db.doc('samples/' + this.currentSamples[i].id).ref);
     }
+
     this.db.collection('kits').doc(slug).set({
       name: this.kitName,
       slug,
       samples: sampleRefs,
       user: this.db.collection('users').doc(this.user).ref,
-      sequence: this.sequence.length > 0 ? this.sequencerService.buildSequenceObject(this.sequence) : this.data.sequence,
+      sequence: this.selectSequence(),
       tags: this.globalService.formattedTags(this.kitName, this.tags),
       updated: firebase.firestore.FieldValue.serverTimestamp(),
-      favoritesCount: this.data.kitName ? this.data.favoritesCount : 0,
+      favoritesCount: this.data && this.data.favoritesCount ? this.data.favoritesCount : 0,
     }, {merge: true}).then((resp) => {
       console.log('saved kit', resp);
       this.saveUserKit();

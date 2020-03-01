@@ -64,7 +64,6 @@ export class KitComponent implements OnInit {
         }
     }
 
-
     ngOnInit() {
         this.initializeActiveKeys();
         this.loadKit();
@@ -110,9 +109,12 @@ export class KitComponent implements OnInit {
     }
 
     replaceSample($event: any) {
-        const index = $event.mouseEvent.toElement.querySelector('.audio').id.split('sampler')[1] - 1;
-        this.kitSamples.splice(index, 1, $event.dragData);
-        this.globalService.currentSamples.next(this.kitSamples);
+        const target = $event.mouseEvent.toElement.querySelector('.audio');
+        if (target) {
+            const index = target.id.split('sampler')[1] - 1;
+            this.kitSamples.splice(index, 1, $event.dragData);
+            this.globalService.currentSamples.next(this.kitSamples);
+        }
     }
 
     openSaveKitDialog(edit: boolean) {
