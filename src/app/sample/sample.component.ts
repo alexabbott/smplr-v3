@@ -13,6 +13,7 @@ export class SampleComponent implements OnInit {
   @Input() component: string;
   @Input() active: boolean;
   @Input() showFavorite: boolean;
+  @Input() showKeys: boolean;
   keys: Array<string>
 
   constructor(private globalService: GlobalService) {

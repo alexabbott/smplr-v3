@@ -12,4 +12,8 @@
     margin: 1px 5px 0 0;
     pointer-events: initial;
   }
+
+  &.disabled .favorite-icon {
+    pointer-events: none;
+  }
 }
