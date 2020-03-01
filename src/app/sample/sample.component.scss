@@ -47,4 +47,14 @@
         width: 100%;
         z-index: 2;
     }
+
+    .key {
+        bottom: 38px;
+        font-size: 0.7rem;
+        height: 26px;
+        left: 50%;
+        position: absolute;
+        transform: translateX(-50%);
+        width: 26px;
+    }
 }

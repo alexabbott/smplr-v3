@@ -17,6 +17,25 @@ export class GlobalService {
   public favoriteSamples = new BehaviorSubject({});
   queryParams: any;
 
+  public keys = [
+    '4',
+    '5',
+    '6',
+    '7',
+    'e',
+    'r',
+    't',
+    'y',
+    's',
+    'd',
+    'f',
+    'g',
+    'z',
+    'x',
+    'c',
+    'v',
+];
+
   constructor(
     public router: Router,
   ) { }

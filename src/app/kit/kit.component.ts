@@ -42,24 +42,7 @@ export class KitComponent implements OnInit {
             this.keyMapEnabled = enabled;
         });
 
-        this.keys = [
-            '4',
-            '5',
-            '6',
-            '7',
-            'e',
-            'r',
-            't',
-            'y',
-            's',
-            'd',
-            'f',
-            'g',
-            'z',
-            'x',
-            'c',
-            'v',
-        ];
+        this.keys = this.globalService.keys;
 
         this.keyMap = {
             'z': 12,

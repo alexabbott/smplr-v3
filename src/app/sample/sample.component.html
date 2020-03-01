@@ -9,6 +9,9 @@
     {{ sample.name }}
     <span *ngIf="!sample.url">Drag a sample</span>
   </div>
+  <div class="key" *ngIf="!showFavorite">
+    {{ keys[index - 1]}}
+  </div>
   <favorite
     [collection]="'samples'"
     [id]="sample.id"

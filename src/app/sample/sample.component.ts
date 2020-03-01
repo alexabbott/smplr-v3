@@ -1,4 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { GlobalService } from '../global.service';
 
 @Component({
   selector: 'sample',
@@ -12,8 +13,11 @@ export class SampleComponent implements OnInit {
   @Input() component: string;
   @Input() active: boolean;
   @Input() showFavorite: boolean;
+  keys: Array<string>
 
-  constructor() { }
+  constructor(private globalService: GlobalService) {
+    this.keys = this.globalService.keys;
+  }
 
   ngOnInit() {
   }
