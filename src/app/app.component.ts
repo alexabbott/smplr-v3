@@ -22,7 +22,7 @@ export class AppComponent {
   ) {
     this.authenticateUser();
     this.router.events.subscribe((url) => {
-      this.isKit = window.location.pathname.substring(0, 4) === '/kit' ? true : false;
+      this.isKit = (window.location.pathname.substring(0, 4) === '/kit' || window.location.pathname === '/new-kit') ? true : false;
     });
   }
 

@@ -1,4 +1,10 @@
 <div class="samples">
+    <div class="menu">
+        <mat-icon [matMenuTriggerFor]="menu" class="menu-icon">more_horiz</mat-icon>
+        <mat-menu #menu="matMenu">
+            <button mat-menu-item (click)="openSampleDialog()">Upload a sample</button>
+        </mat-menu>
+    </div>
     <div class="search">
         <mat-form-field>
             <input

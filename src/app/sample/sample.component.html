@@ -1,6 +1,14 @@
 <div class="sample" [ngClass]="{'active': active, 'empty': !sample.url}" *ngIf="sample">
-  <audio src="{{sample.url}}" id="{{component}}{{index}}" preload="auto"></audio>
-  <div class="sample-name">{{ sample.name }}</div>
+  <audio
+    src="{{sample.url}}"
+    id="{{component}}{{index}}"
+    preload="auto"
+    class="audio"
+  ></audio>
+  <div class="sample-name">
+    {{ sample.name }}
+    <span *ngIf="!sample.url">Drag a sample</span>
+  </div>
   <favorite
     [collection]="'samples'"
     [id]="sample.id"

@@ -36,7 +36,7 @@ export class GlobalService {
       tags.push(tag.name);
     });
     const slugArray = name.split(' ').map(item => this.slugify(item));
-    return tags.concat(slugArray);
+    return [...new Set(tags.concat(slugArray))];
   }
 
   formattedChips(tags) {
@@ -48,14 +48,12 @@ export class GlobalService {
   }
 
   playSample(event) {
-    if (event.target.className === 'sample') { event.target.firstElementChild.play(); }
+    event.target.querySelector('.audio').play();
   }
 
   stopSample(event) {
-    if (event.target.className === 'sample') {
-      event.target.firstElementChild.pause();
-      event.target.firstElementChild.currentTime = 0;
-    }
+    event.target.querySelector('.audio').pause();
+    event.target.querySelector('.audio').currentTime = 0;
   }
 
   updateParams(key, value) {

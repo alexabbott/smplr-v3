@@ -13,7 +13,6 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 export class SaveSequenceDialogComponent implements OnInit {
   kitName: string;
   kitSamples: any;
-  sequenceObject: any;
 
   constructor(
     public dialogRef: MatDialogRef<SaveSequenceDialogComponent>,
@@ -37,19 +36,11 @@ export class SaveSequenceDialogComponent implements OnInit {
     this.dialogRef.close();
   }
 
-  buildSequenceObject(sequence) {
-    this.sequenceObject = {};
-    sequence.forEach((step, index) => {
-      this.sequenceObject[index] = step;
-    });
-    return this.sequenceObject;
-  }
-
   saveSequence() {
     this.sequencerService.sequence.subscribe((sequence) => {
       this.globalService.slugify(this.kitName);
       this.db.collection('kits').doc(this.globalService.slugify(this.kitName)).update({
-        sequence: this.buildSequenceObject(sequence),
+        sequence: this.sequencerService.buildSequenceObject(sequence),
       }).then((resp) => {
         console.log('saved sequence', resp);
       });

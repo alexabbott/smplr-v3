@@ -2,8 +2,19 @@
 
 .kits {
   box-sizing: border-box;
-  margin: 2rem auto 0;
+  margin: 1.3rem auto 0;
   width: 416px;
+}
+
+.menu {
+  display: flex;
+  height: 16px;
+  justify-content: flex-end;
+
+  mat-icon {
+      cursor: pointer;
+      transform: translateX(6px);
+  }
 }
 
 .kit {

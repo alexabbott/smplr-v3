@@ -1,6 +1,16 @@
 <div class="kit">
-    <div class="kit-info">
-        {{ currentKit.name }} by <img *ngIf="kitUser" [src]="kitUser.photoURL" class="avatar">
+    <div class="kit-info" [ngClass]="{ 'new-kit': newKit }">
+        <div class="meta" *ngIf="!newKit">
+            {{ currentKit.name }} by <img *ngIf="kitUser" [src]="kitUser.photoURL" class="avatar">
+        </div>
+        <div class="menu" *ngIf="user">
+            <mat-icon [matMenuTriggerFor]="menu" class="menu-icon">more_horiz</mat-icon>
+            <mat-menu #menu="matMenu">
+                <button mat-menu-item (click)="openSaveKitDialog(false)">Save as new kit</button>
+                <button mat-menu-item (click)="openSaveKitDialog(true)" *ngIf="user && kitUser && kitUser.id === user && !newKit">Edit current kit</button>
+                <button mat-menu-item (click)="openSaveSequenceDialog()" *ngIf="user && kitUser && kitUser.id === user && !newKit">Save kit sequence</button>
+            </mat-menu>
+        </div>
     </div>
     <div class="kit-samples">
         <div
@@ -22,13 +32,3 @@
         </div>
     </div>
 </div>
-
-<span class="menu">
-    <mat-icon [matMenuTriggerFor]="menu" class="menu-icon">add_circle</mat-icon>
-    <mat-menu #menu="matMenu">
-        <button mat-menu-item (click)="openSampleDialog()">Upload a sample</button>
-        <button mat-menu-item (click)="openSaveKitDialog(false)">Save as new kit</button>
-        <button mat-menu-item (click)="openSaveKitDialog(true)" *ngIf="user && kitUser && kitUser.id === user">Edit current kit</button>
-        <button mat-menu-item (click)="openSaveSequenceDialog()" *ngIf="user && kitUser && kitUser.id === user">Save kit sequence</button>
-    </mat-menu>
-</span>

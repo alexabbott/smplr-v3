@@ -1,4 +1,10 @@
 <div class="kits">
+  <div class="menu">
+    <mat-icon [matMenuTriggerFor]="menu" class="menu-icon">more_horiz</mat-icon>
+    <mat-menu #menu="matMenu">
+        <button mat-menu-item routerLink="/new-kit">Create new kit</button>
+    </mat-menu>
+  </div>
   <div class="search">
     <mat-form-field>
         <input
@@ -14,7 +20,7 @@
       <button mat-menu-item (click)="sortKits('favoritesCount')">Popular kits</button>
     </mat-menu>
   </div>
-  <a routerLink="kit/{{ kit.slug }}" *ngFor="let kit of kits" class="kit">
+  <a routerLink="/kit/{{ kit.slug }}" *ngFor="let kit of kits" class="kit">
     <div class="kit-container">
       <div class="kit-left">
         <div class="kit-info">

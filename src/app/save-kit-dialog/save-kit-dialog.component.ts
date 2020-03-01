@@ -40,11 +40,12 @@ export class SaveKitDialogComponent implements OnInit {
 
     this.globalService.currentSamples.subscribe((samples) => this.currentSamples = samples);
 
-    this.sequencerService.sequence.subscribe((s) => this.sequence = s);
-    console.log('this.data', this.data);
+    this.sequencerService.sequence.subscribe((s) => { this.sequence = s; console.log(this.sequence); });
+
     if (this.data) {
-      if (this.data.kitName) { this.kitName = this.data.kitName; }
-      if (this.data.tags) { this.tags = this.globalService.formattedChips(this.data.tags); console.log(this.tags); }
+      console.log('this.data', this.data);
+      if (this.data.name) { this.kitName = this.data.name; }
+      if (this.data.tags) { this.tags = this.globalService.formattedChips(this.data.tags); }
     }
   }
 
@@ -56,6 +57,9 @@ export class SaveKitDialogComponent implements OnInit {
     const sampleRefs = [];
     const slug = this.globalService.slugify(this.kitName);
 
+    console.log(this.data.sequence, 'this.data.sequence');
+    console.log(this.sequence, 'this.sequence');
+
     for (let i = 0; i < this.currentSamples.length; i++) {
       sampleRefs.push(this.db.doc('samples/' + this.currentSamples[i].id).ref);
     }
@@ -64,7 +68,7 @@ export class SaveKitDialogComponent implements OnInit {
       slug,
       samples: sampleRefs,
       user: this.db.collection('users').doc(this.user).ref,
-      sequence: this.sequence,
+      sequence: this.sequence.length > 0 ? this.sequencerService.buildSequenceObject(this.sequence) : this.data.sequence,
       tags: this.globalService.formattedTags(this.kitName, this.tags),
       updated: firebase.firestore.FieldValue.serverTimestamp(),
       favoritesCount: this.data.kitName ? this.data.favoritesCount : 0,

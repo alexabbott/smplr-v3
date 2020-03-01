@@ -31,7 +31,7 @@ export class KitsComponent implements OnInit {
 
   modelChange() {
     this.modelChanged
-      .pipe(debounceTime(300), distinctUntilChanged())
+      .pipe(debounceTime(600), distinctUntilChanged())
       .subscribe(search => {
         if (search && search !== '') {
           this.searchKits(search);
@@ -59,7 +59,7 @@ export class KitsComponent implements OnInit {
   searchKits(search: string) {
     this.db
       .collection('kits', ref => ref
-        .where('tags', 'array-contains-any', [search])
+        .where('tags', 'array-contains-any', search.split(' '))
         .orderBy(this.sort, 'desc')
         .limit(20))
       .snapshotChanges()

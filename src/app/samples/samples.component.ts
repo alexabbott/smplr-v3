@@ -3,6 +3,8 @@ import { AngularFirestore } from '@angular/fire/firestore';
 import { GlobalService } from '../global.service';
 import { Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import { SaveSampleDialogComponent } from '../save-sample-dialog/save-sample-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'samples',
@@ -20,6 +22,7 @@ export class SamplesComponent implements OnInit {
   constructor(
     public db: AngularFirestore,
     public globalService: GlobalService,
+    public dialog: MatDialog,
   ) {
     this.samples = [];
     this.modelChange();
@@ -32,7 +35,7 @@ export class SamplesComponent implements OnInit {
 
   modelChange() {
     this.modelChanged
-      .pipe(debounceTime(300), distinctUntilChanged())
+      .pipe(debounceTime(600), distinctUntilChanged())
       .subscribe(search => {
         if (search && search !== '') {
           this.searchSamples(search);
@@ -61,7 +64,7 @@ export class SamplesComponent implements OnInit {
   searchSamples(search: string) {
     this.db
       .collection('samples', ref => ref
-        .where('tags', 'array-contains-any', [search])
+        .where('tags', 'array-contains-any', search.split(' '))
         .orderBy(this.sort, 'desc')
         .limit(20))
       .snapshotChanges()
@@ -91,5 +94,17 @@ export class SamplesComponent implements OnInit {
         this.samples = this.initialResults;
       }
     }
+  }
+
+  openSampleDialog() {
+    this.globalService.keyMapEnabled.next(false);
+    const dialogRef = this.dialog.open(SaveSampleDialogComponent, {
+        width: '350px'
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+        this.globalService.keyMapEnabled.next(true);
+        console.log('The sample upload dialog was closed');
+    });
   }
 }

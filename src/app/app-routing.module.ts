@@ -5,7 +5,8 @@ import { KitComponent } from './kit/kit.component';
 
 const routes: Routes = [
   { path: '', component: KitsComponent },
-  { path: 'kit/:slug', component: KitComponent }
+  { path: 'kit/:slug', component: KitComponent },
+  { path: 'new-kit', component: KitComponent }
 ];
 
 @NgModule({

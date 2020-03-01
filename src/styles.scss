@@ -26,6 +26,9 @@ h3,
 .mat-button,
 .mat-raised-button,
 .mat-dialog-title,
+.mat-drawer-container,
+.mat-form-field,
+.mat-menu-item,
 .mat-select-value-text,
 .mat-option-text,
 .mat-input-placeholder,
@@ -41,7 +44,7 @@ mat-sidenav {
     box-shadow: 0 0 16px 3px rgba(0, 0, 0, 0.1);
     box-sizing: border-box;
     height: calc(100vh - 64px);
-    padding: 20px;
+    padding: 20px 20px 0;
     width: 300px;
 }
 

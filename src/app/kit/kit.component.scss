@@ -1,3 +1,5 @@
+@import "./../../shared/variables.scss";
+
 mat-form-field {
     display: block;
 }
@@ -9,10 +11,19 @@ mat-form-field {
 }
 
 .kit-info {
-    align-items: center;
     display: flex;
-    flex-direction: row;
-    margin-bottom: .5rem;
+    justify-content: space-between;
+
+    &.new-kit {
+        justify-content: flex-end;
+    }
+
+    .meta {
+        align-items: center;
+        display: flex;
+        flex-direction: row;
+        margin-bottom: .5rem;
+    }
 
     .avatar {
         border-radius: 50%;
@@ -29,8 +40,6 @@ mat-form-field {
 }
 
 .menu {
+    color: $black;
     cursor: pointer;
-    position: absolute;
-    right: 25px;
-    top: 25px;
 }

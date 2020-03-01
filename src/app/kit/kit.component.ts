@@ -4,7 +4,6 @@ import { Observable } from 'rxjs';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { GlobalService } from '../global.service';
 import { MatDialog } from '@angular/material/dialog';
-import { SaveSampleDialogComponent } from '../save-sample-dialog/save-sample-dialog.component';
 import { SaveKitDialogComponent } from '../save-kit-dialog/save-kit-dialog.component';
 import { SaveSequenceDialogComponent } from '../save-sequence-dialog/save-sequence-dialog.component';
 
@@ -26,6 +25,7 @@ export class KitComponent implements OnInit {
     keyMapEnabled: boolean;
     activeKeys: any;
     sampleLimit: Number = 16;
+    newKit = false;
 
     constructor(
         public db: AngularFirestore,
@@ -127,21 +127,9 @@ export class KitComponent implements OnInit {
     }
 
     replaceSample($event: any) {
-        const index = $event.mouseEvent.toElement.childNodes[1].id.split('sampler')[1] - 1;
+        const index = $event.mouseEvent.toElement.querySelector('.audio').id.split('sampler')[1] - 1;
         this.kitSamples.splice(index, 1, $event.dragData);
         this.globalService.currentSamples.next(this.kitSamples);
-    }
-
-    openSampleDialog() {
-        this.globalService.keyMapEnabled.next(false);
-        const dialogRef = this.dialog.open(SaveSampleDialogComponent, {
-            width: '350px'
-        });
-
-        dialogRef.afterClosed().subscribe(result => {
-            this.globalService.keyMapEnabled.next(true);
-            console.log('The sample upload dialog was closed');
-        });
     }
 
     openSaveKitDialog(edit: boolean) {
@@ -151,7 +139,7 @@ export class KitComponent implements OnInit {
         if (edit) {
             dialogRef = this.dialog.open(SaveKitDialogComponent, {
                 width: '350px',
-                data: { kitName: this.currentKit.name, favoritesCount: this.currentKit.favoritesCount, tags: this.currentKit.tags }
+                data: this.currentKit
             });
         } else {
             dialogRef = this.dialog.open(SaveKitDialogComponent, {
@@ -191,6 +179,7 @@ export class KitComponent implements OnInit {
                         favoritesCount: kit.favoritesCount,
                         tags: kit.tags,
                         user: kit.user.id,
+                        sequence: kit.sequence,
                     };
                     this.globalService.currentSequence.next(kit.sequence);
                     if (kit && kit.samples) { this.loadKitSamples(kit); }
@@ -198,6 +187,10 @@ export class KitComponent implements OnInit {
                     this.globalService.currentSamples.next(this.kitSamples);
                     this.globalService.kitName.next(this.currentKit.name);
                 });
+            } else {
+                this.currentKit = { samples: {} };
+                this.kitSamples = [{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{}];
+                this.newKit = true;
             }
         });
     }
