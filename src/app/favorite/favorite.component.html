@@ -1,4 +1,4 @@
-<span class="favorite">
+<span class="favorite" [ngClass]="{ 'disabled': disabledFavorite }">
   <mat-icon
     (click)="toggleFavorite($event)"
     *ngIf="favorites[id]"

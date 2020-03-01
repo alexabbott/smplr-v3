@@ -1,15 +1,23 @@
-.filled {
-  color: red;
-}
+@import "./../../shared/variables.scss";
 
 .favorite {
   align-items: center;
+  color: $black;
   display: flex;
   font-size: .8rem;
   width: 80px;
 
   .favorite-icon {
+    color: $black;
     margin: 1px 5px 0 0;
     pointer-events: initial;
+
+    &.filled {
+      color: $red;
+    }
+  }
+
+  &.disabled .favorite-icon {
+    pointer-events: none;
   }
 }

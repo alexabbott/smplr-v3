@@ -14,6 +14,7 @@ export class FavoriteComponent implements OnInit {
   @Input() id: string;
   @Input() collection: string;
   @Input() favoritesCount: number;
+  @Input() disabledFavorite: boolean;
 
   constructor(
     public globalService: GlobalService,

@@ -32,7 +32,7 @@
             [collection]="'kits'"
             [id]="kit.id"
             [favoritesCount]="kit.favoritesCount"
-            *ngIf="user"
+            [disabledFavorite]="!user"
             class="favorite-icon"
           ></favorite>
         </div>

@@ -1,7 +1,14 @@
 <div class="kit">
     <div class="kit-info" [ngClass]="{ 'new-kit': newKit }">
-        <div class="meta" *ngIf="!newKit">
-            {{ currentKit.name }} by <img *ngIf="kitUser" [src]="kitUser.photoURL" class="avatar">
+        <div class="meta" *ngIf="!newKit && currentKit.name">
+            {{ currentKit.name }} by <img [src]="kitUser.photoURL" class="avatar">
+            <favorite
+                [collection]="'kits'"
+                [id]="currentKit.slug"
+                [favoritesCount]="currentKit.favoritesCount"
+                [disabledFavorite]="!user"
+                class="favorite-icon"
+            ></favorite>
         </div>
         <div class="menu" *ngIf="user">
             <mat-icon [matMenuTriggerFor]="menu" class="menu-icon">more_horiz</mat-icon>
@@ -27,6 +34,7 @@
                 [component]="'sampler'"
                 [active]="activeKeys[keys[i]]"
                 [showFavorite]="false"
+                [showKeys]="true"
             >
             </sample>
         </div>
