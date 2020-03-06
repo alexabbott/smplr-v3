@@ -1,8 +1,46 @@
+@import "./../../shared/variables.scss";
+
 mat-icon {
     cursor: pointer;
 }
 
-.my-samples {
+.avatar {
+    border-radius: 50%;
+    display: block;
+    margin: 0 auto;
+    width: 3rem;
+}
+
+.user-samples {
     display: flex;
     flex-wrap: wrap;
+    justify-content: center;
+    margin-top: .5rem;
+}
+
+.user-kits {
+    margin-top: .6rem;
+}
+
+.empty {
+    margin-top: 1rem;
+}
+
+::ng-deep {
+    .mat-tab-header {
+        border-bottom: 0 !important;
+    }
+
+    .mat-tab-labels {
+        justify-content: center;
+    }
+
+    .mat-tab-label {
+        min-width: 96px !important;
+        padding: 0 5px !important;
+    }
+
+    .mat-ink-bar {
+        background-color: $black !important;
+    }
 }

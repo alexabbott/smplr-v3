@@ -40,5 +40,8 @@
                 [showKeys]="false"
             ></sample>
         </div>
+        <div class="empty" *ngIf="!samples.length">
+            No samples found
+        </div>
     </div>
 </div>

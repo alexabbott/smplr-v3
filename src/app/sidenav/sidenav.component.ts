@@ -18,7 +18,7 @@ export class SidenavComponent implements OnInit {
     this.route.queryParams.subscribe((queryParams: any) => {
       this.params = queryParams;
 
-      if (this.params.module === 'profile') {
+      if (this.params.profile) {
         this.showProfile = true;
       } else {
         this.showProfile = false;

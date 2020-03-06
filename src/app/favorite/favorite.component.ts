@@ -22,7 +22,7 @@ export class FavoriteComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.globalService.user.subscribe((u) => this.user = u);
+    this.globalService.userId.subscribe((u) => this.user = u);
     this.globalService[`favorite${this.globalService.capitalize(this.collection)}`].subscribe((favorites) => { this.favorites = favorites; });
   }
 

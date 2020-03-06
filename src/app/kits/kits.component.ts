@@ -22,7 +22,7 @@ export class KitsComponent implements OnInit {
     public globalService: GlobalService,
   ) {
     this.modelChange();
-    this.globalService.user.subscribe((u) => this.user = u);
+    this.globalService.userId.subscribe((u) => this.user = u);
   }
 
   ngOnInit() {

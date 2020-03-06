@@ -1,0 +1,25 @@
+<a routerLink="/kit/{{ kit.slug }}" class="kit" queryParamsHandling="merge">
+    <div class="kit-container">
+        <div class="kit-left">
+        <div class="kit-info">
+            <span class="name">{{ kit.name }}</span> by
+            <img
+                *ngIf="kit.fullUser"
+                [src]="kit.fullUser.photoURL"
+                class="avatar"
+                (click)="openProfile($event)"
+            >
+        </div>
+        <div class="favorite">
+            <favorite
+            [collection]="'kits'"
+            [id]="kit.id"
+            [favoritesCount]="kit.favoritesCount"
+            [disabledFavorite]="!user"
+            class="favorite-icon"
+            ></favorite>
+        </div>
+        </div>
+        <button mat-raised-button class="load">Load</button>
+    </div>
+</a>

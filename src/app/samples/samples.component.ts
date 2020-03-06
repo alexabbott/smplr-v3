@@ -26,7 +26,7 @@ export class SamplesComponent implements OnInit {
   ) {
     this.samples = [];
     this.modelChange();
-    this.globalService.user.subscribe((u) => this.user = u);
+    this.globalService.userId.subscribe((u) => this.user = u);
   }
 
   ngOnInit() {

@@ -19,6 +19,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatIconModule } from '@angular/material/icon';
+import { MatTabsModule } from '@angular/material/tabs';
 import { FormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -40,6 +41,7 @@ import { KitsComponent } from './kits/kits.component';
 import { SaveSampleDialogComponent } from './save-sample-dialog/save-sample-dialog.component';
 import { SaveKitDialogComponent } from './save-kit-dialog/save-kit-dialog.component';
 import { SaveSequenceDialogComponent } from './save-sequence-dialog/save-sequence-dialog.component';
+import { KitPreviewComponent } from './kit-preview/kit-preview.component';
 
 @NgModule({
   declarations: [
@@ -55,6 +57,7 @@ import { SaveSequenceDialogComponent } from './save-sequence-dialog/save-sequenc
     SaveSampleDialogComponent,
     SaveKitDialogComponent,
     SaveSequenceDialogComponent,
+    KitPreviewComponent,
   ],
   imports: [
     BrowserModule,
@@ -76,6 +79,7 @@ import { SaveSequenceDialogComponent } from './save-sequence-dialog/save-sequenc
     MatSelectModule,
     MatSidenavModule,
     MatSnackBarModule,
+    MatTabsModule,
     MatToolbarModule,
     DndModule.forRoot(),
   ],

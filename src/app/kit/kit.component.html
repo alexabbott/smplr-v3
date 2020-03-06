@@ -1,7 +1,12 @@
 <div class="kit">
     <div class="kit-info" [ngClass]="{ 'new-kit': newKit }">
         <div class="meta" *ngIf="!newKit && currentKit.name">
-            {{ currentKit.name }} by <img [src]="kitUser.photoURL" class="avatar">
+            {{ currentKit.name }} by
+            <img
+                [src]="kitUser.photoURL"
+                class="avatar"
+                (click)="openUserProfile()"
+            >
             <favorite
                 [collection]="'kits'"
                 [id]="currentKit.slug"

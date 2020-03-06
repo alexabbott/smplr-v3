@@ -1,23 +1,34 @@
 <mat-icon (click)="closeProfile()">arrow_back</mat-icon>
-<h3>My Samples</h3>
-<div class="my-samples">
-  <div
-    class="sample-container"
-    *ngFor="let sample of samplesQuery; let i = index"
-    (focus)="globalService.keyMapEnabled.next(false)"
-    (focusout)="globalService.keyMapEnabled.next(true)"
-    (mousedown)="globalService.playSample($event)"
-    (mouseup)="globalService.stopSample($event)"
-    dnd-draggable
-    [dragEnabled]="true"
-    [dragData]="sample"
-    [dropZones]="['zone1','zone2','zone3','zone4','zone5','zone6','zone7','zone8','zone9','zone10','zone11','zone12','zone13','zone14','zone15','zone16']">
-    <sample [sample]="sample" [component]="'profile'" [index]="i+1" [showFavorite]="false"></sample>
-  </div>
-</div>
-<h3>My Kits</h3>
-<div class="my-kits">
-  <div class="kit-container" *ngFor="let kit of kitsQuery">
-    <a routerLink="/kit/{{kit.slug}}">{{kit.name}}</a>
-  </div>
-</div>
+<img [src]="profileUser.photoURL" class="avatar" *ngIf="profileUser">
+<mat-tab-group>
+  <mat-tab label="Samples">
+    <div class="user-samples">
+      <div
+        class="sample-container"
+        *ngFor="let sample of samplesQuery; let i = index"
+        (focus)="globalService.keyMapEnabled.next(false)"
+        (focusout)="globalService.keyMapEnabled.next(true)"
+        (mousedown)="globalService.playSample($event)"
+        (mouseup)="globalService.stopSample($event)"
+        dnd-draggable
+        [dragEnabled]="true"
+        [dragData]="sample"
+        [dropZones]="['zone1','zone2','zone3','zone4','zone5','zone6','zone7','zone8','zone9','zone10','zone11','zone12','zone13','zone14','zone15','zone16']">
+        <sample [sample]="sample" [component]="'profile'" [index]="i+1" [showFavorite]="false"></sample>
+      </div>
+      <div class="empty" *ngIf="!samplesQuery.length">
+        No samples
+      </div>
+    </div>
+  </mat-tab>
+  <mat-tab label="Kits">
+    <div class="user-kits">
+      <div class="kit-container" *ngFor="let kit of kitsQuery">
+        <kit-preview [kit]="kit" [user]="profileUser.id"></kit-preview>
+      </div>
+      <div class="empty" *ngIf="!kitsQuery.length">
+        No kits
+      </div>
+    </div>
+  </mat-tab>
+</mat-tab-group>

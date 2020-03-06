@@ -50,7 +50,10 @@ export class SequencerComponent implements OnInit {
 
   playSample(index) {
     const audio = <HTMLAudioElement>document.getElementById('sampler' + (index + 1));
+    audio.pause();
+    audio.currentTime = 0;
     audio.play();
+
     audio.onended = () => {
       audio.pause();
       audio.currentTime = 0;

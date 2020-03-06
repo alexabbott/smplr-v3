@@ -10,6 +10,7 @@ export class GlobalService {
   public currentSequence = new BehaviorSubject(null);
   public currentSamples = new BehaviorSubject(null);
   public kitName = new BehaviorSubject('');
+  public userId = new BehaviorSubject(null);
   public user = new BehaviorSubject(null);
   public userRef = new BehaviorSubject(null);
   public keyMapEnabled = new BehaviorSubject(true);
@@ -80,7 +81,7 @@ export class GlobalService {
       queryParams: { ...this.queryParams }
     };
     if (value) {
-      query.queryParams[key] = value;
+      query.queryParams[key] = typeof value === 'object' && value !== null ? value.uid : value;
     } else {
       query.queryParams[key] = null;
     }

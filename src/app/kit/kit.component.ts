@@ -68,7 +68,7 @@ export class KitComponent implements OnInit {
         this.initializeActiveKeys();
         this.loadKit();
 
-        this.globalService.user.subscribe((u) => {
+        this.globalService.userId.subscribe((u) => {
             this.user = u;
         });
     }
@@ -202,5 +202,10 @@ export class KitComponent implements OnInit {
         const newKit = kit.payload.doc.data();
         newKit.id = kit.payload.doc.id;
         return newKit;
+    }
+
+    openUserProfile() {
+        console.log('test', this.currentKit.user);
+        this.globalService.updateParams('profile', this.currentKit.user);
     }
 }

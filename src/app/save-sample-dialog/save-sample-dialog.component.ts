@@ -37,7 +37,7 @@ export class SaveSampleDialogComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.globalService.user.subscribe((u) => this.user = u);
+    this.globalService.userId.subscribe((u) => this.user = u);
   }
 
   handleFiles(e) {

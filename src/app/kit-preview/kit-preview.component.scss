@@ -1,0 +1,32 @@
+@import "./../../shared/variables.scss";
+
+.kit {
+    margin-bottom: 1rem;
+    text-decoration: none;
+  }
+  
+  .kit-container {
+    align-items: center;
+    border: 1px solid $black;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+    padding: 1rem;
+  }
+  
+  .kit-info {
+    align-items: center;
+    display: flex;
+  }
+  
+  .name {
+    margin-right: .2rem;
+  }
+  
+  .avatar {
+      border-radius: 50%;
+      height: 30px;
+      margin: -1px 0 0 .3rem;
+      width: 30px;
+  }

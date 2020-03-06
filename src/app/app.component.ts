@@ -13,6 +13,7 @@ import { GlobalService } from './global.service';
 export class AppComponent {
   userData: any;
   isKit: boolean;
+  user: string;
 
   constructor(
     public afAuth: AngularFireAuth,
@@ -27,9 +28,10 @@ export class AppComponent {
   }
 
   ngOnInit() {
-    this.globalService.user.subscribe((id) => {
-      this.setFavorites(id, 'kits');
-      this.setFavorites(id, 'samples');
+    this.globalService.userId.subscribe((user) => {
+      this.user = user;
+      this.setFavorites(user, 'kits');
+      this.setFavorites(user, 'samples');
     });
   }
 
@@ -52,7 +54,8 @@ export class AppComponent {
           photoURL: user.photoURL,
           email: user.email
         };
-        this.globalService.user.next(user.uid);
+        this.globalService.userId.next(user.uid);
+        this.globalService.user.next(user);
         this.globalService.userRef.next(this.db.collection('users').doc(user.uid).ref)
         const userRef = this.db.collection('users').doc(user.uid);
         userRef.valueChanges().subscribe((u) => {

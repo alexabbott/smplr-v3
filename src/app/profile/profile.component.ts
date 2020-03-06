@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { GlobalService } from '../global.service';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'profile',
@@ -16,26 +16,45 @@ export class ProfileComponent implements OnInit {
   kitsQuery: any;
   kits: any;
   userRef: any;
+  user: any;
+  profileUser: any;
 
   constructor(
     public db: AngularFirestore,
     public globalService: GlobalService,
-    private router: Router
+    private router: Router,
+    private route: ActivatedRoute,
   ) {
     this.samplesRef = this.db.collection<any[]>('samples');
     this.kitsRef = this.db.collection<any[]>('kits');
     this.samplesQuery = [];
     this.kitsQuery = [];
-    this.globalService.userRef.subscribe((ref) => {
-      if (ref) {
-        this.userRef = ref;
+  }
+
+  ngOnInit() {
+    this.globalService.user.subscribe((u) => {
+      this.user = u;
+    });
+
+    this.route.queryParams.subscribe((queryParams: any) => {
+      if (queryParams.profile) {
+        const userDoc = this.db.collection('users').doc(queryParams.profile);
+        this.userRef = userDoc.ref;
+        userDoc.valueChanges().subscribe((u) => {
+          u['id'] = queryParams.profile;
+          this.profileUser = u;
+        });
         this.fetchUserKits();
         this.fetchUserSamples();
       }
     });
   }
 
-  ngOnInit() { }
+  addKitUsers() {
+    this.kitsQuery.forEach((kit) => {
+      kit.fullUser = this.profileUser;
+    });
+  }
 
   fetchUserSamples() {
     this.db
@@ -56,6 +75,7 @@ export class ProfileComponent implements OnInit {
       .valueChanges()
       .subscribe((kits: any) => {
         this.kitsQuery = kits;
+        this.addKitUsers();
       });
   }
 
