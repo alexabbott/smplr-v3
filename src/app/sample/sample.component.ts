@@ -29,11 +29,9 @@ export class SampleComponent implements AfterViewInit {
       audioElement.crossOrigin = 'anonymous';
       const audioSource = new MediaElementAudioSourceNode(context, {
         mediaElement: audioElement,
-     });
-     audioSource.connect(context.destination);
-      if (context.state === 'suspended') {
-        context.resume();
-      }
+      });
+      audioSource.connect(context.destination);
+      this.audioService.resumeContext();
     }
   }
 }

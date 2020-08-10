@@ -3,6 +3,7 @@ import { AngularFirestore } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { GlobalService } from '../global.service';
+import { AudioService } from '../audio.service';
 import { MatDialog } from '@angular/material/dialog';
 import { SaveKitDialogComponent } from '../save-kit-dialog/save-kit-dialog.component';
 import { SaveSequenceDialogComponent } from '../save-sequence-dialog/save-sequence-dialog.component';
@@ -32,6 +33,7 @@ export class KitComponent implements OnInit {
         public route: ActivatedRoute,
         public router: Router,
         public globalService: GlobalService,
+        public audioService: AudioService,
         public dialog: MatDialog
     ) {
         this.kitSamples = this.globalService.create2DArray(this.sampleLimit);;
@@ -75,6 +77,7 @@ export class KitComponent implements OnInit {
 
     @HostListener('document:keydown', ['$event'])
     keydown(e: KeyboardEvent) {
+        this.audioService.resumeContext();
         if (this.keyMapEnabled && this.keys.includes(e.key)) {
             const sample = <HTMLAudioElement>document.getElementById('sampler' + (this.keyMap[e.key] + 1));
             if (sample.getAttribute('src')) {

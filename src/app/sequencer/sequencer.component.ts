@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { SequencerService } from '../sequencer.service';
 import { GlobalService } from '../global.service';
+import { AudioService } from '../audio.service';
 
 @Component({
   selector: 'sequencer',
@@ -19,6 +20,7 @@ export class SequencerComponent implements OnInit {
   constructor(
     public globalService: GlobalService,
     public sequencerService: SequencerService,
+    public audioService: AudioService,
   ) {
     this.stepLimit = 32;
     this.steps = this.globalService.create2DArray(this.stepLimit);
@@ -50,6 +52,7 @@ export class SequencerComponent implements OnInit {
   }
 
   playSample(index) {
+    this.audioService.resumeContext();
     const audio = <HTMLAudioElement>document.getElementById('sampler' + (index + 1));
     audio.pause();
     audio.currentTime = 0;

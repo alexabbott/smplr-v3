@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { Router } from '@angular/router';
+import { AudioService } from './audio.service';
 
 @Injectable({
   providedIn: 'root'
@@ -39,6 +40,7 @@ export class GlobalService {
 
   constructor(
     public router: Router,
+    private audioService: AudioService,
   ) { }
 
   slugify(text) {
@@ -68,6 +70,7 @@ export class GlobalService {
   }
 
   playSample(event) {
+    this.audioService.resumeContext();
     event.target.querySelector('.audio').play();
     event.target.classList.add('active');
   }

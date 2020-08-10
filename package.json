@@ -7,7 +7,8 @@
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "deploy": "ng build --prod; firebase deploy;"
   },
   "private": true,
   "dependencies": {
@@ -23,6 +24,8 @@
     "@angular/platform-browser-dynamic": "~9.0.2",
     "@angular/router": "~9.0.2",
     "firebase": "^7.9.1",
+    "firebase-admin": "^9.0.0",
+    "firebase-functions": "^3.9.0",
     "ng2-dnd": "^5.0.2",
     "rxjs": "~6.5.4",
     "tslib": "^1.10.0",
