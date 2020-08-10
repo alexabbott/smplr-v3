@@ -27,7 +27,6 @@
             (focus)="globalService.keyMapEnabled.next(false)"
             (focusout)="globalService.keyMapEnabled.next(true)"
             (mousedown)="globalService.playSample($event)"
-            (mouseup)="globalService.stopSample($event)"
             dnd-draggable
             [dragEnabled]="true"
             [dragData]="sample"

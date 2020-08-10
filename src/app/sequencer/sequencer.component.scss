@@ -1,14 +1,5 @@
 @import "./../../shared/variables.scss";
 
-.controls {
-  display: block;
-  margin: 1rem 0;
-
-  button {
-    margin: 0 .2rem;
-  }
-}
-
 .sequencer-container {
   background: $white;
   border-top: solid 1px rgba(0,0,0,.12);
@@ -23,6 +14,23 @@
   padding: 0 1rem;
   position: fixed;
   width: calc(100% - 330px);
+
+  .step-indicators {
+    margin-left: 70px;
+
+    .step-indicator {
+      box-sizing: border-box;
+      display: inline-block;
+      margin: 0 1px;
+      text-align: center;
+      visibility: hidden;
+      width: 20px;
+
+      &.visible {
+        visibility: visible;
+      }
+    }
+  }
 
   .sequencer {
     display: inline-block;
@@ -57,16 +65,27 @@
     &.active {
       background: #000;
     }
+
+    &.playing {
+      background: green;
+    }
   }
 }
 
 .controls {
   align-items: flex-start;
   display: flex;
+  margin: 1rem 0;
 
   button {
+    margin: 0 .2rem;
     min-width: 45px;
     width: 45px;
+
+    &.active {
+      background: green;
+      color: white;
+    }
   }
     
   .bpm {

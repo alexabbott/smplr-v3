@@ -1,12 +1,13 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, AfterViewInit, Input, ViewChild } from '@angular/core';
 import { GlobalService } from '../global.service';
+import { AudioService } from '../audio.service';
 
 @Component({
   selector: 'sample',
   templateUrl: './sample.component.html',
   styleUrls: ['./sample.component.scss']
 })
-export class SampleComponent implements OnInit {
+export class SampleComponent implements AfterViewInit {
 
   @Input() sample: any;
   @Input() index: number;
@@ -14,12 +15,25 @@ export class SampleComponent implements OnInit {
   @Input() active: boolean;
   @Input() showFavorite: boolean;
   @Input() showKeys: boolean;
+  @ViewChild('audio') audio; 
   keys: Array<string>
 
-  constructor(private globalService: GlobalService) {
+  constructor(private globalService: GlobalService, private audioService: AudioService) {
     this.keys = this.globalService.keys;
   }
 
-  ngOnInit() {
+  ngAfterViewInit() {
+    const audioElement = this.audio.nativeElement;
+    const context = this.audioService.context;
+    if (audioElement.src) {
+      audioElement.crossOrigin = 'anonymous';
+      const audioSource = new MediaElementAudioSourceNode(context, {
+        mediaElement: audioElement,
+     });
+     audioSource.connect(context.destination);
+      if (context.state === 'suspended') {
+        context.resume();
+      }
+    }
   }
 }

@@ -14,12 +14,13 @@ export class SequencerComponent implements OnInit {
   currentStep: number;
   samples: Array<any>;
   stepLimit: number;
+  playing: boolean;
 
   constructor(
     public globalService: GlobalService,
     public sequencerService: SequencerService,
   ) {
-    this.stepLimit = 16;
+    this.stepLimit = 32;
     this.steps = this.globalService.create2DArray(this.stepLimit);
     this.bpm = 100;
     this.currentStep = 0;
@@ -61,6 +62,8 @@ export class SequencerComponent implements OnInit {
   }
 
   play() {
+    this.currentStep = 0;
+    this.playing = true;
     this.intervalRef = setInterval(() => {
       const stepSamples = this.steps[this.currentStep];
       stepSamples.forEach((sample) => {
@@ -71,10 +74,12 @@ export class SequencerComponent implements OnInit {
       } else {
         this.currentStep += 1;
       }
-    }, this.bpm * 3);
+    }, this.bpm * 1.5);
   }
 
   stop() {
+    this.playing = false;
+    this.currentStep = 0;
     clearInterval(this.intervalRef);
   }
 }

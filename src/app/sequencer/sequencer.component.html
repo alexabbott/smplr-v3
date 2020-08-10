@@ -2,12 +2,17 @@
   <div class="sequencer">
     <div class="controls">
       <button (click)="stop()" mat-raised-button class="stop">■</button>
-      <button (click)="play()" mat-raised-button class="play">►</button>
+      <button (click)="play()" [ngClass]="{'active': playing}" mat-raised-button class="play">►</button>
       <mat-form-field class="bpm">
         <input matInput type="number" min="1" max="500" [(ngModel)]="bpm" placeholder="BPM">
       </mat-form-field>
     </div>
     <div class="steps-container">
+      <div class="step-indicators">
+        <ng-container *ngFor="let step of steps; let x = index;">
+          <div class="step-indicator" [ngClass]="{'visible': x === currentStep }">•</div>
+        </ng-container>
+      </div>
       <ng-container *ngFor="let sample of samples; let x = index;">
         <div *ngIf="sample && sample.name" class="row">
           <div class="sample-name">{{ sample.name }}</div>
@@ -16,7 +21,7 @@
               *ngFor="let step of steps; let y = index"
               class="step"
               (click)="toggleStepSample(x, y)"
-              [ngClass]="{'active': step.includes(x)}"
+              [ngClass]="{'active': step.includes(x), 'playing': y === currentStep && playing && step.includes(x)}"
             >
             </div>
           </div>

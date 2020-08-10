@@ -53,8 +53,10 @@
         font-size: 0.7rem;
         height: 26px;
         left: 50%;
+        pointer-events: none;
         position: absolute;
         transform: translateX(-50%);
+        user-select: none;
         width: 26px;
     }
 }

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { GlobalService } from '../global.service';
+import { AudioService } from '../audio.service';
 import { Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { SaveSampleDialogComponent } from '../save-sample-dialog/save-sample-dialog.component';
@@ -18,15 +19,18 @@ export class SamplesComponent implements OnInit {
   modelChanged: Subject<string> = new Subject<string>();
   user: string;
   sort = 'updated';
+  context: any;
 
   constructor(
     public db: AngularFirestore,
     public globalService: GlobalService,
     public dialog: MatDialog,
+    public audioService: AudioService,
   ) {
     this.samples = [];
     this.modelChange();
     this.globalService.userId.subscribe((u) => this.user = u);
+    this.context = this.audioService.context;
   }
 
   ngOnInit() {

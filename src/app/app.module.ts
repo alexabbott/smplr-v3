@@ -29,6 +29,7 @@ import { KitComponent } from './kit/kit.component';
 
 import { GlobalService } from '../app/global.service';
 import { SequencerService } from '../app/sequencer.service';
+import { AudioService } from '../app/audio.service';
 
 import { DndModule } from 'ng2-dnd';
 import { SampleComponent } from './sample/sample.component';
@@ -83,7 +84,7 @@ import { KitPreviewComponent } from './kit-preview/kit-preview.component';
     MatToolbarModule,
     DndModule.forRoot(),
   ],
-  providers: [GlobalService, SequencerService],
+  providers: [GlobalService, SequencerService, AudioService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

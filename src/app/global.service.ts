@@ -69,11 +69,13 @@ export class GlobalService {
 
   playSample(event) {
     event.target.querySelector('.audio').play();
+    event.target.classList.add('active');
   }
 
   stopSample(event) {
     event.target.querySelector('.audio').pause();
     event.target.querySelector('.audio').currentTime = 0;
+    event.target.classList.remove('active');
   }
 
   updateParams(key, value) {
