@@ -27,6 +27,7 @@ export class KitComponent implements OnInit {
     activeKeys: any;
     sampleLimit: Number = 16;
     newKit = false;
+    gainNodes: Object;
 
     constructor(
         public db: AngularFirestore,
@@ -36,7 +37,7 @@ export class KitComponent implements OnInit {
         public audioService: AudioService,
         public dialog: MatDialog
     ) {
-        this.kitSamples = this.globalService.create2DArray(this.sampleLimit);;
+        this.kitSamples = this.globalService.create2DArray(this.sampleLimit);
         this.currentKit = {};
         this.activeKeys = {};
 
@@ -73,6 +74,10 @@ export class KitComponent implements OnInit {
         this.globalService.userId.subscribe((u) => {
             this.user = u;
         });
+
+        this.audioService.gainNodes.subscribe((nodes) => {
+            this.gainNodes = nodes;
+        });
     }
 
     @HostListener('document:keydown', ['$event'])
@@ -82,6 +87,10 @@ export class KitComponent implements OnInit {
             const sample = <HTMLAudioElement>document.getElementById('sampler' + (this.keyMap[e.key] + 1));
             if (sample.getAttribute('src')) {
                 if (!this.activeKeys[e.key]) {
+                    // const gainNode = this.gainNodes[(sample.id).replace('sampler', '')]
+                    // const ogGain = (<HTMLInputElement>sample.parentElement.querySelector('.gain')).value;
+                    // gainNode.gain.value = ogGain;
+                    sample.currentTime = 0;
                     sample.play();
                 }
                 this.activeKeys[e.key] = true;
@@ -99,6 +108,9 @@ export class KitComponent implements OnInit {
             this.activeKeys[e.key] = false;
             const sample = <HTMLAudioElement>document.getElementById('sampler' + (this.keyMap[e.key] + 1));
             if (sample.getAttribute('src')) {
+                // const gainNode = this.gainNodes[(sample.id).replace('sampler', '')];
+                // gainNode.gain.setValueAtTime(gainNode.gain.value, this.audioService.context.currentTime); 
+                // gainNode.gain.exponentialRampToValueAtTime(0.0001, this.audioService.context.currentTime + 0.03);
                 sample.pause();
                 sample.currentTime = 0;
             }

@@ -16,6 +16,24 @@ export class SequencerComponent implements OnInit {
   samples: Array<any>;
   stepLimit: number;
   playing: boolean;
+  sampleOrder = {
+    1: 4,
+    2: 3,
+    3: 2,
+    4: 1,
+    5: 8,
+    6: 7,
+    7: 6,
+    8: 5,
+    9: 12,
+    10: 11,
+    11: 10,
+    12: 9,
+    13: 16,
+    14: 15,
+    15: 14,
+    16: 13,
+  }
 
   constructor(
     public globalService: GlobalService,
@@ -24,7 +42,7 @@ export class SequencerComponent implements OnInit {
   ) {
     this.stepLimit = 32;
     this.steps = this.globalService.create2DArray(this.stepLimit);
-    this.bpm = 100;
+    this.bpm = 180;
     this.currentStep = 0;
   }
 
@@ -77,7 +95,7 @@ export class SequencerComponent implements OnInit {
       } else {
         this.currentStep += 1;
       }
-    }, this.bpm * 1.5);
+    }, (60 / (this.bpm * 2)) * 1000);
   }
 
   stop() {

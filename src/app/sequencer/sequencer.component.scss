@@ -36,6 +36,11 @@
     display: inline-block;
   }
 
+  .rows {
+    display: flex;
+    flex-direction: column;
+  }
+
   .row {
     display: flex;
   }
@@ -43,6 +48,7 @@
   .sample-name {
     font-size: .5rem;
     height: 10px;
+    line-height: 1.5;
     width: 70px;
   }
   

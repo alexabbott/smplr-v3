@@ -13,6 +13,16 @@
   <div class="key" *ngIf="showKeys">
     {{ keys[index - 1]}}
   </div>
+  <input
+    type="range"
+    *ngIf="showKeys && sample.url"
+    class="gain"
+    min="0"
+    max="1"
+    (ngModelChange)="changeGain()"
+    [(ngModel)]="gainValue"
+    step=".1"
+  >
   <favorite
     [collection]="'samples'"
     [id]="sample.id"

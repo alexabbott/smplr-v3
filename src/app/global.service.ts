@@ -71,14 +71,28 @@ export class GlobalService {
 
   playSample(event) {
     this.audioService.resumeContext();
-    event.target.querySelector('.audio').play();
-    event.target.classList.add('active');
+    const target = event.target;
+    if (target.querySelector('.audio')) {
+      target.querySelector('.audio').play();
+      target.classList.add('active');
+    }
   }
 
   stopSample(event) {
-    event.target.querySelector('.audio').pause();
-    event.target.querySelector('.audio').currentTime = 0;
-    event.target.classList.remove('active');
+    const target = event.target;
+    if (target.querySelector('.audio')) {
+      const audio = target.querySelector('.audio');
+      audio.pause();
+      audio.currentTime = 0;
+      target.classList.remove('active');
+    }
+  }
+
+  softStopSample(event) {
+    const target = event.target;
+    if (target.querySelector('.audio')) {
+      target.classList.remove('active');
+    }
   }
 
   updateParams(key, value) {

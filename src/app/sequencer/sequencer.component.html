@@ -13,20 +13,22 @@
           <div class="step-indicator" [ngClass]="{'visible': x === currentStep }">•</div>
         </ng-container>
       </div>
-      <ng-container *ngFor="let sample of samples; let x = index;">
-        <div *ngIf="sample && sample.name" class="row">
-          <div class="sample-name">{{ sample.name }}</div>
-          <div class="steps">
-            <div
-              *ngFor="let step of steps; let y = index"
-              class="step"
-              (click)="toggleStepSample(x, y)"
-              [ngClass]="{'active': step.includes(x), 'playing': y === currentStep && playing && step.includes(x)}"
-            >
+      <div class="rows">
+        <ng-container *ngFor="let sample of samples; let x = index;">
+          <div *ngIf="sample && sample.name" class="row" [ngStyle]="{'order': sampleOrder[x + 1]}" [ngClass]="'_' + x">
+            <div class="sample-name">{{ sample.name }}</div>
+            <div class="steps">
+              <div
+                *ngFor="let step of steps; let y = index"
+                class="step"
+                (click)="toggleStepSample(x, y)"
+                [ngClass]="{'active': step.includes(x), 'playing': y === currentStep && playing && step.includes(x)}"
+              >
+              </div>
             </div>
           </div>
-        </div>
-      </ng-container>
+        </ng-container>
+      </div>
     </div>
   </div>
 </div>
