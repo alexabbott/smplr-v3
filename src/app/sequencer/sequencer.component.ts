@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { SequencerService } from '../sequencer.service';
 import { GlobalService } from '../global.service';
 import { AudioService } from '../audio.service';
@@ -42,7 +42,7 @@ export class SequencerComponent implements OnInit {
   ) {
     this.stepLimit = 32;
     this.steps = this.globalService.create2DArray(this.stepLimit);
-    this.bpm = 180;
+    this.bpm = 120;
     this.currentStep = 0;
   }
 
@@ -59,6 +59,19 @@ export class SequencerComponent implements OnInit {
       }
     });
   }
+
+  @HostListener('document:keydown', ['$event'])
+    keydown(e: KeyboardEvent) {
+      if (e.key === ' ') {
+        this.audioService.resumeContext();
+
+        if (this.playing) {
+          this.stop();
+        } else {
+          this.play();
+        }
+      }
+    }
 
   toggleStepSample(sampleIndex, stepIndex) {
     if (this.steps[stepIndex].includes(sampleIndex)) {

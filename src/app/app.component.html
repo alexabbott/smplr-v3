@@ -2,7 +2,7 @@
   <a routerLink="/" class="app-icon" queryParamsHandling="merge">SMPLR</a>
   <span class="toolbar-spacer"></span>
   <span>
-    <i class="material-icons" (click)="sidenav.toggle()">playlist_play</i>
+    <i class="material-icons" (click)="sidenav.toggle(); toggleOpenClass();">playlist_play</i>
     <button mat-raised-button *ngIf="!(afAuth.authState | async)" (click)="login()">Log In</button>
     <span *ngIf="afAuth.authState | async; let user;">
       <img [src]="user.photoURL" [matMenuTriggerFor]="menu" class="user-photo">

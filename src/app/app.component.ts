@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Renderer2 } from '@angular/core';
 import { Router } from '@angular/router';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFirestore } from '@angular/fire/firestore';
@@ -20,6 +20,7 @@ export class AppComponent {
     public db: AngularFirestore,
     public globalService: GlobalService,
     public router: Router,
+    private renderer: Renderer2,
   ) {
     this.authenticateUser();
     this.router.events.subscribe((url) => {
@@ -85,6 +86,10 @@ export class AppComponent {
         }
       });
     }
+  }
+
+  toggleOpenClass() {
+    document.body.classList.toggle('sidenav-closed');
   }
 }
 

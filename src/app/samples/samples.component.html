@@ -14,8 +14,8 @@
                 (ngModelChange)="searchChanged($event)"
             >
         </mat-form-field>
-        <mat-icon [matMenuTriggerFor]="menu" class="sort-icon">sort</mat-icon>
-        <mat-menu #menu="matMenu">
+        <mat-icon [matMenuTriggerFor]="sampleSortMenu" class="sort-icon">sort</mat-icon>
+        <mat-menu #sampleSortMenu="matMenu">
             <button mat-menu-item (click)="sortSamples('updated')">Newest samples</button>
             <button mat-menu-item (click)="sortSamples('favoritesCount')">Popular samples</button>
         </mat-menu>

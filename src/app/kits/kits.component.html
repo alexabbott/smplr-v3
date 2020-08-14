@@ -14,8 +14,8 @@
             (ngModelChange)="searchChanged($event)"
         >
     </mat-form-field>
-    <mat-icon [matMenuTriggerFor]="menu" class="sort-icon">sort</mat-icon>
-    <mat-menu #menu="matMenu">
+    <mat-icon [matMenuTriggerFor]="kitSortMenu" class="sort-icon">sort</mat-icon>
+    <mat-menu #kitSortMenu="matMenu">
       <button mat-menu-item (click)="sortKits('updated')">Newest kits</button>
       <button mat-menu-item (click)="sortKits('favoritesCount')">Popular kits</button>
     </mat-menu>
@@ -23,7 +23,7 @@
   <ng-container *ngFor="let kit of kits">
     <kit-preview [kit]="kit" [user]="user"></kit-preview>
   </ng-container>
-  <div class="empty" *ngIf="!kits.length">
+  <div class="empty" *ngIf="!kits || !kits.length">
     No kits found
   </div>
 </div>
