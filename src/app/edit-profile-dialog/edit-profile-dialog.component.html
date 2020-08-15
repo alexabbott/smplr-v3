@@ -1,10 +1,6 @@
 <h2 mat-dialog-title>Edit profile</h2>
-<img [src]="avatarURL || data.avatar || data.photoURL" class="avatar" *ngIf="data">
 <div class="upload-button">
-    <button mat-raised-button class="mat-upload-button">
-        <span *ngIf="!allowSave">Update profile photo</span>
-        <span *ngIf="allowSave"><mat-icon>face</mat-icon> Avatar added</span>
-    </button>
+    <img [src]="avatarURL || data.avatar || data.photoURL" class="avatar mat-upload-button" *ngIf="data">
     <input type="file" id="uploadSample" name="sample" class="native-upload" (change)="handleFiles($event)">
 </div>
 <mat-form-field>

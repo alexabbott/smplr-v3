@@ -7,6 +7,7 @@
                 class="avatar"
                 (click)="openUserProfile()"
             >
+            <span *ngIf="kitUser && kitUser.username" class="username">{{ kitUser.username }}</span>
             <favorite
                 [collection]="'kits'"
                 [id]="currentKit.slug"

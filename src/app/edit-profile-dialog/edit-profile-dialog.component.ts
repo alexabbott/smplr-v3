@@ -2,7 +2,6 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { FirebaseApp } from '@angular/fire';
-import * as firebase from 'firebase/app';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
@@ -12,7 +11,6 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 })
 export class EditProfileDialogComponent implements OnInit {
   username: string;
-  storageRef: any;
   file: any;
   avatarURL: string;
   allowSave = false;
@@ -22,10 +20,8 @@ export class EditProfileDialogComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any,
     public snackBar: MatSnackBar,
     private db: AngularFirestore,
-    public af: FirebaseApp,
-  ) {
-    this.storageRef = af.storage().ref();
-  }
+    public firebase: FirebaseApp,
+  ) {}
 
   ngOnInit(): void {
     if (this.data.username) {
@@ -64,16 +60,16 @@ export class EditProfileDialogComponent implements OnInit {
   }
 
   uploadAvatar() {
-    let storageRef = firebase.storage().ref();
-    let path = Date.now().toString() + '-' + this.file.name;
-    let iRef = storageRef.child('avatars/' + path);
-    let me = this;
-    iRef.put(this.file).then((snapshot) => {
+    const storageRef = this.firebase.storage().ref();
+    const path = 'avatars/' + Date.now().toString() + '-' + this.file.name;
+    const fileRef = storageRef.child(path);
+
+    fileRef.put(this.file).then((snapshot) => {
       this.snackBar.open('Profile photo uploaded', 'OK!', {
         duration: 3000
       });
-      this.storageRef.child('avatars/' + path).getDownloadURL().then((url) => {
-        me.avatarURL = url;
+      storageRef.child('avatars/' + path).getDownloadURL().then((url) => {
+        this.avatarURL = url;
         this.allowSave = true;
       });
     });

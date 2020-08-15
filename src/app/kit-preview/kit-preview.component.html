@@ -9,6 +9,7 @@
                 class="avatar"
                 (click)="openProfile($event)"
             >
+            <span *ngIf="kit.fullUser && kit.fullUser.username" class="username">{{ kit.fullUser.username }}</span>
         </div>
         <div class="favorite">
             <favorite
