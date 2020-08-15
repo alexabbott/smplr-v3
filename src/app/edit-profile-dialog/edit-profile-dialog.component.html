@@ -1,0 +1,21 @@
+<h2 mat-dialog-title>Edit profile</h2>
+<img [src]="avatarURL || data.avatar || data.photoURL" class="avatar" *ngIf="data">
+<div class="upload-button">
+    <button mat-raised-button class="mat-upload-button">
+        <span *ngIf="!allowSave">Update profile photo</span>
+        <span *ngIf="allowSave"><mat-icon>face</mat-icon> Avatar added</span>
+    </button>
+    <input type="file" id="uploadSample" name="sample" class="native-upload" (change)="handleFiles($event)">
+</div>
+<mat-form-field>
+    <input
+        matInput
+        placeholder="Username"
+        [(ngModel)]="username"
+    >
+</mat-form-field>
+<mat-dialog-actions>
+  <button mat-button mat-dialog-close>Cancel</button>
+  <!-- Can optionally provide a result for the closing dialog. -->
+  <button mat-raised-button (click)="saveProfile()" [mat-dialog-close]="true">Save</button>
+</mat-dialog-actions>

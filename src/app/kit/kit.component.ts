@@ -220,7 +220,6 @@ export class KitComponent implements OnInit {
     }
 
     openUserProfile() {
-        console.log('test', this.currentKit.user);
         this.globalService.updateParams('profile', this.currentKit.user);
     }
 }

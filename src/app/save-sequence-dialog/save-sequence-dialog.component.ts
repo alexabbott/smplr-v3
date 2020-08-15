@@ -43,6 +43,9 @@ export class SaveSequenceDialogComponent implements OnInit {
         sequence: this.sequencerService.buildSequenceObject(sequence),
       }).then((resp) => {
         console.log('saved sequence', resp);
+        let snackBarRef = this.snackBar.open('Sequence saved', 'OK!', {
+          duration: 3000
+        });
       });
     });
   }

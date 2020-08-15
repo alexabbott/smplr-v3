@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { GlobalService } from '../global.service';
 import { Router, ActivatedRoute } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
+import { EditProfileDialogComponent } from '../edit-profile-dialog/edit-profile-dialog.component';
 
 @Component({
   selector: 'profile',
@@ -18,12 +20,14 @@ export class ProfileComponent implements OnInit {
   userRef: any;
   user: any;
   profileUser: any;
+  allowEdit = false;
 
   constructor(
     public db: AngularFirestore,
     public globalService: GlobalService,
     private router: Router,
     private route: ActivatedRoute,
+    private dialog: MatDialog,
   ) {
     this.samplesRef = this.db.collection<any[]>('samples');
     this.kitsRef = this.db.collection<any[]>('kits');
@@ -43,6 +47,12 @@ export class ProfileComponent implements OnInit {
         userDoc.valueChanges().subscribe((u) => {
           u['id'] = queryParams.profile;
           this.profileUser = u;
+
+          if (this.user.uid === this.profileUser.id) {
+            this.allowEdit = true;
+          } else {
+            this.allowEdit = false;
+          }
         });
         this.fetchUserKits();
         this.fetchUserSamples();
@@ -81,5 +91,12 @@ export class ProfileComponent implements OnInit {
 
   closeProfile() {
     this.router.navigate([location.pathname.split('?')[0]], { queryParams: { module: null } });
+  }
+
+  openEditProfileDialog() {
+    this.dialog.open(EditProfileDialogComponent, {
+        width: '350px',
+        data: this.profileUser
+    });
   }
 }

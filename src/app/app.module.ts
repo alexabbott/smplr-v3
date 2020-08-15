@@ -43,6 +43,7 @@ import { SaveSampleDialogComponent } from './save-sample-dialog/save-sample-dial
 import { SaveKitDialogComponent } from './save-kit-dialog/save-kit-dialog.component';
 import { SaveSequenceDialogComponent } from './save-sequence-dialog/save-sequence-dialog.component';
 import { KitPreviewComponent } from './kit-preview/kit-preview.component';
+import { EditProfileDialogComponent } from './edit-profile-dialog/edit-profile-dialog.component';
 
 @NgModule({
   declarations: [
@@ -59,6 +60,7 @@ import { KitPreviewComponent } from './kit-preview/kit-preview.component';
     SaveKitDialogComponent,
     SaveSequenceDialogComponent,
     KitPreviewComponent,
+    EditProfileDialogComponent,
   ],
   imports: [
     BrowserModule,

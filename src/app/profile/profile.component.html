@@ -1,5 +1,10 @@
 <mat-icon (click)="closeProfile()">arrow_back</mat-icon>
-<img [src]="profileUser.photoURL" class="avatar" *ngIf="profileUser">
+<img [src]="profileUser.avatar || profileUser.photoURL" class="avatar" *ngIf="profileUser">
+<h2 *ngIf="profileUser">
+  <span *ngIf="allowEdit && !profileUser.username">Create a username <mat-icon (click)="openEditProfileDialog()">edit</mat-icon></span>
+  <span *ngIf="allowEdit && profileUser.username">{{ profileUser.username }} <mat-icon (click)="openEditProfileDialog()">edit</mat-icon></span>
+  <span *ngIf="!allowEdit && profileUser.username">{{ profileUser.username }}</span>
+</h2>
 <mat-tab-group>
   <mat-tab label="Samples">
     <div class="user-samples">

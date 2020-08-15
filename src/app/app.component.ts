@@ -1,4 +1,4 @@
-import { Component, OnInit, Renderer2 } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFirestore } from '@angular/fire/firestore';
@@ -14,13 +14,13 @@ export class AppComponent {
   userData: any;
   isKit: boolean;
   user: string;
+  userProfile: any;
 
   constructor(
     public afAuth: AngularFireAuth,
     public db: AngularFirestore,
     public globalService: GlobalService,
     public router: Router,
-    private renderer: Renderer2,
   ) {
     this.authenticateUser();
     this.router.events.subscribe((url) => {
@@ -50,7 +50,7 @@ export class AppComponent {
   authenticateUser() {
     this.afAuth.authState.subscribe((user) => {
       if (user) {
-        let userData = {
+        const userData = {
           displayName: user.displayName,
           photoURL: user.photoURL,
           email: user.email
@@ -60,6 +60,7 @@ export class AppComponent {
         this.globalService.userRef.next(this.db.collection('users').doc(user.uid).ref)
         const userRef = this.db.collection('users').doc(user.uid);
         userRef.valueChanges().subscribe((u) => {
+          this.userProfile = u;
           if (!u) {
             userRef.set(userData);
           } else {

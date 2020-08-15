@@ -7,8 +7,19 @@ mat-icon {
 .avatar {
     border-radius: 50%;
     display: block;
+    height: 3rem;
     margin: 0 auto;
+    object-fit: cover;
     width: 3rem;
+}
+
+h2 {
+    margin-top: 14px;
+    text-align: center;
+
+    .mat-icon {
+        font-size: 1rem;
+    }
 }
 
 .user-samples {

@@ -43,7 +43,6 @@ export class SaveKitDialogComponent implements OnInit {
     this.sequencerService.sequence.subscribe((s) => { this.sequence = s; console.log(this.sequence); });
 
     if (this.data) {
-      console.log('this.data', this.data);
       if (this.data.name) { this.kitName = this.data.name; }
       if (this.data.tags) { this.tags = this.globalService.formattedChips(this.data.tags); }
     }

@@ -3,7 +3,7 @@
         <div class="meta" *ngIf="!newKit && currentKit.name">
             {{ currentKit.name }} by
             <img
-                [src]="kitUser.photoURL"
+                [src]="kitUser.avatar || kitUser.photoURL"
                 class="avatar"
                 (click)="openUserProfile()"
             >

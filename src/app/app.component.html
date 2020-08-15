@@ -4,10 +4,10 @@
   <span>
     <i class="material-icons" (click)="sidenav.toggle(); toggleOpenClass();">playlist_play</i>
     <button mat-raised-button *ngIf="!(afAuth.authState | async)" (click)="login()">Log In</button>
-    <span *ngIf="afAuth.authState | async; let user;">
-      <img [src]="user.photoURL" [matMenuTriggerFor]="menu" class="user-photo">
+    <span *ngIf="afAuth.authState | async; let authUser;">
+      <img [src]="userProfile.avatar || userProfile.photoURL" [matMenuTriggerFor]="menu" class="user-photo" *ngIf="userProfile">
       <mat-menu #menu="matMenu">
-        <button mat-menu-item (click)="globalService.updateParams('profile', user)">My Profile</button>
+        <button mat-menu-item (click)="globalService.updateParams('profile', authUser)">My Profile</button>
         <button mat-menu-item (click)="logout()">Logout</button>
       </mat-menu>
     </span>
