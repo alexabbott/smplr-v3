@@ -13,8 +13,6 @@
   justify-content: center;
   left: 0;
   margin: 2rem 0 0;
-  max-height: 178px;
-  overflow: scroll;
   position: fixed;
   transition: width .2s ease-in-out;
   width: calc(100% - 300px);
@@ -40,7 +38,6 @@
     align-items: center;
     display: flex;
     flex-direction: column;
-    padding-top: 3.5rem;
     position: relative;
     width: 100%;
   }
@@ -97,8 +94,6 @@
   display: flex;
   justify-content: center;
   padding: 10px 0;
-  position: absolute;
-  top: 0;
   width: 100%;
 
   button {
