@@ -55,7 +55,10 @@
     font-size: .5rem;
     height: 10px;
     line-height: 1.5;
-    width: 70px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 75px;
   }
   
   .steps {

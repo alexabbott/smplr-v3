@@ -6,12 +6,12 @@
     border-radius: 1px;
     box-sizing: border-box;
     display: inline-block;
-    height: 100px;
-    line-height: 100px;
-    margin: 2px;
+    height: 85px;
+    line-height: 84px;
+    margin: 2px 4px;
     position: relative;
     text-align: center;
-    width: 100px;
+    width: 120px;
 
     &.active {
         background: $black;

@@ -1,4 +1,5 @@
 import { Component, OnInit, HostListener } from '@angular/core';
+import { Router } from '@angular/router';
 import { SequencerService } from '../sequencer.service';
 import { GlobalService } from '../global.service';
 import { AudioService } from '../audio.service';
@@ -39,11 +40,16 @@ export class SequencerComponent implements OnInit {
     public globalService: GlobalService,
     public sequencerService: SequencerService,
     public audioService: AudioService,
+    private router: Router,
   ) {
     this.stepLimit = 32;
     this.steps = this.globalService.create2DArray(this.stepLimit);
     this.bpm = 120;
     this.currentStep = 0;
+
+    router.events.subscribe((val) => {
+      this.stop();
+    });
   }
 
   ngOnInit() {
