@@ -17,11 +17,8 @@
             ></favorite>
         </div>
         <div class="menu" *ngIf="user">
-            <mat-icon [matMenuTriggerFor]="menu" class="menu-icon">more_horiz</mat-icon>
-            <mat-menu #menu="matMenu">
-                <button mat-menu-item (click)="openSaveKitDialog(true)" *ngIf="user && kitUser && kitUser.id === user && !newKit">Save kit</button>
-                <button mat-menu-item (click)="openSaveKitDialog(false)">Copy kit</button>
-            </mat-menu>
+            <button mat-button (click)="openSaveKitDialog(false)">Copy kit</button>
+            <button mat-raised-button (click)="openSaveKitDialog(true)" *ngIf="user && kitUser && kitUser.id === user && !newKit">Save kit</button>
         </div>
     </div>
     <div class="kit-samples">

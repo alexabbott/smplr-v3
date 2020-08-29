@@ -1,9 +1,6 @@
 <div class="kits">
   <div class="menu">
-    <mat-icon [matMenuTriggerFor]="menu" class="menu-icon">more_horiz</mat-icon>
-    <mat-menu #menu="matMenu">
-        <button mat-menu-item routerLink="/new-kit" queryParamsHandling="merge">Create new kit</button>
-    </mat-menu>
+    <button mat-raised-button routerLink="/new-kit" queryParamsHandling="merge">Create a new kit</button>
   </div>
   <div class="search">
     <mat-form-field>
