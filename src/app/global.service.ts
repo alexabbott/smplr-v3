@@ -57,7 +57,7 @@ export class GlobalService {
     tagsArray.forEach((tag) => {
       tags.push(tag.name);
     });
-    const slugArray = name.split(' ').map(item => this.slugify(item));
+    const slugArray = name.replace('-', ' ').replace('_', ' ').split(' ').map(item => this.slugify(item));
     return [...new Set(tags.concat(slugArray))];
   }
 

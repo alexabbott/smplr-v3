@@ -7,6 +7,7 @@ import { AudioService } from '../audio.service';
 import { MatDialog } from '@angular/material/dialog';
 import { SaveKitDialogComponent } from '../save-kit-dialog/save-kit-dialog.component';
 import { SaveSequenceDialogComponent } from '../save-sequence-dialog/save-sequence-dialog.component';
+import * as firebase from 'firebase/app';
 
 @Component({
     selector: 'kit',
@@ -196,14 +197,20 @@ export class KitComponent implements OnInit {
     }
 
     loadKitSamples(kit) {
-        for (let i = 0; i < kit.samples.length; i++) {
-            this.db.collection<any[]>('samples').doc(kit.samples[i].id).valueChanges().subscribe((s) => {
-                this.sample = {};
-                this.sample = s || {};
-                this.sample.id = kit.samples[i] ? kit.samples[i].id : null;
-                this.kitSamples[i] = this.sample;
+        const sampleIds = kit.samples.map((sample) => sample.id);
+        this.kitSamples = [{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{}];
+        const firstBatch = this.db.collection<any[]>('samples', ref => ref.where(firebase.firestore.FieldPath.documentId(), 'in', sampleIds.slice(0, 8))).valueChanges({idField: 'sid'});
+        const secondBatch = this.db.collection<any[]>('samples', ref => ref.where(firebase.firestore.FieldPath.documentId(), 'in', sampleIds.slice(8, 15))).valueChanges({idField: 'sid'});
+        firstBatch.subscribe((samples) => {
+            samples.forEach((sample) => {
+                this.kitSamples[sampleIds.indexOf(sample.sid)] = sample;
             });
-        }
+        });
+        secondBatch.subscribe((samples) => {
+            samples.forEach((sample) => {
+                this.kitSamples[sampleIds.indexOf(sample.sid)] = sample;
+            });
+        });
     }
 
     setKitUser() {

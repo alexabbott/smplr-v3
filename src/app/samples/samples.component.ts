@@ -20,6 +20,8 @@ export class SamplesComponent implements OnInit {
   user: string;
   sort = 'updated';
   context: any;
+  initialLimit = 20;
+  resultsLimit = 20;
 
   constructor(
     public db: AngularFirestore,
@@ -44,6 +46,7 @@ export class SamplesComponent implements OnInit {
         if (search && search !== '') {
           this.searchSamples(search);
         } else {
+          this.resultsLimit = this.initialLimit;
           this.samples = this.initialResults;
         }
       });
@@ -52,13 +55,22 @@ export class SamplesComponent implements OnInit {
   initialSearch() {
     this.db
       .collection('samples', ref => ref
-        .limit(20)
+        .limit(this.resultsLimit)
         .orderBy(this.sort, 'desc'))
       .snapshotChanges()
       .subscribe((samples) => {
         this.samples = this.transformedData(samples)
         this.initialResults = this.samples;
       });
+  }
+
+  loadMore() {
+    this.resultsLimit += this.resultsLimit;
+    if (this.search && this.search !== '') {
+      this.searchSamples(this.search);
+    } else {
+      this.initialSearch();
+    }
   }
 
   searchChanged(text: string) {
@@ -68,9 +80,9 @@ export class SamplesComponent implements OnInit {
   searchSamples(search: string) {
     this.db
       .collection('samples', ref => ref
-        .where('tags', 'array-contains-any', search.split(' '))
+        .where('tags', 'array-contains-any', search.toLocaleLowerCase().split(' '))
         .orderBy(this.sort, 'desc')
-        .limit(20))
+        .limit(this.resultsLimit))
       .snapshotChanges()
       .subscribe((response) => {
         this.samples = this.transformedData(response);

@@ -40,6 +40,13 @@
                 [showKeys]="false"
             ></sample>
         </div>
+        <button
+            mat-menu-item
+            *ngIf="samples && samples.length % resultsLimit === 0"
+            (click)="loadMore()"
+            class="load-more">
+            Load more
+        </button>
         <div class="empty" *ngIf="!samples.length">
             No samples found
         </div>

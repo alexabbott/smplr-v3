@@ -19,9 +19,8 @@
         <div class="menu" *ngIf="user">
             <mat-icon [matMenuTriggerFor]="menu" class="menu-icon">more_horiz</mat-icon>
             <mat-menu #menu="matMenu">
-                <button mat-menu-item (click)="openSaveKitDialog(false)">Save as new kit</button>
-                <button mat-menu-item (click)="openSaveKitDialog(true)" *ngIf="user && kitUser && kitUser.id === user && !newKit">Edit current kit</button>
-                <button mat-menu-item (click)="openSaveSequenceDialog()" *ngIf="user && kitUser && kitUser.id === user && !newKit">Save kit sequence</button>
+                <button mat-menu-item (click)="openSaveKitDialog(true)" *ngIf="user && kitUser && kitUser.id === user && !newKit">Save kit</button>
+                <button mat-menu-item (click)="openSaveKitDialog(false)">Copy kit</button>
             </mat-menu>
         </div>
     </div>

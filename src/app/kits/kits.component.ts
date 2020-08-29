@@ -16,6 +16,7 @@ export class KitsComponent implements OnInit {
   modelChanged: Subject<string> = new Subject<string>();
   user: string;
   sort = 'updated';
+  resultsLimit = 200;
 
   constructor(
     public db: AngularFirestore,
@@ -43,7 +44,7 @@ export class KitsComponent implements OnInit {
 
   initialSearch() {
     this.db
-      .collection('kits', ref => ref.orderBy(this.sort, 'desc').limit(20))
+      .collection('kits', ref => ref.orderBy(this.sort, 'desc').limit(this.resultsLimit))
       .snapshotChanges()
       .subscribe((response: any) => {
         this.kits = this.transformedData(response);
@@ -59,9 +60,9 @@ export class KitsComponent implements OnInit {
   searchKits(search: string) {
     this.db
       .collection('kits', ref => ref
-        .where('tags', 'array-contains-any', search.split(' '))
+        .where('tags', 'array-contains-any', search.toLocaleLowerCase().split(' '))
         .orderBy(this.sort, 'desc')
-        .limit(20))
+        .limit(this.resultsLimit))
       .snapshotChanges()
       .subscribe((response: any) => {
         this.kits = this.transformedData(response);
