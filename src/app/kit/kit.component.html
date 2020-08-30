@@ -17,8 +17,9 @@
             ></favorite>
         </div>
         <div class="menu" *ngIf="user">
-            <button mat-button (click)="openSaveKitDialog(false)">Copy kit</button>
+            <button mat-button *ngIf="!newKit" (click)="openSaveKitDialog(false)">Copy kit</button>
             <button mat-raised-button (click)="openSaveKitDialog(true)" *ngIf="user && kitUser && kitUser.id === user && !newKit">Save kit</button>
+            <button mat-raised-button (click)="openSaveKitDialog(false)" *ngIf="user && newKit">Save kit</button>
         </div>
     </div>
     <div class="kit-samples">

@@ -200,7 +200,7 @@ export class KitComponent implements OnInit {
         const sampleIds = kit.samples.map((sample) => sample.id);
         this.kitSamples = [{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{}];
         const firstBatch = this.db.collection<any[]>('samples', ref => ref.where(firebase.firestore.FieldPath.documentId(), 'in', sampleIds.slice(0, 8))).valueChanges({idField: 'sid'});
-        const secondBatch = this.db.collection<any[]>('samples', ref => ref.where(firebase.firestore.FieldPath.documentId(), 'in', sampleIds.slice(8, 15))).valueChanges({idField: 'sid'});
+        const secondBatch = this.db.collection<any[]>('samples', ref => ref.where(firebase.firestore.FieldPath.documentId(), 'in', sampleIds.slice(8, 16))).valueChanges({idField: 'sid'});
         firstBatch.subscribe((samples) => {
             samples.forEach((sample) => {
                 this.kitSamples[sampleIds.indexOf(sample.sid)] = sample;

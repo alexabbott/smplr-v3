@@ -69,8 +69,8 @@ export class SaveKitDialogComponent implements OnInit {
     const slug = this.globalService.slugify(this.kitName);
 
     this.currentSamples.forEach((sample) => {
-      console.log('sample', sample);
-      sampleRefs.push(this.db.doc(`samples/${sample.id || sample.sid}`).ref);
+      if (sample.id) { sample.sid = sample.id; }
+      sampleRefs.push(this.db.doc(`samples/${sample.sid}`).ref);
     });
 
     const kitData = {
@@ -84,10 +84,16 @@ export class SaveKitDialogComponent implements OnInit {
       favoritesCount: this.data && this.data.favoritesCount ? this.data.favoritesCount : 0,
     };
 
-    this.db.collection('kits').doc(slug).set(kitData, {merge: true}).then((resp) => {
-      console.log('saved kit', resp);
-      this.saveUserKit();
-    });
+    if (!this.data) {
+      this.db.collection('kits').doc(slug).set(kitData).then((resp) => {
+        console.log('saved kit', resp);
+        this.saveUserKit();
+      });
+    } else {
+      this.db.collection('kits').doc(slug).update(kitData).then(() => {
+        console.log('updatd kit');
+      });
+    }
   }
 
   saveUserKit() {
