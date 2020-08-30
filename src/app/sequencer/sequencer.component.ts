@@ -42,8 +42,7 @@ export class SequencerComponent implements OnInit {
     public audioService: AudioService,
     private router: Router,
   ) {
-    this.stepLimit = 32;
-    this.steps = this.globalService.create2DArray(this.stepLimit);
+    this.setSteps(32);
     this.bpm = 120;
     this.currentStep = 0;
 
@@ -59,11 +58,17 @@ export class SequencerComponent implements OnInit {
     this.globalService.currentSequence.subscribe((sequence) => {
       if (sequence) {
         const keys = Object.keys(sequence);
+        if (keys.length === 64) this.setSteps(64);
         for (let i = 0; i < keys.length; i++) {
           this.steps[i] = sequence[keys[i]];
         }
       }
     });
+  }
+
+  setSteps(limit) {
+    this.stepLimit = limit;
+    this.steps = this.globalService.create2DArray(this.stepLimit);
   }
 
   @HostListener('document:keydown', ['$event'])
@@ -121,5 +126,14 @@ export class SequencerComponent implements OnInit {
     this.playing = false;
     this.currentStep = 0;
     clearInterval(this.intervalRef);
+  }
+
+  updateSteps(limit) {
+    if (limit > this.stepLimit) {
+      this.steps = this.steps.concat(this.globalService.create2DArray(limit - this.stepLimit));
+    } else {
+      this.steps.splice(limit, this.stepLimit);
+    }
+    this.stepLimit = limit;
   }
 }
