@@ -24,7 +24,7 @@
     "@angular/platform-browser-dynamic": "~10.0.9",
     "@angular/router": "~10.0.9",
     "firebase": "^7.9.1",
-    "firebase-admin": "^9.0.0",
+    "firebase-admin": "^11.4.1",
     "firebase-functions": "^3.9.0",
     "ng2-dnd": "^5.0.2",
     "rxjs": "~6.5.4",
