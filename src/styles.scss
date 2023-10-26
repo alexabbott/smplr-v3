@@ -64,13 +64,9 @@ mat-toolbar {
     width: 100%;
 }
 
-.dnd-drag-start {
-    background: rgba(0, 0, 0, 0.3) !important;
-}
-
-.dnd-drag-over {
-    background: rgba(0, 0, 0, 0.3) !important;
-}
+// .cdk-drag:not(.cdk-drag-preview) {
+//     transform: none !important;
+// }
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

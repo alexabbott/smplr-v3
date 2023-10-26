@@ -1,13 +1,13 @@
-import { Component, OnInit, HostListener } from '@angular/core';
-import { AngularFirestore } from '@angular/fire/firestore';
-import { Observable } from 'rxjs';
-import { ActivatedRoute, Params, Router } from '@angular/router';
-import { GlobalService } from '../global.service';
-import { AudioService } from '../audio.service';
-import { MatDialog } from '@angular/material/dialog';
-import { SaveKitDialogComponent } from '../save-kit-dialog/save-kit-dialog.component';
-import { SaveSequenceDialogComponent } from '../save-sequence-dialog/save-sequence-dialog.component';
-import * as firebase from 'firebase/app';
+import { Component, OnInit, HostListener, inject } from '@angular/core'
+import { Firestore, collection, query, where, getDocs, doc, getDoc, documentId } from '@angular/fire/firestore'
+import { Observable } from 'rxjs'
+import { ActivatedRoute, Params, Router } from '@angular/router'
+import { GlobalService } from '../global.service'
+import { AudioService } from '../audio.service'
+import { MatDialog } from '@angular/material/dialog'
+import { SaveKitDialogComponent } from '../save-kit-dialog/save-kit-dialog.component'
+import { SaveSequenceDialogComponent } from '../save-sequence-dialog/save-sequence-dialog.component'
+import 'firebase/firestore'
 
 @Component({
     selector: 'kit',
@@ -15,38 +15,39 @@ import * as firebase from 'firebase/app';
     styleUrls: ['./kit.component.scss']
 })
 export class KitComponent implements OnInit {
-    user: any;
-    kit: Observable<any>;
-    kits: Observable<any>;
-    kitUser: any = {};
-    kitSamples: any;
-    currentKit: any;
-    sample: any;
-    keys: any;
-    keyMap: any;
-    keyMapEnabled: boolean;
-    activeKeys: any;
-    sampleLimit: Number = 16;
-    newKit = false;
-    gainNodes: Object;
+    user: any
+    kit!: Observable<any>
+    kits!: Observable<any>
+    kitUser: any = {}
+    kitSamples: any
+    currentKit: any
+    sample: any
+    keys: any
+    keyMap: any
+    keyMapEnabled!: boolean
+    activeKeys: any
+    sampleLimit: number = 16
+    newKit = false
+    gainNodes!: any
+    private firestore: Firestore = inject(Firestore)
 
     constructor(
-        public db: AngularFirestore,
+        public db: Firestore,
         public route: ActivatedRoute,
         public router: Router,
         public globalService: GlobalService,
         public audioService: AudioService,
         public dialog: MatDialog
     ) {
-        this.kitSamples = this.globalService.create2DArray(this.sampleLimit);
-        this.currentKit = {};
-        this.activeKeys = {};
+        this.kitSamples = this.globalService.create2DArray(this.sampleLimit)
+        this.currentKit = {}
+        this.activeKeys = {}
 
         this.globalService.keyMapEnabled.subscribe((enabled) => {
-            this.keyMapEnabled = enabled;
-        });
+            this.keyMapEnabled = enabled
+        })
 
-        this.keys = this.globalService.keys;
+        this.keys = this.globalService.keys
 
         this.keyMap = {
             'z': 12,
@@ -69,36 +70,41 @@ export class KitComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.initializeActiveKeys();
-        this.loadKit();
+        this.initializeActiveKeys()
+        this.loadKit()
 
-        this.globalService.userId.subscribe((u) => {
-            this.user = u;
-        });
+        this.globalService.userId.subscribe((user) => {
+            this.user = user
+        })
+
+        this.globalService.currentSamples.subscribe((samples) => {
+            this.kitSamples = samples
+        })
 
         this.audioService.gainNodes.subscribe((nodes) => {
-            this.gainNodes = nodes;
-        });
+            this.gainNodes = nodes
+        })
     }
 
     @HostListener('document:keydown', ['$event'])
     keydown(e: KeyboardEvent) {
-        this.audioService.resumeContext();
+        this.audioService.resumeContext()
         if (this.keyMapEnabled && this.keys.includes(e.key)) {
-            const sample = <HTMLAudioElement>document.getElementById('sampler' + (this.keyMap[e.key] + 1));
+            const sample = <HTMLAudioElement>document.getElementById('sampler' + (this.keyMap[e.key] + 1))
             if (sample.getAttribute('src')) {
                 if (!this.activeKeys[e.key]) {
-                    // const gainNode = this.gainNodes[(sample.id).replace('sampler', '')]
-                    // const ogGain = (<HTMLInputElement>sample.parentElement.querySelector('.gain')).value;
-                    // gainNode.gain.value = ogGain;
-                    sample.currentTime = 0;
-                    sample.play();
+                    const sampleName = (sample.id).replace('sampler', '')
+                    const gainNode = this.gainNodes[sampleName]
+                    const ogGain = (<HTMLInputElement>sample.parentElement!.querySelector('.gain')).value
+                    gainNode.gain.value = ogGain
+                    sample.currentTime = 0
+                    sample.play()
                 }
-                this.activeKeys[e.key] = true;
+                this.activeKeys[e.key] = true
                 sample.onended = () => {
-                    sample.pause();
-                    sample.currentTime = 0;
-                };
+                    sample.pause()
+                    sample.currentTime = 0
+                }
             }
         }
     }
@@ -106,127 +112,137 @@ export class KitComponent implements OnInit {
     @HostListener('document:keyup', ['$event'])
     keyup(e: KeyboardEvent) {
         if (this.keyMapEnabled && this.keys.includes(e.key)) {
-            this.activeKeys[e.key] = false;
-            const sample = <HTMLAudioElement>document.getElementById('sampler' + (this.keyMap[e.key] + 1));
+            this.activeKeys[e.key] = false
+            const sample = <HTMLAudioElement>document.getElementById('sampler' + (this.keyMap[e.key] + 1))
             if (sample.getAttribute('src')) {
-                // const gainNode = this.gainNodes[(sample.id).replace('sampler', '')];
-                // gainNode.gain.setValueAtTime(gainNode.gain.value, this.audioService.context.currentTime); 
-                // gainNode.gain.exponentialRampToValueAtTime(0.0001, this.audioService.context.currentTime + 0.03);
-                sample.pause();
-                sample.currentTime = 0;
+                const gainNode = this.gainNodes[(sample.id).replace('sampler', '')]
+                gainNode.gain.setValueAtTime(gainNode.gain.value, this.audioService.context.currentTime) 
+                gainNode.gain.exponentialRampToValueAtTime(0.0001, this.audioService.context.currentTime + 0.03)
+                sample.pause()
+                sample.currentTime = 0
             }
         }
     }
 
     initializeActiveKeys() {
-        this.keys.forEach((key) => {
-            this.activeKeys[key] = false;
-        });
+        this.keys.forEach((key: string | number) => {
+            this.activeKeys[key] = false
+        })
     }
 
     replaceSample($event: any) {
-        const target = $event.mouseEvent.toElement.querySelector('.audio');
-        if (target) {
-            const index = target.id.split('sampler')[1] - 1;
-            this.kitSamples.splice(index, 1, $event.dragData);
-            this.globalService.currentSamples.next(this.kitSamples);
-        }
+        console.log('$event', $event.container.id)
+        // const target = $event.item.element['nativeElement']['firstChild']
+        // if (target) {
+        //     const index = $event.container.id.split('sample')[1] - 1
+        //     console.log('index', index)
+        //     this.kitSamples.splice(index, 1, $event.item.data)
+        //     console.log('k', this.kitSamples)
+        //     this.globalService.currentSamples.next(this.kitSamples)
+        // }
     }
 
     openSaveKitDialog(edit: boolean) {
-        this.globalService.keyMapEnabled.next(false);
-        let dialogRef;
+        this.globalService.keyMapEnabled.next(false)
+        let dialogRef
 
         if (edit) {
             dialogRef = this.dialog.open(SaveKitDialogComponent, {
                 width: '350px',
                 data: this.currentKit
-            });
+            })
         } else {
             dialogRef = this.dialog.open(SaveKitDialogComponent, {
                 width: '350px'
-            });
+            })
         }
 
         dialogRef.afterClosed().subscribe(result => {
-            this.globalService.keyMapEnabled.next(true);
-            console.log('The save kit dialog was closed');
-        });
+            this.globalService.keyMapEnabled.next(true)
+            console.log('The save kit dialog was closed')
+        })
     }
 
     openSaveSequenceDialog() {
-        this.globalService.keyMapEnabled.next(false);
-        let dialogRef;
+        this.globalService.keyMapEnabled.next(false)
+        let dialogRef
 
         dialogRef = this.dialog.open(SaveSequenceDialogComponent, {
             width: '350px',
-        });
+        })
 
         dialogRef.afterClosed().subscribe(result => {
-            this.globalService.keyMapEnabled.next(true);
-            console.log('The save sequence dialog was closed');
-        });
+            this.globalService.keyMapEnabled.next(true)
+            console.log('The save sequence dialog was closed')
+        })
     }
 
     loadKit() {
-        this.route.params.subscribe((params: Params) => {
-            if (params.slug) {
-                this.kit = this.db.collection<any[]>('kits', ref => ref.where('slug', '==', params.slug)).valueChanges();
-                this.kit.subscribe((k) => {
-                    const kit = k[0];
-                    this.currentKit = {
-                        slug: kit.slug,
-                        name: kit.name,
-                        favoritesCount: kit.favoritesCount,
-                        tags: kit.tags,
-                        user: kit.user.id,
-                        sequence: kit.sequence,
-                    };
-                    this.globalService.currentSequence.next(kit.sequence);
-                    if (kit && kit.samples) { this.loadKitSamples(kit); }
-                    this.setKitUser();
-                    this.globalService.currentSamples.next(this.kitSamples);
-                    this.globalService.kitName.next(this.currentKit.name);
-                });
+        this.route.params.subscribe(async (params: Params) => {
+            if (params['slug']) {
+                const kitsRef = collection(this.firestore, 'kits')
+                const kitsQuery = query(kitsRef, where('slug', '==', params['slug']))
+                const querySnapshot = await getDocs(kitsQuery)
+                const kit = this.transformedData(querySnapshot)[0]
+    
+                this.currentKit = {
+                    slug: kit.slug,
+                    name: kit.name,
+                    favoritesCount: kit.favoritesCount,
+                    tags: kit.tags,
+                    user: kit.user.id,
+                    sequence: kit.sequence,
+                }
+                this.globalService.currentSequence.next(kit.sequence)
+                if (kit && kit.samples) { this.loadKitSamples(kit) }
+                this.setKitUser()
+                this.globalService.currentSamples.next(this.kitSamples)
+                this.globalService.kitName.next(this.currentKit.name)
             } else {
-                this.currentKit = { samples: {} };
-                this.kitSamples = [{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{}];
-                this.newKit = true;
+                this.currentKit = { samples: {} }
+                this.kitSamples = [{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{}]
+                this.newKit = true
             }
-        });
+        })
     }
 
-    loadKitSamples(kit) {
-        const sampleIds = kit.samples.map((sample) => sample.id);
-        this.kitSamples = [{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{}];
-        const firstBatch = this.db.collection<any[]>('samples', ref => ref.where(firebase.firestore.FieldPath.documentId(), 'in', sampleIds.slice(0, 8))).valueChanges({idField: 'sid'});
-        const secondBatch = this.db.collection<any[]>('samples', ref => ref.where(firebase.firestore.FieldPath.documentId(), 'in', sampleIds.slice(8, 16))).valueChanges({idField: 'sid'});
-        firstBatch.subscribe((samples) => {
-            samples.forEach((sample) => {
-                this.kitSamples[sampleIds.indexOf(sample.sid)] = sample;
-            });
-        });
-        secondBatch.subscribe((samples) => {
-            samples.forEach((sample) => {
-                this.kitSamples[sampleIds.indexOf(sample.sid)] = sample;
-            });
-        });
+    async loadKitSamples(kit: any) {
+        const sampleIds = kit.samples.map((sample: any) => sample.id)
+        this.kitSamples = [{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{}]
+        const samplesRef = collection(this.firestore, 'samples')
+        const firstBatch = query(samplesRef, where(documentId(), 'in', sampleIds.slice(0, 8)))
+        const secondBatch = query(samplesRef, where(documentId(), 'in', sampleIds.slice(8, 16)))
+        const firstBatchSamples = await getDocs(firstBatch)
+
+        firstBatchSamples.forEach((sample: any) => {
+            this.kitSamples[sampleIds.indexOf(sample.id)] = sample.data()
+        })
+
+        const secondBatchSamples = await getDocs(secondBatch)
+
+        secondBatchSamples.forEach((sample: any) => {
+            this.kitSamples[sampleIds.indexOf(sample.id)] = sample.data()
+        })
     }
 
-    setKitUser() {
-        this.db.collection<any[]>('users').doc(this.currentKit.user).valueChanges().subscribe((u) => {
-            this.kitUser = u;
-            this.kitUser.id = this.currentKit.user;
-        });
+    async setKitUser() {
+        const kitQuery = doc(this.firestore, `users/${this.currentKit.user}`)
+        const kitRef = await getDoc(kitQuery)
+        this.kitUser = kitRef.data()
+        this.kitUser['id'] = this.currentKit.user
     }
 
-    transformedData(kit) {
-        const newKit = kit.payload.doc.data();
-        newKit.id = kit.payload.doc.id;
-        return newKit;
-    }
+    transformedData(items: any) {
+        const newArray: any[] = []
+        items.forEach((item: any) => {
+          const newItem = item.data()
+          newItem.id = item.id
+          newArray.push(newItem)
+        })
+        return newArray
+      }
 
     openUserProfile() {
-        this.globalService.updateParams('profile', this.currentKit.user);
+        this.globalService.updateParams('profile', this.currentKit.user)
     }
 }

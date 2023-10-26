@@ -1,7 +1,7 @@
 @import "./../../shared/variables.scss";
 
 .sample {
-    background: transparent;
+    background-color: $white;
     border: 1px solid $black;
     border-radius: 1px;
     box-sizing: border-box;
@@ -35,7 +35,7 @@
     }
 
     ::ng-deep .favorite {
-        background: #efefef;
+        background-color: #efefef;
         bottom: -13px;
         display: flex;
         height: 26px;

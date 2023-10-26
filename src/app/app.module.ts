@@ -1,15 +1,11 @@
-import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { AngularFireModule } from '@angular/fire';
-import { AngularFirestoreModule } from '@angular/fire/firestore';
-import { AngularFireStorageModule } from '@angular/fire/storage';
-import { AngularFireAuthModule } from '@angular/fire/auth';
-import { environment } from '../environments/environment';
+import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { MatButtonModule } from '@angular/material/button';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatCardModule } from '@angular/material/card';
+import { DragDropModule } from '@angular/cdk/drag-drop'
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatDialogModule } from '@angular/material/dialog';
@@ -24,53 +20,54 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { FormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
-
 import { AppComponent } from './app.component';
-import { KitComponent } from './kit/kit.component';
-
-import { GlobalService } from '../app/global.service';
-import { SequencerService } from '../app/sequencer.service';
-import { AudioService } from '../app/audio.service';
-
-import { DndModule } from 'ng2-dnd';
-import { SampleComponent } from './sample/sample.component';
-import { FavoriteComponent } from './favorite/favorite.component';
-import { SamplesComponent } from './samples/samples.component';
+import { initializeApp,provideFirebaseApp } from '@angular/fire/app';
+import { environment } from '../environments/environment';
+import { provideAuth,getAuth } from '@angular/fire/auth';
+import { provideFirestore,getFirestore } from '@angular/fire/firestore';
+import { provideFunctions,getFunctions } from '@angular/fire/functions';
+import { provideStorage,getStorage } from '@angular/fire/storage';
 import { SidenavComponent } from './sidenav/sidenav.component';
-import { ProfileComponent } from './profile/profile.component';
 import { SequencerComponent } from './sequencer/sequencer.component';
-import { KitsComponent } from './kits/kits.component';
+import { ProfileComponent } from './profile/profile.component';
+import { SamplesComponent } from './samples/samples.component';
 import { SaveSampleDialogComponent } from './save-sample-dialog/save-sample-dialog.component';
+import { SampleComponent } from './sample/sample.component';
+import { KitComponent } from './kit/kit.component';
+import { KitsComponent } from './kits/kits.component';
+import { KitPreviewComponent } from './kit-preview/kit-preview.component';
+import { FavoriteComponent } from './favorite/favorite.component';
 import { SaveKitDialogComponent } from './save-kit-dialog/save-kit-dialog.component';
 import { SaveSequenceDialogComponent } from './save-sequence-dialog/save-sequence-dialog.component';
-import { KitPreviewComponent } from './kit-preview/kit-preview.component';
 import { EditProfileDialogComponent } from './edit-profile-dialog/edit-profile-dialog.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    KitComponent,
-    SampleComponent,
-    FavoriteComponent,
-    SamplesComponent,
     SidenavComponent,
-    ProfileComponent,
     SequencerComponent,
-    KitsComponent,
+    ProfileComponent,
+    SamplesComponent,
     SaveSampleDialogComponent,
+    SampleComponent,
+    KitComponent,
+    KitsComponent,
+    KitPreviewComponent,
+    FavoriteComponent,
     SaveKitDialogComponent,
     SaveSequenceDialogComponent,
-    KitPreviewComponent,
-    EditProfileDialogComponent,
+    EditProfileDialogComponent
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule,
-    AngularFireModule.initializeApp(environment.firebase),
-    AngularFirestoreModule,
-    AngularFireAuthModule,
-    AngularFireStorageModule,
     BrowserAnimationsModule,
+    AppRoutingModule,
+    provideFirebaseApp(() => initializeApp(environment.firebase)),
+    provideAuth(() => getAuth()),
+    provideFirestore(() => getFirestore()),
+    provideFunctions(() => getFunctions()),
+    provideStorage(() => getStorage()),
+    DragDropModule,
     FormsModule,
     MatButtonModule,
     MatButtonToggleModule,
@@ -86,9 +83,8 @@ import { EditProfileDialogComponent } from './edit-profile-dialog/edit-profile-d
     MatSnackBarModule,
     MatTabsModule,
     MatToolbarModule,
-    DndModule.forRoot(),
   ],
-  providers: [GlobalService, SequencerService, AudioService],
+  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

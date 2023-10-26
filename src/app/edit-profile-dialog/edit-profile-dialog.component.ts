@@ -1,8 +1,8 @@
-import { Component, OnInit, Inject } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { AngularFirestore } from '@angular/fire/firestore';
-import { FirebaseApp } from '@angular/fire';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { Component, OnInit, Inject } from '@angular/core'
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog'
+import { Firestore, doc, updateDoc } from '@angular/fire/firestore'
+import { Storage, ref, uploadBytesResumable } from '@angular/fire/storage'
+import { MatSnackBar } from '@angular/material/snack-bar'
 
 @Component({
   selector: 'app-edit-profile-dialog',
@@ -10,68 +10,64 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   styleUrls: ['./edit-profile-dialog.component.scss']
 })
 export class EditProfileDialogComponent implements OnInit {
-  username: string;
-  file: any;
-  avatarURL: string;
-  allowSave = false;
+  username!: string
+  file: any
+  avatarURL!: string
+  allowSave = false
 
   constructor(
     public dialogRef: MatDialogRef<EditProfileDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     public snackBar: MatSnackBar,
-    private db: AngularFirestore,
-    public firebase: FirebaseApp,
+    private db: Firestore,
+    public storage: Storage,
+    private firestore: Firestore = Inject(Firestore)
   ) {}
 
   ngOnInit(): void {
     if (this.data.username) {
-      this.username = this.data.username;
+      this.username = this.data.username
     }
   }
 
   onNoClick(): void {
-    this.dialogRef.close();
+    this.dialogRef.close()
   }
 
-  saveProfile() {
-    const profileData = {
+  async saveProfile() {
+    const profileData: any = {
       username: this.username
-    };
-    if (this.avatarURL) {
-      profileData['avatar'] = this.avatarURL;
     }
-    this.db.collection('users').doc(this.data.id).update(profileData).then((resp) => {
-      console.log('saved profile', resp);
-      this.snackBar.open('Profile saved', 'OK!', {
-        duration: 3000
-      });
-    });
+    if (this.avatarURL) {
+      profileData['avatar'] = this.avatarURL
+    }
+    const userRef = doc(this.firestore, `users/${this.data.id}`)
+    await updateDoc(userRef, profileData)
+    this.snackBar.open('Profile saved', 'OK!', {
+      duration: 3000
+    })
   }
 
-  handleFiles(e) {
-    this.file = e.srcElement.files[0];
+  handleFiles(e: any) {
+    this.file = e.srcElement.files[0]
     if (this.file.size > 2097152) {
       this.snackBar.open('Profile photo must be 2 MB or less', 'OK!', {
         duration: 3000
-      });
+      })
     } else {
-      this.uploadAvatar();
+      this.uploadAvatar()
     }
   }
 
-  uploadAvatar() {
-    const storageRef = this.firebase.storage().ref();
-    const path = 'avatars/' + Date.now().toString() + '-' + this.file.name;
-    const fileRef = storageRef.child(path);
+  async uploadAvatar() {
+    const path = 'avatars/' + Date.now().toString() + '-' + this.file.name
+    const storageRef = ref(this.storage, path)
+    const upload = await uploadBytesResumable(storageRef, this.file)
 
-    fileRef.put(this.file).then((snapshot) => {
-      this.snackBar.open('Profile photo uploaded', 'OK!', {
-        duration: 3000
-      });
-      storageRef.child('avatars/' + path).getDownloadURL().then((url) => {
-        this.avatarURL = url;
-        this.allowSave = true;
-      });
-    });
+    this.snackBar.open('Profile photo uploaded', 'OK!', {
+      duration: 3000
+    })
+    this.avatarURL = upload.ref.fullPath
+    this.allowSave = true
   }
 }

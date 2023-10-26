@@ -1,32 +1,39 @@
-<div class="sample" [ngClass]="{'active': active, 'empty': !sample.url}" *ngIf="sample">
-  <audio
-    src="{{sample.url}}"
-    id="{{component}}{{index}}"
-    preload="auto"
-    class="audio"
-    #audio
-  ></audio>
-  <div class="sample-name">
-    {{ sample.name }}
-    <span *ngIf="!sample.url">Drag a sample</span>
+<div
+  class="sample"
+  [ngClass]="{'active': active, 'empty': !sample.url}"
+  *ngIf="sample"
+  cdkDrag
+  [cdkDragData]="sample"
+  (cdkDragReleased)="replaceSample($event, sample)"
+>
+    <audio
+      src="{{sample.url}}"
+      id="{{component}}{{index}}"
+      preload="auto"
+      class="audio"
+      #audio
+    ></audio>
+    <div class="sample-name">
+      {{ sample.name }}
+      <span *ngIf="!sample.url">Drag a sample</span>
+    </div>
+    <div class="key" *ngIf="showKeys">
+      {{ keys[index - 1]}}
+    </div>
+    <input
+      type="range"
+      *ngIf="showKeys && sample.url"
+      class="gain"
+      min="0"
+      max="1"
+      (ngModelChange)="changeGain()"
+      [(ngModel)]="gainValue"
+      step=".1"
+    >
+    <favorite
+      [collection]="'samples'"
+      [id]="sample.id"
+      [favoritesCount]="sample.favoritesCount"
+      *ngIf="showFavorite"
+    ></favorite>
   </div>
-  <div class="key" *ngIf="showKeys">
-    {{ keys[index - 1]}}
-  </div>
-  <input
-    type="range"
-    *ngIf="showKeys && sample.url"
-    class="gain"
-    min="0"
-    max="1"
-    (ngModelChange)="changeGain()"
-    [(ngModel)]="gainValue"
-    step=".1"
-  >
-  <favorite
-    [collection]="'samples'"
-    [id]="sample.id"
-    [favoritesCount]="sample.favoritesCount"
-    *ngIf="showFavorite"
-  ></favorite>
-</div>

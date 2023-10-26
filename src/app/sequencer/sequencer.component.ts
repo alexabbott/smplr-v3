@@ -1,8 +1,8 @@
-import { Component, OnInit, HostListener } from '@angular/core';
-import { Router } from '@angular/router';
-import { SequencerService } from '../sequencer.service';
-import { GlobalService } from '../global.service';
-import { AudioService } from '../audio.service';
+import { Component, OnInit, HostListener } from '@angular/core'
+import { Router } from '@angular/router'
+import { SequencerService } from '../sequencer.service'
+import { GlobalService } from '../global.service'
+import { AudioService } from '../audio.service'
 
 @Component({
   selector: 'sequencer',
@@ -10,14 +10,14 @@ import { AudioService } from '../audio.service';
   styleUrls: ['./sequencer.component.scss']
 })
 export class SequencerComponent implements OnInit {
-  steps: Array<Array<any>>
-  bpm: number;
-  intervalRef;
-  currentStep: number;
-  samples: Array<any>;
-  stepLimit: number;
-  playing: boolean;
-  sampleOrder = {
+  steps!: any
+  bpm: number
+  intervalRef: string | number | NodeJS.Timeout | undefined
+  currentStep: number
+  samples!: any
+  stepLimit!: number
+  playing!: boolean
+  sampleOrder: any = {
     1: 4,
     2: 3,
     3: 2,
@@ -42,98 +42,98 @@ export class SequencerComponent implements OnInit {
     public audioService: AudioService,
     private router: Router,
   ) {
-    this.setSteps(32);
-    this.bpm = 120;
-    this.currentStep = 0;
+    this.setSteps(32)
+    this.bpm = 120
+    this.currentStep = 0
 
     router.events.subscribe((val) => {
-      this.stop();
-    });
+      this.stop()
+    })
   }
 
   ngOnInit() {
     this.globalService.currentSamples.subscribe((samples) => {
-      this.samples = samples;
-    });
+      this.samples = samples
+    })
     this.globalService.currentSequence.subscribe((sequence) => {
       if (sequence) {
-        const keys = Object.keys(sequence);
-        if (keys.length === 64) this.setSteps(64);
-        for (let i = 0; i < keys.length; i++) {
-          this.steps[i] = sequence[keys[i]];
+        const keys = Object.keys(sequence)
+        // if (keys.length === 64) this.setSteps(64)
+        for (let i = 0; i < this.stepLimit; i++) {
+          this.steps[i] = sequence[keys[i]]
         }
       }
-    });
+    })
   }
 
-  setSteps(limit) {
-    this.stepLimit = limit;
-    this.steps = this.globalService.create2DArray(this.stepLimit);
+  setSteps(limit: number) {
+    this.stepLimit = limit
+    this.steps = this.globalService.create2DArray(this.stepLimit)
   }
 
   @HostListener('document:keydown', ['$event'])
     keydown(e: KeyboardEvent) {
       if (e.key === ' ') {
-        this.audioService.resumeContext();
+        this.audioService.resumeContext()
 
         if (this.playing) {
-          this.stop();
+          this.stop()
         } else {
-          this.play();
+          this.play()
         }
       }
     }
 
-  toggleStepSample(sampleIndex, stepIndex) {
+  toggleStepSample(sampleIndex: any, stepIndex: string | number) {
     if (this.steps[stepIndex].includes(sampleIndex)) {
-      this.steps[stepIndex].splice(this.steps[stepIndex].indexOf(sampleIndex), 1);
+      this.steps[stepIndex].splice(this.steps[stepIndex].indexOf(sampleIndex), 1)
     } else {
-      this.steps[stepIndex].push(sampleIndex);
+      this.steps[stepIndex].push(sampleIndex)
     }
-    this.sequencerService.sequence.next(this.steps);
+    this.sequencerService.sequence.next(this.steps)
   }
 
-  playSample(index) {
-    this.audioService.resumeContext();
-    const audio = <HTMLAudioElement>document.getElementById('sampler' + (index + 1));
-    audio.pause();
-    audio.currentTime = 0;
-    audio.play();
+  playSample(index: number) {
+    this.audioService.resumeContext()
+    const audio = <HTMLAudioElement>document.getElementById('sampler' + (index + 1))
+    audio.pause()
+    audio.currentTime = 0
+    audio.play()
 
     audio.onended = () => {
-      audio.pause();
-      audio.currentTime = 0;
-    };
+      audio.pause()
+      audio.currentTime = 0
+    }
   }
 
   play() {
-    this.currentStep = 0;
-    this.playing = true;
+    this.currentStep = 0
+    this.playing = true
     this.intervalRef = setInterval(() => {
-      const stepSamples = this.steps[this.currentStep];
-      stepSamples.forEach((sample) => {
-        this.playSample(sample);
-      });
+      const stepSamples = this.steps[this.currentStep]
+      stepSamples.forEach((sample: any) => {
+        this.playSample(sample)
+      })
       if (this.currentStep === this.stepLimit - 1) {
-        this.currentStep = 0;
+        this.currentStep = 0
       } else {
-        this.currentStep += 1;
+        this.currentStep += 1
       }
-    }, (60 / (this.bpm * 2)) * 1000);
+    }, (60 / (this.bpm * 2)) * 1000)
   }
 
   stop() {
-    this.playing = false;
-    this.currentStep = 0;
-    clearInterval(this.intervalRef);
+    this.playing = false
+    this.currentStep = 0
+    clearInterval(this.intervalRef)
   }
 
-  updateSteps(limit) {
+  updateSteps(limit: number) {
     if (limit > this.stepLimit) {
-      this.steps = this.steps.concat(this.globalService.create2DArray(limit - this.stepLimit));
+      this.steps = this.steps.concat(this.globalService.create2DArray(limit - this.stepLimit))
     } else {
-      this.steps.splice(limit, this.stepLimit);
+      this.steps.splice(limit, this.stepLimit)
     }
-    this.stepLimit = limit;
+    this.stepLimit = limit
   }
 }

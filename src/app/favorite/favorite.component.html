@@ -1,19 +1,19 @@
 <span class="favorite" [ngClass]="{ 'disabled': disabledFavorite }">
-  <mat-icon
-    (click)="toggleFavorite($event)"
-    *ngIf="favorites[id]"
-    class="filled favorite-icon"
-  >
-    favorite
-  </mat-icon>
-  <mat-icon
-    (click)="toggleFavorite($event)"
-    *ngIf="!favorites[id]"
-    class="favorite-icon"
-  >
-    favorite_border
-  </mat-icon>
-  {{ favoritesCount || 0 }}
-  <ng-container *ngIf="favoritesCount !== 1">likes</ng-container>
-  <ng-container *ngIf="favoritesCount === 1">like</ng-container>
-</span>
+    <!-- <mat-icon
+      (click)="toggleFavorite($event)"
+      *ngIf="favorites[id]"
+      class="filled favorite-icon"
+    >
+      favorite
+    </mat-icon>
+    <mat-icon
+      (click)="toggleFavorite($event)"
+      *ngIf="!favorites[id]"
+      class="favorite-icon"
+    >
+      favorite_border
+    </mat-icon> -->
+    {{ favoritesCount || 0 }}
+    <ng-container *ngIf="favoritesCount !== 1">likes</ng-container>
+    <ng-container *ngIf="favoritesCount === 1">like</ng-container>
+  </span>

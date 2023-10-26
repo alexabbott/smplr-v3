@@ -7,9 +7,9 @@ export class SequencerService {
 
   constructor() { }
 
-  buildSequenceObject(sequence) {
-    const sequenceObject = {};
-    sequence.forEach((step, index) => {
+  buildSequenceObject(sequence: any) {
+    const sequenceObject: any = {};
+    sequence.forEach((step: any, index: any) => {
       sequenceObject[index] = step;
     });
     return sequenceObject;

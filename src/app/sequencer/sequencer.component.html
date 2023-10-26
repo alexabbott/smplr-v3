@@ -1,38 +1,38 @@
 <div class="sequencer-container">
-  <div class="sequencer">
-    <div class="controls">
-      <button (click)="stop()" mat-raised-button class="stop">■</button>
-      <button (click)="play()" [ngClass]="{'active': playing}" mat-raised-button class="play">►</button>
-      <mat-form-field class="bpm">
-        <input matInput type="number" min="1" max="500" [(ngModel)]="bpm" placeholder="BPM">
-      </mat-form-field>
-      <mat-button-toggle-group class="mat-button-toggle-group" name="bars" aria-label="Bars">
-        <mat-button-toggle class="mat-button-toggle" checked value="32" (click)="updateSteps(32)">32</mat-button-toggle>
-        <mat-button-toggle class="mat-button-toggle" value="64" (click)="updateSteps(64)">64</mat-button-toggle>
-      </mat-button-toggle-group>
-    </div>
-    <div class="steps-container">
-      <div class="step-indicators">
-        <ng-container *ngFor="let step of steps; let x = index;">
-          <div class="step-indicator" [ngClass]="{'visible': x === currentStep }">•</div>
-        </ng-container>
+    <div class="sequencer">
+      <div class="controls">
+        <button (click)="stop()" mat-raised-button class="stop">■</button>
+        <button (click)="play()" [ngClass]="{'active': playing}" mat-raised-button class="play">►</button>
+        <mat-form-field class="bpm">
+          <input matInput type="number" min="1" max="500" [(ngModel)]="bpm" placeholder="BPM">
+        </mat-form-field>
+        <mat-button-toggle-group class="mat-button-toggle-group" name="bars" aria-label="Bars">
+          <mat-button-toggle class="mat-button-toggle" checked value="32" (click)="updateSteps(32)">32</mat-button-toggle>
+          <mat-button-toggle class="mat-button-toggle" value="64" (click)="updateSteps(64)">64</mat-button-toggle>
+        </mat-button-toggle-group>
       </div>
-      <div class="rows">
-        <ng-container *ngFor="let sample of samples; let x = index;">
-          <div *ngIf="sample && sample.name" class="row" [ngStyle]="{'order': sampleOrder[x + 1]}" [ngClass]="'_' + x">
-            <div class="sample-name">{{ sample.name }}</div>
-            <div class="steps">
-              <div
-                *ngFor="let step of steps; let y = index"
-                class="step"
-                (click)="toggleStepSample(x, y)"
-                [ngClass]="{'active': step.includes(x), 'playing': y === currentStep && playing && step.includes(x)}"
-              >
+      <div class="steps-container">
+        <div class="step-indicators">
+          <ng-container *ngFor="let step of steps; let x = index;">
+            <div class="step-indicator" [ngClass]="{'visible': x === currentStep }">•</div>
+          </ng-container>
+        </div>
+        <div class="rows">
+          <ng-container *ngFor="let sample of samples; let x = index;">
+            <div *ngIf="sample && sample.name" class="row" [ngStyle]="{'order': sampleOrder[x + 1]}" [ngClass]="'_' + x">
+              <div class="sample-name">{{ sample.name }}</div>
+              <div class="steps">
+                <div
+                  *ngFor="let step of steps; let y = index"
+                  class="step"
+                  (click)="toggleStepSample(x, y)"
+                  [ngClass]="{'active': step.includes(x), 'playing': y === currentStep && playing && step.includes(x)}"
+                >
+                </div>
               </div>
             </div>
-          </div>
-        </ng-container>
+          </ng-container>
+        </div>
       </div>
     </div>
   </div>
-</div>

@@ -15,7 +15,7 @@ export class KitPreviewComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  openProfile(event) {
+  openProfile(event: any) {
     event.preventDefault();
     event.stopPropagation();
     this.globalService.updateParams('profile', this.kit.user.id);

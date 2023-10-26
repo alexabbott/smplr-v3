@@ -1,30 +1,9 @@
 {
-  "firestore": {
-    "rules": "firestore.rules",
-    "indexes": "y"
-  },
-  "functions": {
-    "predeploy": [
-      "npm --prefix \"$RESOURCE_DIR\" run lint",
-      "npm --prefix \"$RESOURCE_DIR\" run build"
-    ],
-    "source": "functions"
-  },
-  "hosting": {
-    "public": "dist/smplr-v3",
-    "ignore": [
-      "firebase.json",
-      "**/.*",
-      "**/node_modules/**"
-    ],
-    "rewrites": [
-      {
-        "source": "**",
-        "destination": "/index.html"
-      }
-    ]
-  },
-  "storage": {
-    "rules": "storage.rules"
-  }
+  "hosting": [
+    {
+      "target": "smplr-v3-new",
+      "source": ".",
+      "frameworksBackend": {}
+    }
+  ]
 }

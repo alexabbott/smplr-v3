@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import { AngularFirestore } from '@angular/fire/firestore';
-import { Subject } from 'rxjs';
-import { GlobalService } from '../global.service';
-import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import { Component, OnInit, inject } from '@angular/core'
+import { Firestore, collection, limit, query, getDocs, orderBy, where, doc, getDoc } from '@angular/fire/firestore'
+import { Subject } from 'rxjs'
+import { GlobalService } from '../global.service'
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators'
 
 @Component({
   selector: 'kits',
@@ -10,24 +10,25 @@ import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
   styleUrls: ['./kits.component.scss'],
 })
 export class KitsComponent implements OnInit {
-  kits: any;
-  search: string;
-  initialResults = [];
-  modelChanged: Subject<string> = new Subject<string>();
-  user: string;
-  sort = 'updated';
-  resultsLimit = 200;
+  kits: any
+  search!: string
+  initialResults = []
+  modelChanged: Subject<string> = new Subject<string>()
+  user!: any
+  sort = 'updated'
+  resultsLimit = 200
+  private firestore: Firestore = inject(Firestore)
 
   constructor(
-    public db: AngularFirestore,
+    public db: Firestore,
     public globalService: GlobalService,
   ) {
-    this.modelChange();
-    this.globalService.userId.subscribe((u) => this.user = u);
+    this.modelChange()
+    this.globalService.userId.subscribe((u) => this.user = u)
   }
 
   ngOnInit() {
-    this.initialSearch();
+    this.initialSearch()
   }
 
   modelChange() {
@@ -35,70 +36,75 @@ export class KitsComponent implements OnInit {
       .pipe(debounceTime(600), distinctUntilChanged())
       .subscribe(search => {
         if (search && search !== '') {
-          this.searchKits(search);
+          this.searchKits(search)
         } else {
-          this.kits = this.initialResults;
+          this.kits = this.initialResults
         }
-      });
+      })
   }
 
-  initialSearch() {
-    this.db
-      .collection('kits', ref => ref.orderBy(this.sort, 'desc').limit(this.resultsLimit))
-      .snapshotChanges()
-      .subscribe((response: any) => {
-        this.kits = this.transformedData(response);
-        this.addKitUsers();
-        this.initialResults = this.kits;
-      });
+  async initialSearch() {
+    const kitsRef = collection(this.firestore, 'kits')
+    const kitsQuery = query(
+        kitsRef,
+        limit(this.resultsLimit),
+        orderBy(this.sort, 'desc')
+      )
+
+      const querySnapshot = await getDocs(kitsQuery)
+    this.kits = this.transformedData(querySnapshot)
+    this.addKitUsers();
+    this.initialResults = this.kits
   }
 
   searchChanged(text: string) {
-    this.modelChanged.next(text);
+    this.modelChanged.next(text)
   }
 
-  searchKits(search: string) {
-    this.db
-      .collection('kits', ref => ref
-        .where('tags', 'array-contains-any', search.toLocaleLowerCase().split(' '))
-        .orderBy(this.sort, 'desc')
-        .limit(this.resultsLimit))
-      .snapshotChanges()
-      .subscribe((response: any) => {
-        this.kits = this.transformedData(response);
-        this.addKitUsers();
-      });
+  async searchKits(search: string) {
+    const kitsRef = collection(this.firestore, 'kits')
+    const kitsQuery = query(
+        kitsRef,
+        where('tags', 'array-contains-any', search.toLocaleLowerCase().split(' ')),
+        limit(this.resultsLimit),
+        orderBy(this.sort, 'desc')
+      )
+
+      const querySnapshot = await getDocs(kitsQuery)
+    this.kits = this.transformedData(querySnapshot)
+    this.addKitUsers()
   }
 
   addKitUsers() {
-    this.kits.forEach((kit, index) => {
-      this.db.collection<any[]>('users').doc(kit.user.id).valueChanges().subscribe((u) => {
-        if (this.kits[index]) {
-          this.kits[index].fullUser = u;
-        }
-      });
-    });
+    this.kits.forEach(async (kit: any, index: any) => {
+      const firestoreUser = doc(this.firestore, `users/${kit.user.id}`)
+      const userData = await getDoc(firestoreUser)
+
+      if (this.kits[index]) {
+        this.kits[index].fullUser = userData.data()
+      }
+    })
   }
 
-  transformedData(kits) {
-    const newKits = [];
-    kits.forEach((kit) => {
-      const newKit = kit.payload.doc.data();
-      newKit.id = kit.payload.doc.id;
-      newKits.push(newKit);
-    });
-    return newKits;
+  transformedData(kits: any) {
+    const newKits: any[] = []
+    kits.forEach((kit: any) => {
+      const newKit = kit.data()
+      newKit.id = kit.id
+      newKits.push(newKit)
+    })
+    return newKits
   }
 
   sortKits(attribute: string) {
-    this.sort = attribute;
+    this.sort = attribute
     if (!this.search || this.search === '') {
-      this.initialSearch();
+      this.initialSearch()
     } else {
       if (this.search && this.search !== '') {
-        this.searchKits(this.search);
+        this.searchKits(this.search)
       } else {
-        this.kits = this.initialResults;
+        this.kits = this.initialResults
       }
     }
   }

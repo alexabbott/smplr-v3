@@ -43,7 +43,7 @@ export class GlobalService {
     private audioService: AudioService,
   ) { }
 
-  slugify(text) {
+  slugify(text: { toString: () => string; }) {
     return text.toString().toLowerCase()
       .replace(/\s+/g, '-')
       .replace(/[^\w\-]+/g, '')
@@ -52,24 +52,24 @@ export class GlobalService {
       .replace(/-+$/, '')
   }
 
-  formattedTags(name, tagsArray) {
-    const tags = [];
-    tagsArray.forEach((tag) => {
+  formattedTags(name: string, tagsArray: any[]) {
+    const tags: any[] = [];
+    tagsArray.forEach((tag: { name: any; }) => {
       tags.push(tag.name);
     });
-    const slugArray = name.replace('-', ' ').replace('_', ' ').split(' ').map(item => this.slugify(item));
+    const slugArray = name.replace('-', ' ').replace('_', ' ').split(' ').map((item: any) => this.slugify(item));
     return [...new Set(tags.concat(slugArray))];
   }
 
-  formattedChips(tags) {
-    return tags.map((tag) => { return { name: tag } });
+  formattedChips(tags: any[]) {
+    return tags.map((tag: any) => { return { name: tag } });
   }
 
-  capitalize(string) {
+  capitalize(string: string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
   }
 
-  playSample(event) {
+  playSample(event: { target: any; }) {
     this.audioService.resumeContext();
     const target = event.target;
     if (target.querySelector('.audio')) {
@@ -78,7 +78,7 @@ export class GlobalService {
     }
   }
 
-  stopSample(event) {
+  stopSample(event: { target: any; }) {
     const target = event.target;
     if (target.querySelector('.audio')) {
       const audio = target.querySelector('.audio');
@@ -88,14 +88,14 @@ export class GlobalService {
     }
   }
 
-  softStopSample(event) {
+  softStopSample(event: { target: any; }) {
     const target = event.target;
     if (target.querySelector('.audio')) {
       target.classList.remove('active');
     }
   }
 
-  updateParams(key, value) {
+  updateParams(key: string | number, value: { uid: any; } | null) {
     let query = {
       queryParams: { ...this.queryParams }
     };
@@ -107,7 +107,7 @@ export class GlobalService {
     this.router.navigate([location.pathname], query);
   }
 
-  create2DArray(rows) {
+  create2DArray(rows: number) {
     const arr = [];
     for (var i = 0; i < rows; i++) {
       arr[i] = [];

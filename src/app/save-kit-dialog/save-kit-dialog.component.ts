@@ -1,12 +1,11 @@
-import { Component, OnInit, Inject } from '@angular/core';
-import { Router } from '@angular/router';
-import { AngularFirestore } from '@angular/fire/firestore';
-import * as firebase from 'firebase/app';
-import { GlobalService } from '../global.service';
-import { SequencerService } from '../sequencer.service';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { ENTER, COMMA, SPACE } from '@angular/cdk/keycodes';
+import { Component, OnInit, Inject } from '@angular/core'
+import { Router } from '@angular/router'
+import { Firestore, doc, serverTimestamp, updateDoc, addDoc, collection } from '@angular/fire/firestore'
+import { GlobalService } from '../global.service'
+import { SequencerService } from '../sequencer.service'
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog'
+import { MatSnackBar } from '@angular/material/snack-bar'
+import { ENTER, COMMA, SPACE } from '@angular/cdk/keycodes'
 
 @Component({
   selector: 'save-kit-dialog',
@@ -14,116 +13,118 @@ import { ENTER, COMMA, SPACE } from '@angular/cdk/keycodes';
   styleUrls: ['./save-kit-dialog.component.scss']
 })
 export class SaveKitDialogComponent implements OnInit {
-  kitName: string;
-  currentSamples: any;
-  user: string;
-  sequence: Array<Array<Number>>;
-  tags: Array<any>;
+  kitName!: string
+  currentSamples: any
+  user!: any
+  sequence!: Array<Array<Number>>
+  tags: Array<any>
 
   // Enter, comma
-  separatorKeysCodes = [ENTER, COMMA, SPACE];
+  separatorKeysCodes = [ENTER, COMMA, SPACE]
 
   constructor(
     public dialogRef: MatDialogRef<SaveKitDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    public db: AngularFirestore,
+    public db: Firestore,
     public globalService: GlobalService,
     public sequencerService: SequencerService,
     public snackBar: MatSnackBar,
     public router: Router,
+    private firestore: Firestore = Inject(Firestore)
   ) {
-    this.tags = [];
+    this.tags = []
   }
 
   ngOnInit() {
-    this.globalService.userId.subscribe((u) => this.user = u);
+    this.globalService.userId.subscribe((u) => this.user = u)
 
-    this.globalService.currentSamples.subscribe((samples) => this.currentSamples = samples);
+    this.globalService.currentSamples.subscribe((samples) => this.currentSamples = samples)
 
-    this.sequencerService.sequence.subscribe((s) => { this.sequence = s; });
+    this.sequencerService.sequence.subscribe((s) => { this.sequence = s })
 
     if (this.data) {
-      if (this.data.name) { this.kitName = this.data.name; }
-      if (this.data.tags) { this.tags = this.globalService.formattedChips(this.data.tags); }
+      if (this.data.name) { this.kitName = this.data.name }
+      if (this.data.tags) { this.tags = this.globalService.formattedChips(this.data.tags) }
     }
   }
 
   onNoClick(): void {
-    this.dialogRef.close();
+    this.dialogRef.close()
   }
 
   selectSequence() {
-    let sequence;
+    let sequence
     if (this.sequence.length > 0) {
-      sequence = this.sequencerService.buildSequenceObject(this.sequence);
+      sequence = this.sequencerService.buildSequenceObject(this.sequence)
     } else if (this.data && this.data.sequence) {
-      sequence = this.data.sequence;
+      sequence = this.data.sequence
     } else {
-      sequence = {};
+      sequence = {}
     }
-    return sequence;
+    return sequence
   }
 
-  saveNewKit() {
-    const sampleRefs = [];
-    const slug = this.globalService.slugify(this.kitName);
+  async saveNewKit() {
+    const sampleRefs: any[] = []
+    const slug = this.globalService.slugify(this.kitName)
 
-    this.currentSamples.forEach((sample) => {
-      if (sample.id) { sample.sid = sample.id; }
-      sampleRefs.push(this.db.doc(`samples/${sample.sid}`).ref);
-    });
+    this.currentSamples.forEach((sample: { id: any; sid: any }) => {
+      if (sample.id) { sample.sid = sample.id }
+      sampleRefs.push(doc(this.firestore, `samples/${sample.sid}`))
+    })
 
     const kitData = {
       name: this.kitName,
       slug,
       samples: sampleRefs,
-      user: this.db.collection('users').doc(this.user).ref,
+      user: doc(this.firestore, `users/${this.user}`).id,
       sequence: this.selectSequence(),
       tags: this.globalService.formattedTags(this.kitName, this.tags),
-      updated: firebase.firestore.FieldValue.serverTimestamp(),
+      updated: serverTimestamp(),
       favoritesCount: this.data && this.data.favoritesCount ? this.data.favoritesCount : 0,
-    };
+    }
+
+    const kitsRef = collection(this.firestore, 'kits')
+    const kitRef = doc(this.firestore, `kits/${slug}`)
 
     if (!this.data) {
-      this.db.collection('kits').doc(slug).set(kitData).then((resp) => {
-        console.log('saved kit', resp);
-        this.saveUserKit();
-      });
+      await addDoc(kitsRef, kitData)
+      console.log('saved kit')
+      this.saveUserKit()
     } else {
-      this.db.collection('kits').doc(slug).update(kitData).then(() => {
-        console.log('updatd kit');
-      });
+      await updateDoc(kitRef, kitData)
     }
   }
 
-  saveUserKit() {
-    this.db.collection('users/' + this.user + '/kits').add({
-      kit: this.db.collection('kits').doc(this.globalService.slugify(this.kitName)).ref
+  async saveUserKit() {
+    const kitsRef = collection(this.firestore, 'kits')
+    const userKitsRef = collection(this.firestore, `users/${this.user}/kits`)
+    await addDoc(userKitsRef, {
+      kit: doc(kitsRef, this.globalService.slugify(this.kitName))
     })
-      .then((response) => {
-        console.log('saved user kit', response);
-        this.router.navigate([`kit/${this.globalService.slugify(this.kitName)}`]);
-      });
+
+    console.log('saved user kit')
+    this.router.navigate([`kit/${this.globalService.slugify(this.kitName)}`])
   }
 
   addChip(event: any): void {
-    const input = event.input;
-    const value = event.value;
+    const input = event.input
+    const value = event.value
 
     if ((value || '').trim()) {
-      this.tags.push({ name: value.trim() });
+      this.tags.push({ name: value.trim() })
     }
 
     if (input) {
-      input.value = '';
+      input.value = ''
     }
   }
 
   removeChip(tag: any): void {
-    let index = this.tags.indexOf(tag);
+    let index = this.tags.indexOf(tag)
 
     if (index >= 0) {
-      this.tags.splice(index, 1);
+      this.tags.splice(index, 1)
     }
   }
 }

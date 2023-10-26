@@ -25,10 +25,10 @@
             (focusout)="globalService.keyMapEnabled.next(true)"
             (mousedown)="globalService.playSample($event)"
             (mouseup)="globalService.softStopSample($event)"
-            dnd-draggable
-            [dragEnabled]="true"
-            [dragData]="sample"
-            [dropZones]="['zone1','zone2','zone3','zone4','zone5','zone6','zone7','zone8','zone9','zone10','zone11','zone12','zone13','zone14','zone15','zone16']">
+            cdkDropList
+            cdkDropListSortingDisabled="true"
+            [cdkDropListData]="samples"
+        >
             <sample
                 [sample]="sample"
                 [index]="i+1"

@@ -1,6 +1,6 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { AngularFirestore } from '@angular/fire/firestore';
+import { Firestore, updateDoc, doc, collection } from '@angular/fire/firestore';
 import { GlobalService } from '../global.service';
 import { SequencerService } from '../sequencer.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -11,13 +11,13 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   styleUrls: ['./save-sequence-dialog.component.scss']
 })
 export class SaveSequenceDialogComponent implements OnInit {
-  kitName: string;
+  kitName!: string;
   kitSamples: any;
 
   constructor(
     public dialogRef: MatDialogRef<SaveSequenceDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    public db: AngularFirestore,
+    public firestore: Firestore = Inject(Firestore),
     public globalService: GlobalService,
     public sequencerService: SequencerService,
     public snackBar: MatSnackBar
@@ -37,16 +37,22 @@ export class SaveSequenceDialogComponent implements OnInit {
   }
 
   saveSequence() {
-    this.sequencerService.sequence.subscribe((sequence) => {
+    this.sequencerService.sequence.subscribe(async (sequence) => {
       this.globalService.slugify(this.kitName);
-      this.db.collection('kits').doc(this.globalService.slugify(this.kitName)).update({
-        sequence: this.sequencerService.buildSequenceObject(sequence),
-      }).then((resp) => {
-        console.log('saved sequence', resp);
+
+      const kitsRef = collection(this.firestore, 'kits')
+
+      const kitRef = doc(kitsRef, this.globalService.slugify(this.kitName))
+
+      await updateDoc(kitRef, {
+        sequence: this.sequencerService.buildSequenceObject(sequence)
+      })
+
+      console.log('saved sequence');
         let snackBarRef = this.snackBar.open('Sequence saved', 'OK!', {
           duration: 3000
         });
-      });
+
     });
   }
 }

@@ -11,14 +11,13 @@
     <input type="file" id="uploadSample" name="sample" class="native-upload" (change)="handleFiles($event)">
   </div>
   <mat-form-field>
-    <mat-chip-list #chipList>
+    <mat-chip-set #chipList>
       <mat-chip *ngFor="let tag of tags" (remove)="removeChip(tag)">
         {{ tag.name }}
         <mat-icon matChipRemove>cancel</mat-icon>
       </mat-chip>
-      <input placeholder="Sample tags" [matChipInputFor]="chipList" [matChipInputSeparatorKeyCodes]="separatorKeysCodes" [matChipInputAddOnBlur]="true"
-        (matChipInputTokenEnd)="addChip($event)" />
-    </mat-chip-list>
+      <input placeholder="Sample tags"  />
+    </mat-chip-set>
   </mat-form-field>
 </mat-dialog-content>
 <mat-dialog-actions>

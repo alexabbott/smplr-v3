@@ -8,7 +8,7 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class SidenavComponent implements OnInit {
   params: any;
-  showProfile: boolean;
+  showProfile!: boolean;
 
   constructor(
     public route: ActivatedRoute

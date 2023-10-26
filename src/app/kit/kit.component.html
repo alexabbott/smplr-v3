@@ -28,9 +28,7 @@
             id="sample{{i+1}}"
             (mousedown)="globalService.playSample($event)"
             (mouseup)="globalService.stopSample($event)"
-            dnd-droppable
-            [dropZones]="['zone' + (i + 1)]"
-            (onDropSuccess)="replaceSample($event)">
+        >
             <sample
                 [sample]="sample"
                 [index]="i+1"
