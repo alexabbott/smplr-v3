@@ -1,7 +1,7 @@
 <h2 mat-dialog-title>Save Current Kit</h2>
 <mat-dialog-content>
   <mat-form-field>
-    <input matInput placeholder="Kit Name" [(ngModel)]="kitName">
+    <input matInput placeholder="Kit Name" [(ngModel)]="kitName" />
   </mat-form-field>
   <mat-form-field>
     <mat-chip-set #chipList>
@@ -9,7 +9,7 @@
         {{ tag.name }}
         <mat-icon matChipRemove>cancel</mat-icon>
       </mat-chip>
-      <input placeholder="Kit tags"
+      <input matInput placeholder="Kit tags"
       />
     </mat-chip-set>
   </mat-form-field>

@@ -1,21 +1,21 @@
 <div class="kits">
     <div class="menu">
+      <div class="search">
+        <mat-form-field>
+            <input
+                matInput
+                placeholder="Search kits"
+                [(ngModel)]="search"
+                (ngModelChange)="searchChanged($event)"
+            >
+        </mat-form-field>
+        <mat-icon [matMenuTriggerFor]="kitSortMenu" class="sort-icon">sort</mat-icon>
+        <mat-menu #kitSortMenu="matMenu">
+          <button mat-menu-item (click)="sortKits('updated')">Newest kits</button>
+          <button mat-menu-item (click)="sortKits('favoritesCount')">Popular kits</button>
+        </mat-menu>
+      </div>
       <button mat-raised-button routerLink="/new-kit" queryParamsHandling="merge">Create a new kit</button>
-    </div>
-    <div class="search">
-      <mat-form-field>
-          <input
-              matInput
-              placeholder="Search kits"
-              [(ngModel)]="search"
-              (ngModelChange)="searchChanged($event)"
-          >
-      </mat-form-field>
-      <mat-icon [matMenuTriggerFor]="kitSortMenu" class="sort-icon">sort</mat-icon>
-      <mat-menu #kitSortMenu="matMenu">
-        <button mat-menu-item (click)="sortKits('updated')">Newest kits</button>
-        <button mat-menu-item (click)="sortKits('favoritesCount')">Popular kits</button>
-      </mat-menu>
     </div>
     <ng-container *ngFor="let kit of kits">
       <kit-preview [kit]="kit" [user]="user"></kit-preview>

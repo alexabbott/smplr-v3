@@ -7,7 +7,9 @@
 
 .kit-container {
   align-items: center;
-  border: 1px solid $black;
+  backdrop-filter: blur(10px);
+  background-color: rgba(255, 255, 255, 0.5);
+  border-radius: 4px;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -34,4 +36,15 @@
 
 .username {
   margin-left: 5px;
+}
+
+.favorite {
+  margin-top: 10px;
+}
+
+.mdc-button.mat-mdc-raised-button:not(:disabled) {
+  color: $black;
+  backdrop-filter: blur(10px);
+  background-color: rgba(255, 255, 255, 0.1);
+  border: none;
 }

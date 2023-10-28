@@ -6,7 +6,6 @@ import { Subject } from 'rxjs'
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators'
 import { SaveSampleDialogComponent } from '../save-sample-dialog/save-sample-dialog.component'
 import { MatDialog } from '@angular/material/dialog'
-import { CdkDrag } from '@angular/cdk/drag-drop'
 
 @Component({
   selector: 'samples',

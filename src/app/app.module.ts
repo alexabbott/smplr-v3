@@ -40,6 +40,9 @@ import { FavoriteComponent } from './favorite/favorite.component';
 import { SaveKitDialogComponent } from './save-kit-dialog/save-kit-dialog.component';
 import { SaveSequenceDialogComponent } from './save-sequence-dialog/save-sequence-dialog.component';
 import { EditProfileDialogComponent } from './edit-profile-dialog/edit-profile-dialog.component';
+import { GlobalService } from './global.service';
+import { AudioService } from './audio.service';
+import { SequencerService } from './sequencer.service';
 
 @NgModule({
   declarations: [
@@ -84,7 +87,7 @@ import { EditProfileDialogComponent } from './edit-profile-dialog/edit-profile-d
     MatTabsModule,
     MatToolbarModule,
   ],
-  providers: [],
+  providers: [AudioService, GlobalService, SequencerService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -19,17 +19,16 @@ export class SaveSampleDialogComponent implements OnInit {
   user!: any
   allowSave: boolean
   tags: any
+  private storage: Storage = Inject(Storage)
+  private firestore: Firestore = Inject(Firestore)
 
   // Enter, comma
   separatorKeysCodes = [ENTER, COMMA, SPACE]
 
   constructor(
     public dialogRef: MatDialogRef<SaveSampleDialogComponent>,
-    public db: Firestore,
     public snackBar: MatSnackBar,
     public globalService: GlobalService,
-    private storage: Storage = Inject(Storage),
-    private firestore: Firestore = Inject(Firestore)
   ) {
     this.allowSave = false
     this.tags = []
@@ -51,8 +50,11 @@ export class SaveSampleDialogComponent implements OnInit {
   }
 
   async uploadSample() {
-    const path = 'samples/' + Date.now().toString() + '-' + this.file.name
+    const path = 'samples/' + Date.now().toString() + '_' + this.file.name.trim().toLocaleLowerCase().replaceAll('-','_')
+    console.log('path', path)
+    console.log('this.storage', this.storage)
     const storageRef = ref(this.storage, path)
+    console.log('ref', storageRef)
     const upload = await uploadBytesResumable(storageRef, this.file)
 
     this.snackBar.open('Sample uploaded', 'OK!', {
@@ -60,7 +62,7 @@ export class SaveSampleDialogComponent implements OnInit {
     })
   
     this.sampleURL = upload.ref.fullPath
-    this.allowSave = true
+    // this.allowSave = true
   }
 
   async saveSample() {

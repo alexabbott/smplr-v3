@@ -29,6 +29,7 @@ export class KitsComponent implements OnInit {
 
   ngOnInit() {
     this.initialSearch()
+    this.globalService.closeSidenav()
   }
 
   modelChange() {

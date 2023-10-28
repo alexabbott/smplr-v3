@@ -5,6 +5,12 @@ body {
     color: $black;
     font-family: $font-serif;
     font-weight: 300;
+    height: 100%;
+    margin: 0;
+}
+
+body {
+    background-image: linear-gradient($main, white);
     margin: 0;
 }
 
@@ -36,18 +42,22 @@ h3,
 .mat-tab-label-content,
 .mat-tab-group,
 .mat-chip,
+.mat-drawer-container,
 .mat-drawer {
-    color: $black;
+    color: $white !important;
     font-family: $font-serif !important;
     font-weight: 300 !important;
 }
 
 mat-sidenav {
-    box-shadow: 0 0 16px 3px rgba(0, 0, 0, 0.1);
     box-sizing: border-box;
     height: calc(100vh - 64px);
     padding: 20px 20px 0;
     width: 300px;
+}
+
+.mat-sidenav.mat-drawer-side.mat-drawer-end {
+    border-left: none;
 }
 
 mat-sidenav-content {
@@ -55,18 +65,78 @@ mat-sidenav-content {
 }
 
 mat-toolbar {
-    box-shadow: 0 0 16px 3px rgba(0, 0, 0, 0.1);
     position: relative;
     z-index: 2;
+
+    &.mat-toolbar {
+        background-color: transparent;
+    }
+
+    a {
+        color: $white;
+    }
 }
 
 .mat-form-field {
     width: 100%;
 }
 
-// .cdk-drag:not(.cdk-drag-preview) {
-//     transform: none !important;
-// }
+.cdk-overlay-container {
+    height: 100vh;
+    position: absolute;
+    top: 0;
+    width: 100vw;
+}
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+.cdk-global-overlay-wrapper {
+    background-color: rgba(0, 0, 0, .2);
+    display: flex;
+    height: 100%;
+    width: 100%;
+}
+
+.cdk-overlay-pane {
+    z-index: 1;
+}
+
+.mdc-button {
+
+    color: $white;
+    font-family: $font-serif !important;
+    font-weight: 300 !important;
+
+    &.mat-mdc-raised-button:not(:disabled) {
+        background-color: transparent;
+        border: 1px solid $white;
+        color: $white;
+    }
+
+    &.mat-mdc-button:not(:disabled) {
+        color: $white;
+    }
+}
+
+.mat-mdc-dialog-container.mdc-dialog .mdc-dialog__surface {
+    backdrop-filter: blur(10px);
+    background-color: rgba(255, 255, 255, 0.5);
+    color: $black;
+
+    h2 {
+        color: $black !important;
+    }
+
+    .mdc-button {
+        color: $black;
+    }
+}
+
+.mat-mdc-menu-panel.mat-mdc-elevation-specific {
+    backdrop-filter: blur(10px);
+    background-color: rgba(255, 255, 255, 0.8);
+    position: absolute;
+    color: $black;
+    font-family: $font-serif;
+    right: 10px;
+    top: 60px;
+    z-index: 1;
+}

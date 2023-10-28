@@ -8,7 +8,7 @@
 
 .menu {
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
 
   mat-icon {
       cursor: pointer;
@@ -17,12 +17,11 @@
 }
 
 .search {
-  align-items: center;
-  display: flex;
+  display: inline-block;
 }
 
 .sort-icon {
-  color: #828282;
+  color: $white;
   cursor: pointer;
   margin-left: 10px;
 }

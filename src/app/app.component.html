@@ -1,5 +1,5 @@
 <mat-toolbar>
-  <a routerLink="/" class="app-icon" queryParamsHandling="merge">SMPLR</a>
+  <a routerLink="/" class="app-icon" queryParamsHandling="merge">SMPLR.V3</a>
   <span class="toolbar-spacer"></span>
   <span>
     <i class="material-icons" (click)="sidenav.toggle(); toggleOpenClass();">playlist_play</i>
@@ -7,7 +7,7 @@
     <span *ngIf="user">
       <img [src]="user.avatar || user.photoURL" [matMenuTriggerFor]="menu" class="user-photo" *ngIf="user">
       <mat-menu #menu="matMenu">
-        <button mat-menu-item *ngIf="user" (click)="globalService.updateParams('profile', user)">My Profile</button>
+        <button mat-menu-item *ngIf="user" (click)="globalService.updateParams('profile', user); sidenav.open()">My Profile</button>
         <button mat-menu-item *ngIf="user" (click)="logout()">Logout</button>
       </mat-menu>
     </span>
@@ -15,7 +15,7 @@
 </mat-toolbar>
 <mat-sidenav-container cdkDropListGroup>
   <router-outlet></router-outlet>
-  <mat-sidenav #sidenav mode="side" opened="true" position="end">
+  <mat-sidenav #sidenav mode="side" opened="false" position="end">
     <sidenav></sidenav>
   </mat-sidenav>
   <sequencer *ngIf="isKit"></sequencer>

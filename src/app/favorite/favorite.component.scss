@@ -2,16 +2,22 @@
 
 .favorite {
   align-items: center;
-  color: $black;
+  border: 1px solid $white;
+  border-radius: 4px;
+  color: $white;
   display: flex;
   font-size: .8rem;
-  width: 80px;
+  justify-content: center;
+  padding: 4px;
+  text-align: center;
+  width: 40px;
 
   .favorite-icon {
     color: $black;
     cursor: pointer;
     margin: 1px 5px 0 0;
     pointer-events: initial;
+    text-align: center;
 
     &.filled {
       color: $red;

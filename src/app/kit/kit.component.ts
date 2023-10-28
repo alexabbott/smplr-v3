@@ -72,6 +72,7 @@ export class KitComponent implements OnInit {
     ngOnInit() {
         this.initializeActiveKeys()
         this.loadKit()
+        this.globalService.openSidenav()
 
         this.globalService.userId.subscribe((user) => {
             this.user = user
@@ -128,18 +129,6 @@ export class KitComponent implements OnInit {
         this.keys.forEach((key: string | number) => {
             this.activeKeys[key] = false
         })
-    }
-
-    replaceSample($event: any) {
-        console.log('$event', $event.container.id)
-        // const target = $event.item.element['nativeElement']['firstChild']
-        // if (target) {
-        //     const index = $event.container.id.split('sample')[1] - 1
-        //     console.log('index', index)
-        //     this.kitSamples.splice(index, 1, $event.item.data)
-        //     console.log('k', this.kitSamples)
-        //     this.globalService.currentSamples.next(this.kitSamples)
-        // }
     }
 
     openSaveKitDialog(edit: boolean) {

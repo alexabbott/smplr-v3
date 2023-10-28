@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { Router } from '@angular/router';
 import { AudioService } from './audio.service';
+import { MatSidenav } from '@angular/material/sidenav';
 
 @Injectable({
   providedIn: 'root'
@@ -17,6 +18,8 @@ export class GlobalService {
   public keyMapEnabled = new BehaviorSubject(true);
   public favoriteKits = new BehaviorSubject({});
   public favoriteSamples = new BehaviorSubject({});
+  private sidenav!: MatSidenav;
+
   queryParams: any;
 
   public keys = [
@@ -113,5 +116,17 @@ export class GlobalService {
       arr[i] = [];
     }
     return arr;
+  }
+
+  setSidenav(sidenav: MatSidenav) {
+    this.sidenav = sidenav;
+  }
+
+  openSidenav() {
+      return this.sidenav.open();
+  }
+
+  closeSidenav() {
+      return this.sidenav.close();
   }
 }

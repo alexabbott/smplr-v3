@@ -1,10 +1,11 @@
 @import "./../../shared/variables.scss";
 
 .sample {
-    background-color: $white;
-    border: 1px solid $black;
-    border-radius: 1px;
+    backdrop-filter: blur(10px);
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 4px;
     box-sizing: border-box;
+    color: $black;
     display: inline-block;
     height: 85px;
     line-height: 84px;
@@ -19,7 +20,7 @@
     }
 
     &.empty {
-        background: $grey;
+        background-color: rgba(255, 255, 255, 0.2);
     }
 
     .sample-name {
@@ -35,12 +36,15 @@
     }
 
     ::ng-deep .favorite {
-        background-color: #efefef;
+        background-color: rgba(255, 255, 255, 0.5);
+        border: none;
         bottom: -13px;
+        color: $black;
         display: flex;
         height: 26px;
         justify-content: center;
         left: 50%;
+        padding: 0;
         pointer-events: none;
         position: absolute;
         transform: translate(-50%, -50%);
@@ -49,6 +53,7 @@
     }
 
     .key {
+        color: $grey;
         font-size: 0.7rem;
         height: 26px;
         left: 50%;

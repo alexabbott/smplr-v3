@@ -1,3 +1,5 @@
+@import "./../../shared/variables.scss";
+
 .samples {
     display: block;
     margin: 0 auto;
@@ -19,7 +21,7 @@
 }
 
 .sort-icon {
-    color: #828282;
+    color: $white;
     cursor: pointer;
     margin-left: 10px;
 }
@@ -27,6 +29,7 @@
 .menu {
     display: flex;
     justify-content: flex-end;
+    margin-bottom: 1rem;
 
     mat-icon {
         cursor: pointer;

@@ -1,8 +1,9 @@
-import { Component, inject } from '@angular/core'
+import { Component, inject, ViewChild } from '@angular/core'
 import { Router } from '@angular/router'
-import { Firestore, collection, doc, addDoc, updateDoc } from '@angular/fire/firestore'
+import { Firestore, collection, doc, addDoc, updateDoc, getDocs } from '@angular/fire/firestore'
 import { Auth, signInWithPopup, GoogleAuthProvider } from '@angular/fire/auth'
 import { GlobalService } from './global.service'
+import { MatSidenav } from '@angular/material/sidenav';
 
 @Component({
   selector: 'app-root',
@@ -16,6 +17,7 @@ export class AppComponent {
   private firestore: Firestore = inject(Firestore)
   private auth: Auth = inject(Auth)
   public user: any
+  @ViewChild('sidenav') public sidenav!: MatSidenav;
 
   constructor(
     public globalService: GlobalService,
@@ -26,11 +28,15 @@ export class AppComponent {
     this.router.events.subscribe((url) => {
       this.isKit = (window.location.pathname.substring(0, 4) === '/kit' || window.location.pathname === '/new-kit') ? true : false
     })
-    // this.globalService.userId.subscribe((user: string) => {
-    //   this.user = user
-    //   this.setFavorites(user, 'kits')
-    //   this.setFavorites(user, 'samples')
-    // })
+    this.globalService.userId.subscribe((user: any) => {
+      this.user = user
+      this.setFavorites(user, 'kits')
+      this.setFavorites(user, 'samples')
+    })
+  }
+
+  ngAfterViewInit(): void {
+    this.globalService.setSidenav(this.sidenav);
   }
 
   login() {
@@ -72,15 +78,18 @@ export class AppComponent {
     return newObject
   }
 
-  setFavorites(id: string, collection: string) {
+  setFavorites(id: string, collectionType: string) {
     if (id) {
-      // collection(this.firestore, `user-favorite-${collection}`).doc(id).collection('favorites').valueChanges().subscribe((items: any) => {
-      //   if (items) {
-      //     this.globalService[`favorite${this.globalService.capitalize(collection)}`].next(this.convertArrayToObject(items))
-      //   } else {
-      //     this.globalService[`favorite${this.globalService.capitalize(collection)}`].next({})
-      //   }
-      // })
+      const collectionRef = collection(this.firestore, `user-favorite-${collectionType}/${id}/favorites`)
+
+      const items = getDocs(collectionRef)
+      
+      // if (items) {
+      //   const collectionTitle = collectionType === 'kits' ? 'favoriteKits' : 'favoriteSamples'
+      //   this.globalService[collectionTitle].next(this.convertArrayToObject(items))
+      // } else {
+      //   this.globalService[collectionTitle].next({})
+      // }
     }
   }
 
